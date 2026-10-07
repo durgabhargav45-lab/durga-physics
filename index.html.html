@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Magnetic Effects of Electric Current – Feel the Physics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef3f8; --grid:#d9e3ee; --card:#ffffff; --ink:#14213d; --muted:#5b6b82; --line:#cfdae8;
+  --north:#e63946; --south:#2a6fdb; --amp:#f29e00; --force:#17a06b; --field:#2a6fdb; --accent:#6c4de6;
+  --soft:#f6f9fc; --warn:#c2410c; --good:#0f8a5f;
+  --ph:#fff4d6;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1824; --grid:#182536; --card:#162131; --ink:#e8eef7; --muted:#9db0c8; --line:#2a3b52; --soft:#1a283a; --ph:#2b2a14;
+    --north:#ff6b76; --south:#6aa2ff; --amp:#ffb830; --force:#3ddc97; --field:#6aa2ff; --accent:#a08cff; --warn:#ff9a62; --good:#3ddc97;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1824; --grid:#182536; --card:#162131; --ink:#e8eef7; --muted:#9db0c8; --line:#2a3b52; --soft:#1a283a; --ph:#2b2a14;
+  --north:#ff6b76; --south:#6aa2ff; --amp:#ffb830; --force:#3ddc97; --field:#6aa2ff; --accent:#a08cff; --warn:#ff9a62; --good:#3ddc97;
+}
+*{box-sizing:border-box}
+html{height:100%; scroll-padding-top:env(safe-area-inset-top,0px); -webkit-text-size-adjust:100%}
+body{margin:0; min-height:100%; background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px; color:var(--ink); font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif; font-size:16px; line-height:1.55}
+h1,h2,h3{font-family:'Baloo 2','Nunito',system-ui,sans-serif; line-height:1.15; margin:0}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+.wrap{max-width:1080px; margin:0 auto; padding:0 14px 60px}
+
+/* hero */
+.hero{padding:30px 0 12px}
+.hero h1{font-size:clamp(30px,6vw,52px); font-weight:800; letter-spacing:-.5px}
+.hero p{max-width:640px; margin:10px 0 0; color:var(--muted); font-size:clamp(16px,2.2vw,19px)}
+.hero .tag{display:inline-block; background:var(--ph); border:2px solid var(--amp); padding:3px 12px; border-radius:99px; font-weight:800; font-size:14px; margin-bottom:12px}
+.heroRow{display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:16px}
+.oerstedMini{width:min(100%,520px); border-radius:18px; background:var(--card); border:2px solid var(--line); display:block; touch-action:manipulation}
+.heroNote{font-size:14px; color:var(--muted); max-width:300px}
+
+/* nav */
+nav.labs{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:color-mix(in srgb,var(--bg) 92%,transparent); backdrop-filter:blur(6px);
+  margin:0 -14px; padding:8px 14px; border-bottom:2px solid var(--line)}
+.chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin}
+.chip{flex:0 0 auto; border:2px solid var(--line); background:var(--card); border-radius:99px; padding:7px 14px; font-weight:800; font-size:14px; white-space:nowrap; display:flex; gap:6px; align-items:center}
+.chip small{font-weight:700; color:var(--muted); font-size:11px}
+.chip[aria-selected="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.chip[aria-selected="true"] small{color:var(--bg); opacity:.75}
+.chip .tick{display:none; color:var(--good); font-weight:900}
+.chip.done .tick{display:inline}
+.chip.bonus{border-style:dashed}
+.progress{height:6px; background:var(--line); border-radius:9px; overflow:hidden; margin-top:6px}
+.progress i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--south),var(--north)); transition:width .4s}
+
+/* lab */
+.lab{display:none; margin-top:18px}
+.lab.on{display:block}
+.labHead{display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; margin-bottom:6px}
+.labHead h2{font-size:clamp(24px,4.4vw,36px); font-weight:800}
+.badge{font-size:13px; font-weight:800; border-radius:8px; padding:2px 10px; background:var(--ph); border:2px solid var(--amp)}
+.badge.bonus{background:#efe9ff; border-color:var(--accent); color:#3a2a9d}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .badge.bonus{background:#2a2350; color:#cfc4ff}}
+.lede{margin:0 0 14px; color:var(--muted); max-width:720px}
+.story{background:var(--card); border:2px solid var(--line); border-left:8px solid var(--amp); border-radius:12px; padding:12px 16px; margin:0 0 14px; max-width:760px}
+.story b{font-family:'Baloo 2'; font-size:18px}
+.grid{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:14px; align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.stage{background:var(--card); border:2px solid var(--line); border-radius:16px; padding:8px; position:relative}
+canvas{display:block; width:100%; height:auto; border-radius:10px; background:var(--soft); touch-action:none; max-width:100%}
+.hint{font-size:13.5px; color:var(--muted); padding:6px 6px 2px}
+.hint b{color:var(--ink)}
+.panel{background:var(--card); border:2px solid var(--line); border-radius:16px; padding:14px}
+.panel h3{font-size:19px; margin-bottom:8px}
+.ctl{margin:0 0 12px}
+.ctl label{display:flex; justify-content:space-between; font-weight:800; font-size:14.5px; margin-bottom:2px}
+.ctl label span{color:var(--accent); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; height:34px; accent-color:var(--accent); margin:0}
+.btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px}
+.btn{border:2px solid var(--ink); background:var(--card); border-radius:12px; padding:8px 13px; font-weight:800; font-size:14.5px; min-height:44px; transition:transform .08s}
+.btn:active{transform:translateY(2px)}
+.btn.pri{background:var(--ink); color:var(--bg)}
+.btn.on{background:var(--amp); border-color:var(--ink); color:#1a1200}
+.btn.small{min-height:38px; padding:5px 11px; font-size:13.5px}
+.btn.good{background:var(--force); color:#04271a; border-color:#04271a}
+.btn.bad{background:var(--north); color:#fff; border-color:#5a0710}
+.seg{display:inline-flex; border:2px solid var(--ink); border-radius:12px; overflow:hidden; margin:0 8px 8px 0}
+.seg button{border:0; background:var(--card); padding:8px 12px; font-weight:800; font-size:14px; min-height:42px}
+.seg button+button{border-left:2px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.read{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:8px; margin:0 0 12px}
+.read div{background:var(--soft); border:2px solid var(--line); border-radius:10px; padding:6px 10px}
+.read small{display:block; color:var(--muted); font-weight:700; font-size:12px}
+.read b{font-family:'Baloo 2'; font-size:22px; font-variant-numeric:tabular-nums}
+.say{background:var(--ph); border:2px solid var(--amp); border-radius:12px; padding:10px 12px; font-weight:700; min-height:3.6em; margin:0 0 12px}
+.rule{background:var(--soft); border:2px dashed var(--accent); border-radius:12px; padding:10px 12px; margin:0 0 12px; font-size:15px}
+.rule b{color:var(--accent)}
+.key{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:13.5px; font-weight:700; margin:0 0 10px}
+.key i{display:inline-block; width:14px; height:14px; border-radius:4px; vertical-align:-2px; margin-right:5px}
+details{background:var(--card); border:2px solid var(--line); border-radius:12px; padding:8px 14px; margin-top:12px}
+summary{font-weight:800; cursor:pointer; min-height:32px; display:flex; align-items:center}
+details p,details li{font-size:15px}
+.quiz{margin-top:16px; background:var(--card); border:2px solid var(--ink); border-radius:16px; padding:14px 16px}
+.quiz h3{font-size:20px; margin-bottom:6px}
+.q{margin:10px 0 14px}
+.q p{margin:0 0 6px; font-weight:800}
+.opts{display:flex; flex-direction:column; gap:6px}
+.opt{text-align:left; border:2px solid var(--line); background:var(--soft); border-radius:10px; padding:9px 12px; font-weight:700; min-height:44px}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:#d8f5e8; border-color:var(--good); color:#064d33}
+.opt.wrong{background:#ffe0dc; border-color:var(--north); color:#6a0e17}
+.why{font-size:14.5px; margin-top:6px; padding:6px 10px; border-radius:8px; background:var(--soft); display:none}
+.why.show{display:block}
+.nextrow{display:flex; justify-content:space-between; gap:10px; margin-top:20px}
+.dir{display:inline-flex; gap:4px; flex-wrap:wrap; margin:0 0 8px}
+.dir button{border:2px solid var(--line); background:var(--soft); border-radius:10px; padding:6px 10px; font-weight:800; min-width:44px; min-height:44px; font-size:15px}
+.dir button[aria-pressed="true"]{border-color:var(--ink); background:var(--amp); color:#1a1200}
+.score{font-family:'Baloo 2'; font-weight:800; font-size:18px}
+.sym{font-family:system-ui,'Nunito',sans-serif}
+table.cmp{width:100%; border-collapse:collapse; font-size:14.5px}
+table.cmp th,table.cmp td{border:2px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top}
+table.cmp th{background:var(--soft)}
+.tableWrap{overflow-x:auto}
+.legend3{display:flex; gap:8px; flex-wrap:wrap; margin:0 0 10px}
+.legend3 span{padding:4px 10px; border-radius:99px; font-weight:800; font-size:13.5px; color:#fff}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+footer{margin-top:40px; color:var(--muted); font-size:13.5px; border-top:2px solid var(--line); padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="tag">Class 10 · Chapter 12</span>
+  <h1>Magnetic Effects of Electric Current</h1>
+  <p>Do not memorise it. Play with it. Ten labs, one for every activity in your book, plus the motor and generator that confuse everybody. Tap, drag and slide: the rules appear by themselves.</p>
+  <div class="heroRow">
+    <canvas id="heroCv" class="oerstedMini" width="520" height="190" aria-label="Tap the switch to send current through the wire and watch the compass needle turn"></canvas>
+    <div class="heroNote"><b>Try it now:</b> tap the switch. That tiny needle jump in 1820 started all of this.</div>
+  </div>
+</header>
+
+<nav class="labs" aria-label="Labs">
+  <div class="chips" id="chips" role="tablist"></div>
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+</nav>
+
+<!-- ============ LAB 1 ============ -->
+<section class="lab" id="lab-oersted" role="tabpanel">
+  <div class="labHead"><h2>1. Oersted's surprise</h2><span class="badge">Activity 12.1 + 12.4</span></div>
+  <p class="lede">Does a wire carrying current act like a magnet? Let us catch it in the act, the same way Oersted did.</p>
+  <div class="story"><b>The accident.</b> In 1820 a physics teacher noticed a compass needle twitch when a battery was connected nearby. Nobody had linked electricity and magnetism before that day.</div>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-oersted" width="720" height="460" aria-label="Top view: straight wire above a compass"></canvas>
+      <div class="hint">Top view. The wire runs <b>north to south</b>, right above the compass. Tap the <b>switch</b> in the picture or use the buttons.</div>
+    </div>
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="btnrow">
+        <button class="btn pri" id="o-key">Plug key: OFF</button>
+        <button class="btn" id="o-rev">Reverse battery</button>
+      </div>
+      <div class="ctl"><label>Current (rheostat) <span id="o-iv"></span></label><input type="range" id="o-i" min="0.5" max="5" step="0.1" value="2.5"></div>
+      <div class="ctl"><label>Compass distance from wire <span id="o-dv"></span></label><input type="range" id="o-d" min="1" max="4" step="0.1" value="1.2"></div>
+      <div class="read"><div><small>Needle turns</small><b id="o-ang">0°</b></div><div><small>Towards</small><b id="o-dir">–</b></div></div>
+      <div class="say" id="o-say">Key is open. The needle points to north, as always.</div>
+      <div class="key"><span><i style="background:var(--north)"></i>needle north end</span><span><i style="background:var(--amp)"></i>current</span></div>
+    </div>
+  </div>
+  <details open><summary>What to notice (answers Activity 12.1 and 12.4)</summary>
+    <ul><li>Key closed: the needle <b>deflects</b>. Current produces a magnetic effect.</li>
+    <li>Reverse the battery: the needle deflects the <b>opposite way</b>. The field direction depends on current direction.</li>
+    <li>More current: more deflection. Move the compass away: less deflection.</li>
+    <li>Why not 90°? The Earth's own field also pulls the needle north. The needle settles where the two pulls balance: tan(angle) = wire field ÷ Earth's field.</li></ul>
+  </details>
+  <div class="quiz" data-quiz="oersted"></div>
+</section>
+
+<!-- ============ LAB 2 ============ -->
+<section class="lab" id="lab-bar" role="tabpanel">
+  <div class="labHead"><h2>2. See the invisible field</h2><span class="badge">Activity 12.2 + 12.3</span></div>
+  <p class="lede">A magnet pushes and pulls through empty space. Iron filings and a compass make that region visible.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-bar" width="720" height="500" aria-label="Bar magnet with iron filings, field lines and a draggable compass"></canvas>
+      <div class="hint"><b>Drag the compass</b> anywhere. <b>Tap empty space</b> in Field-line mode to trace a line from that point.</div>
+    </div>
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="seg" role="group" aria-label="Display mode">
+        <button id="b-m1" aria-pressed="true">Iron filings</button><button id="b-m2" aria-pressed="false">Field lines</button><button id="b-m3" aria-pressed="false">Both</button>
+      </div>
+      <div class="ctl"><label>Magnet strength <span id="b-sv"></span></label><input type="range" id="b-s" min="0.4" max="2" step="0.05" value="1"></div>
+      <div class="btnrow"><button class="btn small" id="b-tap">Tap the board</button><button class="btn small" id="b-flip">Flip magnet</button><button class="btn small" id="b-clr">Clear lines</button></div>
+      <div class="read"><div><small>Field here</small><b id="b-str">–</b></div><div><small>Compass N points</small><b id="b-pt">–</b></div></div>
+      <div class="say" id="b-say">Drag the compass near the north pole. Its south end turns towards it: unlike poles attract.</div>
+      <div class="rule"><b>Rules of field lines.</b> They leave the <b>N</b> pole, enter the <b>S</b> pole, and continue inside from S to N, so they are closed loops. Crowded lines mean a strong field. They never cross.</div>
+    </div>
+  </div>
+  <details><summary>Why can two field lines never cross?</summary>
+    <p>At a crossing point the compass would have to point in two directions at once. A needle can only point one way, so the lines cannot cross.</p></details>
+  <div class="quiz" data-quiz="bar"></div>
+</section>
+
+<!-- ============ LAB 3 ============ -->
+<section class="lab" id="lab-wire" role="tabpanel">
+  <div class="labHead"><h2>3. Field around a straight wire</h2><span class="badge">Activity 12.5 · Right-hand thumb rule</span></div>
+  <p class="lede">Iron filings around a vertical wire make concentric circles. But clockwise or anticlockwise? The right hand answers it.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-wire" width="720" height="500" aria-label="Magnetic field circles around a straight current carrying wire"></canvas>
+      <div class="hint"><b>Drag the compass</b> to point P, then to farther point Q. Switch between the 3D side view and the cardboard top view.</div>
+    </div>
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="seg" role="group" aria-label="View">
+        <button id="w-v1" aria-pressed="true">Cardboard top view</button><button id="w-v2" aria-pressed="false">3D side view</button>
+      </div>
+      <div class="btnrow"><button class="btn pri" id="w-rev">Reverse current</button><button class="btn small" id="w-fil">Filings: ON</button></div>
+      <div class="ctl"><label>Current (rheostat) <span id="w-iv"></span></label><input type="range" id="w-i" min="0.5" max="5" step="0.1" value="3"></div>
+      <div class="read"><div><small>Field at compass</small><b id="w-b">–</b></div><div><small>Distance</small><b id="w-r">–</b></div></div>
+      <div class="say" id="w-say">Drag the compass. Its red end follows the field.</div>
+      <div class="rule"><b>Right-hand thumb rule.</b> Hold the wire in your right fist. <b>Thumb</b> along the <b>current</b>. Curled <b>fingers</b> show the <b>field</b> direction.</div>
+      <details><summary>Symbols: dot and cross</summary><p>A <b>dot</b> means the current comes <b>out of</b> the page, towards you (the tip of an arrow). A <b>cross</b> means it goes <b>into</b> the page (the tail feathers).</p></details>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="wire"></div>
+</section>
+
+<!-- ============ LAB 4 ============ -->
+<section class="lab" id="lab-sol" role="tabpanel">
+  <div class="labHead"><h2>4. Bend the wire: loop and solenoid</h2><span class="badge">Activity 12.6</span></div>
+  <p class="lede">Bend a straight wire into a loop and the circles stack up. Add more turns and you build a bar magnet out of wire.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-sol" width="720" height="420" aria-label="Cross-section of a coil with magnetic field lines"></canvas>
+      <div class="hint">Cross-section cut through the middle. Wire going <b>out</b> of the page shows a dot, wire going <b>in</b> shows a cross. <b>Drag the compass</b> inside and outside.</div>
+    </div>
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="ctl"><label>Number of turns <span id="s-nv"></span></label><input type="range" id="s-n" min="1" max="14" step="1" value="1"></div>
+      <div class="ctl"><label>Current <span id="s-iv"></span></label><input type="range" id="s-i" min="0.5" max="5" step="0.1" value="3"></div>
+      <div class="btnrow"><button class="btn pri" id="s-rev">Reverse current</button><button class="btn small" id="s-bar">Bar magnet overlay: OFF</button></div>
+      <div class="read"><div><small>Field at centre</small><b id="s-bc">–</b></div><div><small>Left end is</small><b id="s-pole">–</b></div></div>
+      <div class="say" id="s-say">One turn: the field at the very centre looks like a straight line.</div>
+      <div class="rule"><b>Solenoid:</b> inside the coil the lines are <b>parallel and evenly spaced</b>, so the field is <b>uniform</b>. Outside it looks just like a bar magnet. Field at centre = <b>n</b> times one turn.</div>
+    </div>
+  </div>
+  <details><summary>Quick trick to find the north end</summary><p>Curl the fingers of your right hand the way the current goes around the coil. Your thumb points to the <b>north</b> end of the solenoid.</p></details>
+  <div class="quiz" data-quiz="sol"></div>
+</section>
+
+<!-- ============ LAB 5 ============ -->
+<section class="lab" id="lab-em" role="tabpanel">
+  <div class="labHead"><h2>5. Build an electromagnet</h2><span class="badge">Section 12.2.4 · Fig. 12.11</span></div>
+  <p class="lede">A solenoid with a soft iron core becomes a magnet you can switch on and off. Cranes in scrap yards use giant ones.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-em" width="720" height="460" aria-label="Electromagnet picking up paper clips"></canvas>
+      <div class="hint">Close the switch, then raise turns and current. How many clips can you lift?</div>
+    </div>
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="btnrow"><button class="btn pri" id="e-key">Switch: OFF</button><button class="btn" id="e-core">Iron core: ON</button></div>
+      <div class="ctl"><label>Turns of wire <span id="e-nv"></span></label><input type="range" id="e-n" min="5" max="60" step="1" value="20"></div>
+      <div class="ctl"><label>Current <span id="e-iv"></span></label><input type="range" id="e-i" min="0.5" max="5" step="0.1" value="2"></div>
+      <div class="read"><div><small>Clips lifted</small><b id="e-c">0</b></div><div><small>Strength</small><b id="e-s">0</b></div></div>
+      <div class="say" id="e-say">Switch off: no current, no magnet. The clips just lie there.</div>
+      <div class="rule"><b>Stronger electromagnet:</b> more turns, more current, soft iron core. Switch off and it drops everything, which a permanent magnet cannot do.</div>
+    </div>
+  </div>
+  <div class="quiz" data-quiz="em"></div>
+</section>
+
+<!-- ============ LAB 6 ============ -->
+<section class="lab" id="lab-force" role="tabpanel">
+  <div class="labHead"><h2>6. A magnet pushes a wire back</h2><span class="badge">Activity 12.7</span></div>
+  <p class="lede">The wire pushes the magnet, so Newton says the magnet pushes the wire too. Ampère proved it. Here is the swinging rod, seen end-on.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-force" width="720" height="500" aria-label="Aluminium rod hung between the poles of a horseshoe magnet"></canvas>
+      <div class="hint">You look <b>along the rod</b> from end A. Current shows as a dot (towards you) or a cross (away). Field arrows go from N to S.</div>
+    </div>
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="btnrow"><button class="btn pri" id="f-key">Key: OFF</button><button class="btn" id="f-rev">Reverse current</button><button class="btn" id="f-pole">Swap magnet poles</button></div>
+      <div class="ctl"><label>Current (rheostat) <span id="f-iv"></span></label><input type="range" id="f-i" min="0.5" max="5" step="0.1" value="2"></div>
+      <div class="ctl"><label>Magnet strength <span id="f-bv"></span></label><input type="range" id="f-b" min="0.5" max="3" step="0.1" value="1.5"></div>
+      <div class="ctl"><label>Length of rod in field <span id="f-lv"></span></label><input type="range" id="f-l" min="0.5" max="2" step="0.1" value="1"></div>
+      <div class="read"><div><small>Push (force)</small><b id="f-F">0</b></div><div><small>Rod moves</small><b id="f-d">–</b></div></div>
+      <div class="say" id="f-say">Key open: no current, no force. The rod hangs straight.</div>
+      <div class="rule"><b>Force ∝ B × I × L.</b> Largest when current ⟂ field. It is always perpendicular to <b>both</b>.</div>
+    </div>
+  </div>
+  <details open><summary>Answers to the in-text questions</summary>
+    <ul><li>Current increased: displacement <b>increases</b>.</li><li>Stronger horse-shoe magnet: displacement <b>increases</b>.</li><li>Longer rod: displacement <b>increases</b>.</li></ul></details>
+  <div class="quiz" data-quiz="force"></div>
+</section>
+
+<!-- ============ LAB 7 ============ -->
+<section class="lab" id="lab-fleming" role="tabpanel">
+  <div class="labHead"><h2>7. Fleming's hand rules in 3D</h2><span class="badge">Fleming's left-hand rule · textbook</span></div>
+  <p class="lede">Three directions at 90° to each other. Spin the 3D hand and you will never mix them up again. Left hand for motors, right hand for generators.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-hand" width="720" height="520" aria-label="Rotatable 3D hand showing field, current and force directions"></canvas>
+      <div class="hint"><b>Drag to rotate</b> the 3D view. The three fingers always stay at right angles.</div>
+    </div>
+    <div class="panel">
+      <h3>Pick the rule</h3>
+      <div class="seg" role="group" aria-label="Rule">
+        <button id="h-L" aria-pressed="true">Left hand: force</button><button id="h-R" aria-pressed="false">Right hand: induced current</button>
+      </div>
+      <div class="legend3" id="h-leg"></div>
+      <div id="h-ctl"></div>
+      <div class="say" id="h-say"></div>
+      <div class="rule" id="h-rule"></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3>Challenge: find the direction</h3>
+    <p style="margin:0 0 8px" id="h-q"></p>
+    <div class="dir" id="h-ans"></div>
+    <div><span class="score" id="h-score">Streak 0 · Best 0</span> <button class="btn small" id="h-nq">New question</button></div>
+    <div class="why" id="h-why"></div>
+  </div>
+  <details><summary>Electrons, protons, alpha particles (Example 12.2 and exercise questions)</summary>
+    <p>Current direction means the direction <b>positive charges</b> move. A proton or alpha particle moving east is a current going east. An <b>electron</b> moving east is a current going <b>west</b>. So for electrons, point the middle finger <b>opposite</b> to the motion. Try it in the challenge.</p></details>
+  <div class="quiz" data-quiz="fleming"></div>
+</section>
+
+<!-- ============ LAB 8 ============ -->
+<section class="lab" id="lab-motor" role="tabpanel">
+  <div class="labHead"><h2>8. Electric motor</h2><span class="badge bonus">Bonus lab · the tough one made easy</span></div>
+  <p class="lede">A motor is just Fleming's left-hand rule used twice, once on each side of a coil, with a clever switch that keeps the push going the same way.</p>
+  <div class="story"><b>Three questions, three answers.</b> Why does the coil turn? The two sides get opposite pushes. Why does it not stop when it becomes vertical? Its own momentum carries it. Why must the current flip? Otherwise the pushes would reverse and drag it back.</div>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-motor" width="720" height="500" aria-label="DC motor 3D view"></canvas>
+      <div class="hint"><b>Drag</b> to rotate the 3D view. Use <b>Freeze</b> and the angle slider to step through one turn.</div>
+    </div>
+    <div class="stage">
+      <canvas id="cv-motor2" width="720" height="500" aria-label="DC motor end view with forces"></canvas>
+      <div class="hint">End view: you look along the axle. <b>Green arrows</b> are the forces from Fleming's left-hand rule.</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3>Controls</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+      <div>
+        <div class="btnrow"><button class="btn pri" id="m-run">Switch: ON</button><button class="btn" id="m-frz">Freeze at angle</button></div>
+        <div class="btnrow"><button class="btn small" id="m-rev">Reverse battery</button><button class="btn small" id="m-pole">Swap magnet poles</button></div>
+        <div class="seg" role="group" aria-label="Ring type"><button id="m-rA" aria-pressed="false">Slip rings (broken motor)</button><button id="m-rB" aria-pressed="true">Split ring commutator</button></div>
+      </div>
+      <div>
+        <div class="ctl"><label>Battery voltage <span id="m-vv"></span></label><input type="range" id="m-v" min="1" max="12" step="0.5" value="6"></div>
+        <div class="ctl"><label>Magnet strength <span id="m-bv"></span></label><input type="range" id="m-b" min="0.5" max="3" step="0.1" value="1.5"></div>
+        <div class="ctl"><label>Turns in coil <span id="m-nv"></span></label><input type="range" id="m-n" min="1" max="20" step="1" value="5"></div>
+        <div class="ctl" id="m-angwrap"><label>Coil angle <span id="m-av"></span></label><input type="range" id="m-a" min="0" max="360" step="1" value="0"></div>
+      </div>
+      <div>
+        <div class="read"><div><small>Speed</small><b id="m-rpm">0</b></div><div><small>Torque now</small><b id="m-tq">0</b></div></div>
+        <div class="say" id="m-say"></div>
+      </div>
+    </div>
+  </div>
+  <details open><summary>How a motor works in 4 steps</summary>
+    <ol><li><b>Current flows</b> down side AB and back along side CD, so the two sides carry opposite currents.</li>
+    <li><b>Fleming's left-hand rule</b> gives one side an upward push and the other a downward push. That pair of pushes is a <b>turning effect</b>.</li>
+    <li>At the <b>vertical position</b> the forces still act, but they only stretch the coil. No turning. The gap in the <b>split ring</b> reaches the brushes and the current <b>reverses</b>.</li>
+    <li>The reversed current flips both pushes, so the coil keeps turning the <b>same way</b> through every half turn.</li></ol>
+    <p>Try <b>Slip rings</b> and see the coil stall and wobble. That is exactly why the split ring is needed.</p></details>
+  <div class="quiz" data-quiz="motor"></div>
+</section>
+
+<!-- ============ LAB 9 ============ -->
+<section class="lab" id="lab-gen" role="tabpanel">
+  <div class="labHead"><h2>9. Electric generator</h2><span class="badge bonus">Bonus lab · exercise Q7(iii)</span></div>
+  <p class="lede">A motor turns current into motion. A generator does the reverse: spin a coil in a magnetic field and a current appears. You are the power station.</p>
+  <div class="story"><b>Be the engine.</b> Drag the coil round with your finger or mouse. Spin faster and the bulb glows brighter. Stop and it goes dark. That is electromagnetic induction, discovered by Faraday.</div>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-gen" width="720" height="500" aria-label="Generator 3D view"></canvas>
+      <div class="hint"><b>Drag</b> the picture to rotate the view, or press <b>Auto-spin</b>.</div>
+    </div>
+    <div class="stage">
+      <canvas id="cv-gen2" width="720" height="500" aria-label="Generator end view: drag to turn the coil"></canvas>
+      <div class="hint"><b>Drag around the circle</b> to turn the coil by hand. Fleming's right-hand rule is shown on side AB.</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3>Controls</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+      <div>
+        <div class="btnrow"><button class="btn pri" id="g-auto">Auto-spin: OFF</button></div>
+        <div class="seg" role="group" aria-label="Ring type"><button id="g-rA" aria-pressed="true">Slip rings: AC</button><button id="g-rB" aria-pressed="false">Split ring: DC</button></div>
+      </div>
+      <div>
+        <div class="ctl"><label>Spin speed (auto) <span id="g-sv"></span></label><input type="range" id="g-s" min="0.3" max="4" step="0.1" value="1.2"></div>
+        <div class="ctl"><label>Magnet strength <span id="g-bv"></span></label><input type="range" id="g-b" min="0.5" max="3" step="0.1" value="1.5"></div>
+        <div class="ctl"><label>Turns in coil <span id="g-nv"></span></label><input type="range" id="g-n" min="1" max="20" step="1" value="5"></div>
+      </div>
+      <div>
+        <div class="read"><div><small>Voltage now</small><b id="g-e">0</b></div><div><small>Peak so far</small><b id="g-pk">0</b></div></div>
+        <div class="say" id="g-say"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3>Motor or generator?</h3>
+    <div class="tableWrap"><table class="cmp">
+      <tr><th></th><th>Motor</th><th>Generator</th></tr>
+      <tr><td>Energy change</td><td>Electrical to mechanical</td><td>Mechanical to electrical</td></tr>
+      <tr><td>You supply</td><td>A battery</td><td>Turning force</td></tr>
+      <tr><td>You get</td><td>Rotation</td><td>Current</td></tr>
+      <tr><td>Rule used</td><td>Fleming's <b>left</b> hand</td><td>Fleming's <b>right</b> hand</td></tr>
+      <tr><td>Thumb, fore, middle</td><td>Force, Field, Current</td><td>Motion, Field, Current</td></tr>
+    </table></div>
+  </div>
+  <div class="quiz" data-quiz="gen"></div>
+</section>
+
+<!-- ============ LAB 10 ============ -->
+<section class="lab" id="lab-home" role="tabpanel">
+  <div class="labHead"><h2>10. Safe wiring at home</h2><span class="badge">Section 12.4</span></div>
+  <p class="lede">Live, neutral, earth, and a fuse. Switch on appliances until the fuse blows, then see why the earth wire can save your life.</p>
+  <div class="grid">
+    <div class="stage">
+      <canvas id="cv-home" width="720" height="520" aria-label="Domestic circuit with appliances, fuse and earth wire"></canvas>
+      <div class="hint">Tap an appliance to switch it on or off. All appliances are in <b>parallel</b>, so each gets the full 220 V.</div>
+    </div>
+    <div class="panel">
+      <h3>Part A: overload and fuse</h3>
+      <div class="seg" role="group" aria-label="Circuit rating"><button id="r-5" aria-pressed="true">5 A circuit</button><button id="r-15" aria-pressed="false">15 A circuit</button></div>
+      <div class="btnrow" id="r-apps"></div>
+      <div class="btnrow"><button class="btn bad small" id="r-short">Short circuit</button><button class="btn small" id="r-fix">Replace fuse</button></div>
+      <div class="read"><div><small>Total current</small><b id="r-i">0 A</b></div><div><small>Fuse limit</small><b id="r-lim">5 A</b></div></div>
+      <h3>Part B: earth wire</h3>
+      <div class="btnrow"><button class="btn small" id="r-earth">Earth wire: CONNECTED</button><button class="btn bad small" id="r-fault">Insulation fault</button></div>
+      <div class="say" id="r-say">Switch on appliances. Current = power ÷ 220 V.</div>
+    </div>
+  </div>
+  <details><summary>Check the book's example: 2 kW oven on a 5 A circuit</summary>
+    <p>Current = P ÷ V = 2000 W ÷ 220 V ≈ <b>9.1 A</b>. That is more than 5 A, so the fuse <b>melts</b> and cuts the supply. Use the 15 A circuit for high-power appliances.</p></details>
+  <div class="quiz" data-quiz="home"></div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section class="lab" id="lab-final" role="tabpanel">
+  <div class="labHead"><h2>Final check</h2><span class="badge">Board-style mix</span></div>
+  <p class="lede">Eight questions from the whole chapter. No lab needed, just your head and your hands.</p>
+  <div class="quiz" data-quiz="final"></div>
+  <details open><summary>One-page memory sheet</summary>
+    <div class="tableWrap"><table class="cmp">
+      <tr><th>Rule</th><th>Use it for</th><th>Thumb</th><th>Fore finger</th><th>Middle finger</th></tr>
+      <tr><td>Right-hand thumb rule</td><td>Field around a wire</td><td>Current</td><td colspan="2">Curled fingers = field</td></tr>
+      <tr><td>Fleming left hand</td><td>Force on current (motor)</td><td>Force</td><td>Field</td><td>Current</td></tr>
+      <tr><td>Fleming right hand</td><td>Induced current (generator)</td><td>Motion</td><td>Field</td><td>Induced current</td></tr>
+    </table></div>
+  </details>
+</section>
+
+<div class="nextrow"><button class="btn" id="prevLab">Previous lab</button><button class="btn pri" id="nextLab">Next lab</button></div>
+
+<footer>Built from Chapter 12 of your Class 10 Physical Science book (activities 12.1 to 12.7, sections 12.1 to 12.4). Motor and generator are bonus labs. Numbers in the simulations use simple units to show how things change, not exact lab values.</footer>
+</div>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const TAU=Math.PI*2;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const wrapPi=a=>{a=(a+Math.PI)%TAU; if(a<0)a+=TAU; return a-Math.PI;};
+const wrapHalf=a=>{a=(a+Math.PI/2)%Math.PI; if(a<0)a+=Math.PI; return a-Math.PI/2;};
+const rnd=(function(){let s=12345;return()=>{s=(s*16807)%2147483647;return (s-1)/2147483646;};})();
+
+/* ---------- colours (follow light / dark theme) ---------- */
+let COL={};
+function readColors(){
+  const s=getComputedStyle(document.documentElement), g=n=>s.getPropertyValue(n).trim();
+  COL={bg:g('--bg'),card:g('--card'),ink:g('--ink'),muted:g('--muted'),line:g('--line'),north:g('--north'),south:g('--south'),
+       amp:g('--amp'),force:g('--force'),field:g('--field'),accent:g('--accent'),soft:g('--soft'),good:g('--good'),warn:g('--warn')};
+}
+readColors();
+if(window.matchMedia){const mq=window.matchMedia('(prefers-color-scheme: dark)'); (mq.addEventListener?mq.addEventListener.bind(mq,'change'):mq.addListener.bind(mq))(()=>setTimeout(readColors,50));}
+const SKIN='#f2c9a0', SKIN_D='#b9885f';
+
+/* ---------- canvas helpers ---------- */
+function setup(cv){
+  const W=+cv.getAttribute('width'), H=+cv.getAttribute('height');
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*dpr; cv.height=H*dpr;
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  const pt=e=>{const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*W/r.width, y:(e.clientY-r.top)*H/r.height};};
+  return {cv,ctx,W,H,pt};
+}
+function clear(c){c.ctx.clearRect(0,0,c.W,c.H); c.ctx.fillStyle=COL.soft; c.ctx.fillRect(0,0,c.W,c.H);}
+function makeDrag(c,down,move,up){
+  let on=false;
+  c.cv.addEventListener('pointerdown',e=>{const p=c.pt(e); if(down(p,e)===false)return; on=true; try{c.cv.setPointerCapture(e.pointerId);}catch(_){} e.preventDefault();});
+  c.cv.addEventListener('pointermove',e=>{if(on){move(c.pt(e),e);}});
+  const end=e=>{if(on){on=false; up&&up(c.pt(e),e);}};
+  c.cv.addEventListener('pointerup',end); c.cv.addEventListener('pointercancel',end);
+}
+function arrow(ctx,x1,y1,x2,y2,color,w,head){
+  head=head||10; const a=Math.atan2(y2-y1,x2-x1);
+  ctx.save(); ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=w||3; ctx.lineCap='round';
+  const bx=x2-Math.cos(a)*head*.8, by=y2-Math.sin(a)*head*.8;
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(bx,by); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2-Math.cos(a-.42)*head,y2-Math.sin(a-.42)*head); ctx.lineTo(x2-Math.cos(a+.42)*head,y2-Math.sin(a+.42)*head); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function chevron(ctx,x,y,a,size,color){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(a); ctx.fillStyle=color;
+  ctx.beginPath(); ctx.moveTo(size,0); ctx.lineTo(-size*.7,-size*.7); ctx.lineTo(-size*.3,0); ctx.lineTo(-size*.7,size*.7); ctx.closePath(); ctx.fill(); ctx.restore();
+}
+function text(ctx,s,x,y,color,size,align,weight){
+  ctx.save(); ctx.fillStyle=color||COL.ink; ctx.font=(weight||'800')+' '+(size||14)+'px Nunito,system-ui,sans-serif'; ctx.textAlign=align||'center'; ctx.textBaseline='middle'; ctx.fillText(s,x,y); ctx.restore();
+}
+function rrect(ctx,x,y,w,h,r){ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();}
+/* current symbol: out=true -> dot (towards you), else cross (away) */
+function curSym(ctx,x,y,r,out,color,bg){
+  ctx.save(); ctx.beginPath(); ctx.arc(x,y,r,0,TAU); ctx.fillStyle=bg||COL.card; ctx.fill(); ctx.lineWidth=2.5; ctx.strokeStyle=color||COL.amp; ctx.stroke();
+  ctx.fillStyle=color||COL.amp; ctx.strokeStyle=color||COL.amp; ctx.lineWidth=2.5;
+  if(out){ctx.beginPath(); ctx.arc(x,y,r*.34,0,TAU); ctx.fill();}
+  else{const d=r*.55; ctx.beginPath(); ctx.moveTo(x-d,y-d); ctx.lineTo(x+d,y+d); ctx.moveTo(x+d,y-d); ctx.lineTo(x-d,y+d); ctx.stroke();}
+  ctx.restore();
+}
+function drawCompass(ctx,x,y,r,ang,cardinal){
+  ctx.save(); ctx.translate(x,y);
+  ctx.beginPath(); ctx.arc(0,0,r,0,TAU); ctx.fillStyle=COL.card; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle=COL.ink; ctx.stroke();
+  if(cardinal){const f=Math.round(r*.28); [['N',0,-1],['E',1,0],['S',0,1],['W',-1,0]].forEach(([t,dx,dy])=>text(ctx,t,dx*(r-f*.7),dy*(r-f*.7),COL.muted,f,'center','800'));}
+  ctx.rotate(ang);
+  ctx.beginPath(); ctx.moveTo(r*.78,0); ctx.lineTo(0,-r*.17); ctx.lineTo(0,r*.17); ctx.closePath(); ctx.fillStyle=COL.north; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-r*.78,0); ctx.lineTo(0,-r*.17); ctx.lineTo(0,r*.17); ctx.closePath(); ctx.fillStyle=COL.south; ctx.fill();
+  ctx.beginPath(); ctx.arc(0,0,r*.07,0,TAU); ctx.fillStyle=COL.ink; ctx.fill();
+  ctx.restore();
+}
+/* needle with spring: ang follows target with a little wobble */
+function Needle(a){this.a=a||0; this.w=0;}
+Needle.prototype.step=function(target,dt){
+  const n=Math.max(1,Math.ceil(dt/0.008)), h=dt/n;
+  for(let i=0;i<n;i++){const d=wrapPi(target-this.a); this.w+=(70*d-9*this.w)*h; this.a+=this.w*h;}
+};
+const arrow8=a=>{const g=['→','↘','↓','↙','←','↖','↑','↗']; return g[Math.round(wrapPi(a)/(Math.PI/4)+8)%8];};
+
+/* ---------- tiny 3D engine ---------- */
+function view3(yaw,pitch,cx,cy,scale){
+  const cyw=Math.cos(yaw),syw=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch),D=1100;
+  return function P(x,y,z){
+    const x1=x*cyw+z*syw, z1=-x*syw+z*cyw;
+    const y2=y*cp-z1*sp, z2=y*sp+z1*cp;
+    const f=D/(D-z2);
+    return [cx+x1*f*scale, cy-y2*f*scale, z2];
+  };
+}
+function DL(){const items=[]; return {
+  add(z,fn){items.push([z,fn]);},
+  run(){items.sort((a,b)=>a[0]-b[0]); items.forEach(i=>i[1]());}
+};}
+function line3(L,ctx,P,a,b,color,w,alpha,cap){
+  const p=P(a[0],a[1],a[2]), q=P(b[0],b[1],b[2]);
+  L.add((p[2]+q[2])/2,()=>{ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.strokeStyle=color; ctx.lineWidth=w||2; ctx.lineCap=cap||'round'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(q[0],q[1]); ctx.stroke(); ctx.restore();});
+}
+function arrow3(L,ctx,P,a,b,color,w,head,label){
+  const p=P(a[0],a[1],a[2]), q=P(b[0],b[1],b[2]);
+  L.add((p[2]+q[2])/2+5,()=>{arrow(ctx,p[0],p[1],q[0],q[1],color,w,head); if(label){const dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy)||1; text(ctx,label,q[0]+dx/l*22,q[1]+dy/l*16,color,14,'center','800');}});
+}
+function box3(L,ctx,P,c,s,color,alpha,label,lcolor){
+  const [cx,cy,cz]=c,[sx,sy,sz]=s, v=[];
+  for(let i=0;i<8;i++) v.push(P(cx+((i&1)?sx:-sx),cy+((i&2)?sy:-sy),cz+((i&4)?sz:-sz)));
+  const faces=[[0,1,3,2],[4,5,7,6],[0,1,5,4],[2,3,7,6],[0,2,6,4],[1,3,7,5]];
+  faces.forEach(f=>{const z=(v[f[0]][2]+v[f[1]][2]+v[f[2]][2]+v[f[3]][2])/4;
+    L.add(z+cz*0,()=>{ctx.save(); ctx.globalAlpha=alpha; ctx.fillStyle=color; ctx.strokeStyle=COL.ink; ctx.lineWidth=1.5; ctx.beginPath(); f.forEach((k,i)=>i?ctx.lineTo(v[k][0],v[k][1]):ctx.moveTo(v[k][0],v[k][1])); ctx.closePath(); ctx.fill(); ctx.globalAlpha=Math.min(1,alpha+.3); ctx.stroke(); ctx.restore();});});
+  if(label){const p=P(cx,cy,cz+sz+2); L.add(p[2]+sz+8,()=>text(ctx,label,p[0],p[1],lcolor||'#fff',22,'center','800'));}
+}
+function orbit(c,state,onChange){
+  makeDrag(c,()=>true,(p,e)=>{},null);
+  let last=null;
+  c.cv.addEventListener('pointerdown',e=>{last=c.pt(e);});
+  c.cv.addEventListener('pointermove',e=>{ if(!last||!(e.buttons&1||e.pointerType==='touch'))return; const p=c.pt(e); if(state.skip&&state.skip(p)){last=p;return;} state.yaw+=(p.x-last.x)*.008; state.pitch=clamp(state.pitch+(p.y-last.y)*.006,-.2,1.2); last=p; onChange&&onChange();});
+  const up=()=>{last=null}; c.cv.addEventListener('pointerup',up); c.cv.addEventListener('pointercancel',up);
+}
+function bindRange(id,outId,fmt,cb){
+  const el=$(id), out=$(outId); const f=()=>{out.textContent=fmt(+el.value); cb&&cb(+el.value);}; el.addEventListener('input',f); f(); return el;
+}
+function setPressed(ids,on){ids.forEach(i=>$(i).setAttribute('aria-pressed',i===on?'true':'false'));}
+function setText(el,s){ if(el._t!==s){el._t=s; el.textContent=s;} }
+function setHTML(el,s){ if(el._h!==s){el._h=s; el.innerHTML=s;} }
+
+/* ---------- navigation ---------- */
+const LABS=[
+ {id:'oersted',name:'Oersted',tag:'12.1'},{id:'bar',name:'Field lines',tag:'12.2'},{id:'wire',name:'Straight wire',tag:'12.5'},
+ {id:'sol',name:'Loop & solenoid',tag:'12.6'},{id:'em',name:'Electromagnet',tag:'12.2.4'},{id:'force',name:'Force on rod',tag:'12.7'},
+ {id:'fleming',name:'Fleming hands',tag:'rule'},{id:'motor',name:'Motor',tag:'bonus',bonus:1},{id:'gen',name:'Generator',tag:'bonus',bonus:1},
+ {id:'home',name:'House wiring',tag:'12.4'},{id:'final',name:'Final check',tag:'quiz'}
+];
+const modules={}; let cur=null; const done=new Set();
+const chipsEl=$('chips');
+LABS.forEach((l,i)=>{
+  const b=document.createElement('button'); b.className='chip'+(l.bonus?' bonus':''); b.setAttribute('role','tab'); b.id='chip-'+l.id;
+  b.innerHTML='<span class="tick">✓</span>'+(i+1)+'. '+l.name+' <small>'+l.tag+'</small>';
+  b.onclick=()=>show(l.id); chipsEl.appendChild(b);
+});
+function show(id,quiet){
+  if(cur&&modules[cur]&&modules[cur].exit)modules[cur].exit();
+  cur=id;
+  LABS.forEach(l=>{ $('lab-'+l.id).classList.toggle('on',l.id===id); $('chip-'+l.id).setAttribute('aria-selected',l.id===id?'true':'false'); });
+  const ch=$('chip-'+id); if(ch&&ch.scrollIntoView)ch.scrollIntoView({inline:'center',block:'nearest'});
+  if(modules[id]&&modules[id].enter)modules[id].enter();
+  const i=LABS.findIndex(l=>l.id===id); $('prevLab').style.visibility=i>0?'visible':'hidden'; $('nextLab').style.visibility=i<LABS.length-1?'visible':'hidden';
+  if(!quiet)window.scrollTo({top:Math.max(0,$('chips').getBoundingClientRect().top+window.scrollY-60),behavior:'smooth'});
+  try{history.replaceState(null,'','#'+id);}catch(_){}
+}
+$('prevLab').onclick=()=>{const i=LABS.findIndex(l=>l.id===cur); if(i>0)show(LABS[i-1].id);};
+$('nextLab').onclick=()=>{const i=LABS.findIndex(l=>l.id===cur); if(i<LABS.length-1)show(LABS[i+1].id);};
+function markDone(id){done.add(id); $('chip-'+id).classList.add('done'); $('bar').style.width=(done.size/LABS.length*100)+'%';}
+
+/* ---------- quizzes ---------- */
+const QUIZ={
+oersted:[
+ {q:'A current is switched on in a wire placed just above a compass. What happens to the needle?',o:['Nothing','It deflects','It spins round and round','It points south'],a:1,why:'The current produces a magnetic field around the wire and the needle feels it. This was Oersted\'s discovery.'},
+ {q:'You reverse the battery. The needle now deflects…',o:['The same way','The opposite way','It does not move','It spins'],a:1,why:'Reversing the current reverses the magnetic field it makes, so the needle turns the other way.'},
+ {q:'Which change gives a <b>bigger</b> deflection?',o:['Smaller current','Compass farther from the wire','Bigger current, or compass closer to the wire','Using a thinner compass'],a:2,why:'The field grows with current and gets weaker with distance.'}],
+bar:[
+ {q:'Outside a bar magnet, field lines run from…',o:['South to north','North to south','North to north','They do not have a direction'],a:1,why:'By convention lines leave the N pole and enter the S pole, then continue inside the magnet from S to N, so they are closed curves.'},
+ {q:'Where is the magnetic field strongest?',o:['Where the lines are most crowded','Where the lines are far apart','Far from the magnet','Exactly the same everywhere'],a:0,why:'Crowded lines mean a stronger field. They crowd near the poles.'},
+ {q:'Why can two field lines never cross?',o:['Magnets forbid it','At a crossing the compass would have to point two ways at once','Field lines are always parallel','They repel each other'],a:1,why:'A compass needle points in only one direction at any place, so two lines cannot meet and cross.'}],
+wire:[
+ {q:'The field near a long straight wire carrying current looks like…',o:['Straight lines parallel to the wire','Straight lines at right angles to the wire','Radial lines starting at the wire','Concentric circles around the wire'],a:3,why:'This is what the iron filings showed in Activity 12.5: concentric circles centred on the wire.'},
+ {q:'Right-hand thumb rule: the thumb points along the…',o:['field','current','force','north pole'],a:1,why:'Thumb = current. The curled fingers then show the direction of the field lines.'},
+ {q:'Same current, but the compass is moved <b>twice as far</b> from the wire. The field…',o:['gets weaker','gets stronger','stays the same','reverses'],a:0,why:'The field falls with distance. The circles on the cardboard spread out as you move away.'}],
+sol:[
+ {q:'The magnetic field inside a long current-carrying solenoid is…',o:['zero','weaker at the middle','the same at all points','stronger towards the end'],a:2,why:'Inside the lines are parallel and equally spaced, so the field is uniform.'},
+ {q:'A coil has 10 turns. Compared with one turn (same current), the field is…',o:['10 times as large','the same','10 times smaller','zero'],a:0,why:'The current in each turn has the same direction, so the fields simply add up: n turns give n times the field.'},
+ {q:'Outside, the field of a solenoid looks like that of…',o:['a straight wire','a bar magnet','a single charge','a compass'],a:1,why:'One end of the solenoid acts as a north pole and the other as a south pole, just like a bar magnet.'}],
+em:[
+ {q:'Which change does <b>not</b> make an electromagnet stronger?',o:['More turns of wire','More current','Taking out the soft iron core','Adding more cells'],a:2,why:'The soft iron core gets magnetised and adds to the field. Removing it makes the magnet much weaker.'},
+ {q:'An advantage of an electromagnet over a permanent magnet is that it…',o:['can be switched on and off','never needs any wire','is always stronger','works without current'],a:0,why:'Switch off the current and it drops the load. A crane in a scrap yard needs exactly that.'},
+ {q:'A soft iron rod placed inside a current-carrying solenoid becomes a…',o:['battery','resistor','electromagnet','fuse'],a:2,why:'The strong field inside the coil magnetises the iron. The result is called an electromagnet.'}],
+force:[
+ {q:'The push on a current-carrying rod is <b>largest</b> when the current is…',o:['parallel to the field','at right angles to the field','zero','along the magnet'],a:1,why:'Experiments show the force is highest when the current is perpendicular to the field.'},
+ {q:'You reverse the current <b>and</b> swap the magnet poles. The rod is pushed…',o:['the opposite way','the same way as before','not at all','upwards'],a:1,why:'Each change reverses the force. Two reversals cancel, so the force points the same way again.'},
+ {q:'The force on the rod is perpendicular to…',o:['the field only','the current only','both the field and the current','neither'],a:2,why:'That is why we need three mutually perpendicular directions: Fleming\'s left-hand rule.'}],
+fleming:[
+ {q:'In Fleming\'s left-hand rule the forefinger, middle finger and thumb show…',o:['Force, Field, Current','Field, Current, Force','Current, Force, Field','Field, Force, Current'],a:1,why:'Forefinger = Field, middle finger = Current, thumb = Force (motion).'},
+ {q:'An electron moves to the east. The <b>current</b> direction is…',o:['east','west','north','up'],a:1,why:'Conventional current is the direction of positive charge. Electrons are negative, so the current points opposite to their motion.'},
+ {q:'Field points into the page, current flows to the right. The force points…',o:['Down','Left','Up','Out of the page'],a:2,why:'Left hand: forefinger away from you (into page), middle finger to the right. The thumb points up. Try it in the 3D lab.'}],
+motor:[
+ {q:'What does the split-ring commutator do?',o:['Stores charge','Reverses the current in the coil every half turn','Makes the magnet stronger','Cools the coil'],a:1,why:'Reversing the current each half turn keeps the push on each side in the same turning sense.'},
+ {q:'When the coil is vertical (plane at right angles to the field) the turning effect is…',o:['maximum','zero','reversed','double'],a:1,why:'The two forces act along the same line, so they only stretch the coil. Momentum carries it past while the current flips.'},
+ {q:'Which rule gives the direction of force on each side of the coil?',o:['Right-hand thumb rule','Fleming\'s right-hand rule','Fleming\'s left-hand rule','Ohm\'s law'],a:2,why:'A motor uses force on a current-carrying conductor in a field: Fleming\'s left-hand rule.'},
+ {q:'Which change spins a motor faster?',o:['Weaker magnet','Fewer turns','Lower voltage','More turns, stronger magnet or more current'],a:3,why:'Torque grows with the number of turns, the magnet strength and the current.'}],
+gen:[
+ {q:'A generator changes…',o:['electrical energy to mechanical energy','mechanical energy to electrical energy','heat to light','chemical energy to sound'],a:1,why:'Turning the coil (mechanical) makes a current (electrical). A motor does the reverse.'},
+ {q:'Which rule gives the direction of the induced current?',o:['Fleming\'s left-hand rule','Fleming\'s right-hand rule','Right-hand thumb rule','Maxwell\'s rule'],a:1,why:'Thumb = motion, forefinger = field, middle finger = induced current.'},
+ {q:'With slip rings the output changes direction every half turn. It is called…',o:['DC','AC','static','zero current'],a:1,why:'Alternating current. With a split ring the output keeps one direction (pulsating DC).'},
+ {q:'The voltage is <b>zero</b> when…',o:['the coil moves fastest across the field lines','the coil sides move along the field lines (coil plane at right angles to the field)','the magnet is strongest','the bulb is off'],a:1,why:'No field lines are being cut at that instant, so no voltage is induced.'}],
+home:[
+ {q:'The earth wire has insulation of colour…',o:['red','black','green','white'],a:2,why:'Live is red, neutral is black, earth is green.'},
+ {q:'A 2 kW oven runs on a 220 V circuit rated 5 A. What happens?',o:['It works normally','The fuse melts, because the current is about 9 A','It works at half power','The neutral wire melts'],a:1,why:'I = P/V = 2000/220 ≈ 9.1 A, which is more than 5 A. The fuse melts and cuts the circuit.'},
+ {q:'Appliances at home are connected in parallel so that…',o:['each gets the same potential difference','current is the same in all','they use less energy','the fuse is not needed'],a:0,why:'Parallel connection gives each appliance the full 220 V, and each can be switched separately.'},
+ {q:'Why is a metal body appliance connected to the earth wire?',o:['To make it faster','To give leaking current a low-resistance path so you do not get a shock','To save electricity','To increase voltage'],a:1,why:'The metal body stays at earth potential, so a leak does not give you a severe shock.'}],
+final:[
+ {q:'Magnetic field near a long straight current-carrying wire:',o:['straight lines perpendicular to the wire','straight lines parallel to the wire','radial lines starting at the wire','concentric circles centred on the wire'],a:3,why:'Right-hand thumb rule: circles around the wire.'},
+ {q:'At the time of a short circuit, the current in the circuit…',o:['reduces substantially','does not change','increases heavily','varies continuously'],a:2,why:'Live and neutral touch, resistance becomes tiny, so the current jumps. The fuse melts.'},
+ {q:'A wire with green insulation is usually the live wire. True or false?',o:['True','False'],a:1,why:'Green is the earth wire. Live is red.'},
+ {q:'A positively charged alpha particle moving west is deflected north. The field points…',o:['south','east','downward','upward'],a:3,why:'Current points west, force points north. Left hand: thumb north, middle finger west, so forefinger (field) points up.'},
+ {q:'You face the front wall. An electron beam moving from the back wall to the front wall is deflected to your <b>right</b>. The field direction is…',o:['upward','downward','towards the front wall','towards your left'],a:1,why:'The electron current points towards you (opposite to motion). Force is to the right. The left-hand rule then gives field vertically downward.'},
+ {q:'Rule for current induced in a coil rotated in a magnetic field:',o:['Fleming\'s left-hand rule','Fleming\'s right-hand rule','Right-hand thumb rule','Newton\'s third law'],a:1,why:'Thumb = motion, forefinger = field, middle finger = induced current.'},
+ {q:'Current drawn by a 2 kW oven on 220 V is about…',o:['0.11 A','2 A','9 A','440 A'],a:2,why:'I = P/V = 2000/220 ≈ 9.1 A.'},
+ {q:'In a DC motor the split ring is needed to…',o:['reverse current in the coil every half turn','make the field uniform','store energy','reduce friction only'],a:0,why:'Without it the torque would reverse each half turn and the coil would stop.'}]
+};
+function buildQuiz(el){
+  const key=el.dataset.quiz, qs=QUIZ[key]; let answered=0,right=0;
+  el.innerHTML='<h3>Check yourself</h3>';
+  const sc=document.createElement('div'); sc.className='score'; sc.style.marginTop='6px';
+  qs.forEach((q,qi)=>{
+    const d=document.createElement('div'); d.className='q'; d.innerHTML='<p>'+(qi+1)+'. '+q.q+'</p>';
+    const o=document.createElement('div'); o.className='opts'; const why=document.createElement('div'); why.className='why';
+    q.o.forEach((t,i)=>{
+      const b=document.createElement('button'); b.className='opt'; b.innerHTML=t;
+      b.onclick=()=>{
+        if(d.dataset.done)return; d.dataset.done=1;
+        b.classList.add(i===q.a?'right':'wrong'); if(i!==q.a)o.children[q.a].classList.add('right');
+        why.innerHTML=(i===q.a?'<b>Yes.</b> ':'<b>Not quite.</b> ')+q.why; why.classList.add('show');
+        answered++; if(i===q.a)right++;
+        if(answered===qs.length){sc.textContent='Score: '+right+' / '+qs.length+(right===qs.length?'  🎉 Perfect!':''); markDone(key);}
+      };
+      o.appendChild(b);
+    });
+    d.appendChild(o); d.appendChild(why); el.appendChild(d);
+  });
+  el.appendChild(sc);
+}
+document.querySelectorAll('[data-quiz]').forEach(buildQuiz);
+
+/* =====================================================
+   HERO : tiny Oersted
+   ===================================================== */
+const hero=(function(){
+  const c=setup($('heroCv')), ctx=c.ctx; const nd=new Needle(-Math.PI/2); let on=false, dir=1, t=0;
+  const path=[[60,160],[60,28],[420,28],[420,172],[60,172]];
+  c.cv.addEventListener('pointerdown',e=>{const p=c.pt(e); if(p.x<110&&p.y>100){dir*=-1;} else on=!on; });
+  function draw(dt){
+    t+=dt; clear(c); nd.step(-Math.PI/2+(on?dir*Math.atan(1.2):0),dt);
+    ctx.lineWidth=5; ctx.strokeStyle=COL.muted; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); path.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke();
+    ctx.fillStyle=COL.card; ctx.fillRect(40,100,40,56); ctx.strokeStyle=COL.ink; ctx.lineWidth=3; ctx.strokeRect(40,100,40,56);
+    text(ctx,dir>0?'+':'−',60,114,COL.north,18); text(ctx,dir>0?'−':'+',60,142,COL.south,18);
+    ctx.strokeStyle=COL.ink; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(190,172); ctx.lineTo(210,172); ctx.stroke(); ctx.beginPath(); ctx.moveTo(250,172); ctx.lineTo(on?210:244,on?172:140); ctx.stroke();
+    text(ctx,'switch',230,186,COL.muted,12);
+    drawCompass(ctx,420,100,40,nd.a,true);
+    ctx.lineWidth=7; ctx.strokeStyle=on?COL.amp:COL.muted; ctx.beginPath(); ctx.moveTo(420,12); ctx.lineTo(420,188); ctx.globalAlpha=.55; ctx.stroke(); ctx.globalAlpha=1;
+    if(on){let L=0,seg=[]; for(let i=0;i<path.length-1;i++){const l=Math.hypot(path[i+1][0]-path[i][0],path[i+1][1]-path[i][1]);seg.push(l);L+=l;}
+      for(let k=0;k<18;k++){let d=((k/18)*L+t*90*dir)%L; if(d<0)d+=L; let i=0; while(d>seg[i]){d-=seg[i];i++;} const a=path[i],b=path[i+1],f=d/seg[i];
+        ctx.fillStyle=COL.amp; ctx.beginPath(); ctx.arc(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,4,0,TAU); ctx.fill();}}
+    text(ctx,on?'Current ON':'Tap to switch on',300,100,on?COL.amp:COL.muted,16);
+    text(ctx,'tap battery to reverse',60,92,COL.muted,11);
+  }
+  return {frame:draw};
+})();
+
+/* =====================================================
+   LAB 1 : OERSTED
+   ===================================================== */
+modules.oersted=(function(){
+  const c=setup($('cv-oersted')), ctx=c.ctx; const nd=new Needle(-Math.PI/2);
+  let on=false, dir=1, I=2.5, d=1.2, t=0;
+  const path=[[110,410],[110,50],[360,50],[360,410],[110,410]];
+  const f=()=>{ const Bw=0.57*I/d; return Math.atan(Bw); };
+  bindRange('o-i','o-iv',v=>v.toFixed(1)+' A',v=>{I=v;});
+  bindRange('o-d','o-dv',v=>v.toFixed(1)+' cm',v=>{d=v;});
+  const keyBtn=$('o-key');
+  function toggle(){on=!on; keyBtn.textContent='Plug key: '+(on?'ON':'OFF'); keyBtn.classList.toggle('on',on);}
+  keyBtn.onclick=toggle; $('o-rev').onclick=()=>{dir*=-1;};
+  makeDrag(c,p=>{ if(Math.abs(p.x-270)<60&&Math.abs(p.y-410)<30){toggle();} else if(Math.abs(p.x-110)<45&&p.y>330){dir*=-1;} return false;});
+  function update(dt){ t+=dt; nd.step(-Math.PI/2+(on?dir*f():0),dt); }
+  function draw(){
+    clear(c);
+    ctx.lineWidth=7; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle=COL.muted;
+    ctx.beginPath(); path.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke();
+    // north-south labels
+    text(ctx,'North ↑',600,40,COL.muted,15); text(ctx,'East →',600,66,COL.muted,15);
+    text(ctx,'straight wire (N–S)',438,230,COL.muted,13,'left');
+    // compass under wire
+    ctx.globalAlpha=1; drawCompass(ctx,360,230,62,nd.a,true);
+    ctx.lineWidth=10; ctx.strokeStyle=on?COL.amp:COL.muted; ctx.globalAlpha=.55; ctx.beginPath(); ctx.moveTo(360,50); ctx.lineTo(360,410); ctx.stroke(); ctx.globalAlpha=1;
+    // battery
+    ctx.fillStyle=COL.card; ctx.fillRect(86,340,48,64); ctx.strokeStyle=COL.ink; ctx.lineWidth=3; ctx.strokeRect(86,340,48,64);
+    text(ctx,dir>0?'+':'−',110,356,COL.north,20); text(ctx,dir>0?'−':'+',110,388,COL.south,20); text(ctx,'cells',110,424,COL.muted,12);
+    // key
+    ctx.lineWidth=6; ctx.strokeStyle=COL.ink; ctx.beginPath(); ctx.moveTo(220,410); ctx.lineTo(240,410); ctx.moveTo(300,410); ctx.lineTo(320,410); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(240,410); ctx.lineTo(on?300:290,on?410:380); ctx.stroke(); text(ctx,'key',270,432,COL.muted,13);
+    ctx.fillStyle=on?COL.good:COL.muted; ctx.beginPath(); ctx.arc(270,410,6,0,TAU); ctx.fill();
+    // flow
+    if(on){ let L=0,seg=[]; for(let i=0;i<path.length-1;i++){const l=Math.hypot(path[i+1][0]-path[i][0],path[i+1][1]-path[i][1]);seg.push(l);L+=l;}
+      const n=26; for(let k=0;k<n;k++){let s=((k/n)*L+t*(40+I*26)*dir)%L; if(s<0)s+=L; let i=0; while(s>seg[i]){s-=seg[i];i++;} const a=path[i],b=path[i+1],q=s/seg[i];
+        ctx.fillStyle=COL.amp; ctx.beginPath(); ctx.arc(a[0]+(b[0]-a[0])*q,a[1]+(b[1]-a[1])*q,5,0,TAU); ctx.fill();}
+      arrow(ctx,360,150,360,dir>0?210:90,COL.amp,5,14);
+    }
+    // inset side view
+    ctx.save(); ctx.translate(540,150); ctx.fillStyle=COL.card; ctx.strokeStyle=COL.line; ctx.lineWidth=2; rrect(ctx,0,0,160,150,12); ctx.fill(); ctx.stroke();
+    text(ctx,'Side view',80,16,COL.muted,13);
+    const gap=18+d*18; ctx.fillStyle=COL.amp; ctx.beginPath(); ctx.arc(80,38,8,0,TAU); ctx.fill(); text(ctx,'wire',112,38,COL.muted,12,'left');
+    ctx.fillStyle=COL.south; ctx.fillRect(56,38+gap,48,12); ctx.fillStyle=COL.north; ctx.fillRect(80,38+gap,24,12); text(ctx,'compass',80,38+gap+26,COL.muted,12);
+    arrow(ctx,140,40,140,38+gap,COL.muted,2,6); arrow(ctx,140,38+gap,140,40,COL.muted,2,6);
+    ctx.restore();
+    // readouts
+    const ang=on?dir*f()*180/Math.PI:0;
+    setText($('o-ang'),Math.abs(ang).toFixed(0)+'°'); setText($('o-dir'),!on?'–':(dir>0?'East':'West'));
+    setText($('o-say'),!on?'Key is open. The needle points to north, as always.':
+      (dir>0?'Current flows north to south over the needle: the north end swings to the EAST.':'Battery reversed, so current flows south to north: the north end swings to the WEST.')+' Deflection '+Math.abs(ang).toFixed(0)+'°.');
+  }
+  return {update,draw};
+})();
+
+/* =====================================================
+   LAB 2 : BAR MAGNET
+   ===================================================== */
+modules.bar=(function(){
+  const c=setup($('cv-bar')), ctx=c.ctx; const W=c.W,H=c.H;
+  const MC={x:360,y:250}, MW=110, MH=28;
+  let flip=false, s=1, mode=1, settle=1; const comp={x:150,y:140}; const nd=new Needle(0);
+  let nPos={x:264,y:250}, sPos={x:456,y:250}; let lines=[], user=[], fil=[];
+  function setPoles(){nPos={x:flip?456:264,y:250}; sPos={x:flip?264:456,y:250}; build();}
+  function inMag(x,y,pad){return Math.abs(x-MC.x)<MW+(pad||0)&&Math.abs(y-MC.y)<MH+(pad||0);}
+  function B(px,py){let bx=0,by=0;[[nPos,1],[sPos,-1]].forEach(([p,q])=>{const dx=px-p.x,dy=py-p.y,r2=dx*dx+dy*dy+120,inv=q/(r2*Math.sqrt(r2)); bx+=dx*inv;by+=dy*inv;}); return [bx*9000*s,by*9000*s];}
+  function trace(x,y,sign,target){
+    const pts=[[x,y]]; let px=x,py=y;
+    for(let i=0;i<900;i++){
+      let b=B(px,py), m=Math.hypot(b[0],b[1])||1; const hx=px+sign*b[0]/m*2.2, hy=py+sign*b[1]/m*2.2;
+      b=B(hx,hy); m=Math.hypot(b[0],b[1])||1; px+=sign*b[0]/m*4.4; py+=sign*b[1]/m*4.4;
+      pts.push([px,py]);
+      if(Math.hypot(px-target.x,py-target.y)<9)break;
+      if(px<-20||px>W+20||py<-20||py>H+20)break;
+    }
+    return pts;
+  }
+  function build(){
+    lines=[]; for(let k=0;k<22;k++){const a=k/22*TAU, x=nPos.x+Math.cos(a)*14, y=nPos.y+Math.sin(a)*14; if(inMag(x,y,0))continue; lines.push(trace(x,y,1,sPos));}
+    user=user.map(u=>mkUser(u.x,u.y));
+    fil=[]; const step=15;
+    for(let gx=8;gx<W;gx+=step)for(let gy=8;gy<H;gy+=step){
+      const x=gx+(rnd()-.5)*step*.7, y=gy+(rnd()-.5)*step*.7; if(inMag(x,y,6))continue;
+      const b=B(x,y); fil.push({x,y,t:Math.atan2(b[1],b[0]),m:Math.hypot(b[0],b[1]),r:rnd()*Math.PI});
+    }
+  }
+  function mkUser(x,y){const f=trace(x,y,1,sPos),b=trace(x,y,-1,nPos); b.reverse(); return {x,y,pts:b.concat(f.slice(1))};}
+  function arrowsOn(pts,color,w){
+    ctx.strokeStyle=color; ctx.lineWidth=w; ctx.lineJoin='round'; ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke();
+    let acc=60; for(let i=1;i<pts.length;i++){acc+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); if(acc>130){acc=0; chevron(ctx,pts[i][0],pts[i][1],Math.atan2(pts[i][1]-pts[i-1][1],pts[i][0]-pts[i-1][0]),6,color);}}
+  }
+  function setMode(m){mode=m; setPressed(['b-m1','b-m2','b-m3'],'b-m'+m);}
+  $('b-m1').onclick=()=>setMode(1); $('b-m2').onclick=()=>setMode(2); $('b-m3').onclick=()=>setMode(3);
+  $('b-tap').onclick=()=>{fil.forEach(f=>f.r=rnd()*Math.PI); settle=0;};
+  $('b-flip').onclick=()=>{flip=!flip; setPoles();};
+  $('b-clr').onclick=()=>{user=[];};
+  bindRange('b-s','b-sv',v=>v.toFixed(2)+'×',v=>{s=v;});
+  let drag=false;
+  makeDrag(c,p=>{ if(Math.hypot(p.x-comp.x,p.y-comp.y)<42){drag=true;return true;}
+      if(inMag(p.x,p.y,0))return false;
+      if(mode===1){fil.forEach(f=>f.r=rnd()*Math.PI); settle=0;} else {user.push(mkUser(p.x,p.y)); if(user.length>8)user.shift();}
+      return false;},
+    p=>{comp.x=clamp(p.x,20,W-20); comp.y=clamp(p.y,20,H-20);}, ()=>{drag=false;});
+  function update(dt){
+    if(settle<1)settle=Math.min(1,settle+dt*1.4);
+    let target; if(inMag(comp.x,comp.y,0)){target=Math.atan2(nPos.y-sPos.y,nPos.x-sPos.x);} else {const b=B(comp.x,comp.y); target=Math.atan2(b[1],b[0]);}
+    nd.step(target,dt);
+  }
+  function draw(){
+    clear(c);
+    const e=1-Math.pow(1-settle,3);
+    if(mode!==2){ // filings
+      ctx.lineCap='round'; ctx.strokeStyle=COL.ink; ctx.lineWidth=1.7;
+      fil.forEach(f=>{const a=f.r+wrapHalf(f.t-f.r)*e; const al=clamp(Math.pow(f.m,.5)*.5,.07,.95)*(mode===3?.55:1); ctx.globalAlpha=al; const dx=Math.cos(a)*4.6,dy=Math.sin(a)*4.6; ctx.beginPath(); ctx.moveTo(f.x-dx,f.y-dy); ctx.lineTo(f.x+dx,f.y+dy); ctx.stroke();});
+      ctx.globalAlpha=1;
+    }
+    if(mode!==1){
+      lines.forEach(l=>arrowsOn(l,COL.field,2.2)); user.forEach(u=>arrowsOn(u.pts,COL.accent,3));
+    }
+    // magnet
+    const x0=MC.x-MW, wN=nPos.x<sPos.x;
+    ctx.fillStyle=wN?COL.north:COL.south; ctx.fillRect(x0,MC.y-MH,MW,2*MH); ctx.fillStyle=wN?COL.south:COL.north; ctx.fillRect(MC.x,MC.y-MH,MW,2*MH);
+    ctx.strokeStyle=COL.ink; ctx.lineWidth=3; ctx.strokeRect(x0,MC.y-MH,2*MW,2*MH);
+    text(ctx,wN?'N':'S',MC.x-MW/2,MC.y,'#fff',26); text(ctx,wN?'S':'N',MC.x+MW/2,MC.y,'#fff',26);
+    if(mode!==1){ [-14,0,14].forEach(dy=>arrow(ctx,sPos.x,MC.y+dy,nPos.x+ (nPos.x<sPos.x?8:-8),MC.y+dy,'rgba(255,255,255,.75)',1.8,7)); }
+    // compass
+    drawCompass(ctx,comp.x,comp.y,30,nd.a,false);
+    ctx.strokeStyle=COL.accent; ctx.lineWidth=2; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.arc(comp.x,comp.y,38,0,TAU); ctx.stroke(); ctx.setLineDash([]);
+    text(ctx,'drag me',comp.x,comp.y-50,COL.accent,12);
+    const b=B(comp.x,comp.y), m=Math.hypot(b[0],b[1]);
+    setText($('b-str'),inMag(comp.x,comp.y,0)?'inside':(m<10?m.toFixed(2):m.toFixed(0)));
+    setText($('b-pt'),arrow8(nd.a));
+    const dN=Math.hypot(comp.x-nPos.x,comp.y-nPos.y), dS=Math.hypot(comp.x-sPos.x,comp.y-sPos.y);
+    let msg;
+    if(inMag(comp.x,comp.y,0))msg='Inside the magnet the field lines run from S to N, so the needle points towards N.';
+    else if(Math.min(dN,dS)<110)msg=dN<dS?'Near the north pole: the needle\'s blue south end turns towards it. Unlike poles attract.':'Near the south pole: the needle\'s red north end turns towards it.';
+    else msg='Far from the magnet the field is weak. The needle still follows the field line through its position.';
+    setText($('b-say'),msg);
+  }
+  function enter(){setPoles(); settle=0;}
+  return {enter,update,draw};
+})();
+/* =====================================================
+   LAB 3 : STRAIGHT WIRE + RIGHT-HAND THUMB RULE
+   ===================================================== */
+modules.wire=(function(){
+  const c=setup($('cv-wire')), ctx=c.ctx, W=c.W, H=c.H, C={x:360,y:250};
+  let out=true, I=3, fil=true, vw='top', t=0; const comp={x:480,y:250}; const nd=new Needle(0);
+  const V={yaw:.55,pitch:.5};
+  function Bs(px,py){const dx=px-C.x,dy=py-C.y,r2=dx*dx+dy*dy+25,k=out?1:-1; return [k*dy/r2,-k*dx/r2];}
+  let grid=[]; for(let gx=10;gx<W;gx+=15)for(let gy=10;gy<H;gy+=15){grid.push({x:gx+(rnd()-.5)*8,y:gy+(rnd()-.5)*8});}
+  bindRange('w-i','w-iv',v=>v.toFixed(1)+' A',v=>{I=v;});
+  $('w-rev').onclick=()=>{out=!out;};
+  $('w-fil').onclick=e=>{fil=!fil; e.target.textContent='Filings: '+(fil?'ON':'OFF');};
+  function setV(v){vw=v; setPressed(['w-v1','w-v2'],v==='top'?'w-v1':'w-v2');}
+  $('w-v1').onclick=()=>setV('top'); $('w-v2').onclick=()=>setV('3d');
+  orbit(c,{get yaw(){return V.yaw},set yaw(v){V.yaw=v},get pitch(){return V.pitch},set pitch(v){V.pitch=v},skip:p=>vw==='top'});
+  makeDrag(c,p=>{ if(vw==='top'&&Math.hypot(p.x-comp.x,p.y-comp.y)<44)return true; return false;},
+           p=>{comp.x=clamp(p.x,24,W-24); comp.y=clamp(p.y,24,H-24);});
+  function update(dt){ t+=dt; const b=Bs(comp.x,comp.y); nd.step(Math.atan2(b[1],b[0]),dt); }
+  function drawTop(){
+    const radii=[45,85,125,165,205,245];
+    if(fil){ctx.strokeStyle=COL.ink; ctx.lineWidth=1.7; ctx.lineCap='round';
+      grid.forEach(g=>{const r=Math.hypot(g.x-C.x,g.y-C.y); if(r<26)return; const b=Bs(g.x,g.y), a=Math.atan2(b[1],b[0]), m=400*I/r;
+        ctx.globalAlpha=clamp(Math.sqrt(m/26),.08,.9); const dx=Math.cos(a)*4.6,dy=Math.sin(a)*4.6; ctx.beginPath(); ctx.moveTo(g.x-dx,g.y-dy); ctx.lineTo(g.x+dx,g.y+dy); ctx.stroke();});
+      ctx.globalAlpha=1;}
+    radii.forEach((r,k)=>{
+      ctx.strokeStyle=COL.field; ctx.globalAlpha=clamp(.25+I/9,.3,.8)*(fil?.7:1); ctx.lineWidth=2.2; ctx.beginPath(); ctx.arc(C.x,C.y,r,0,TAU); ctx.stroke(); ctx.globalAlpha=1;
+      const w=.1*I*(80/r)*(out?-1:1); const n=Math.max(3,Math.round(r/28));
+      for(let j=0;j<n;j++){const ph=t*w+j/n*TAU; const x=C.x+Math.cos(ph)*r, y=C.y+Math.sin(ph)*r; chevron(ctx,x,y,ph+(out?-Math.PI/2:Math.PI/2),6,COL.field);}
+    });
+    curSym(ctx,C.x,C.y,15,out,COL.amp,COL.card);
+    text(ctx,out?'current out of page':'current into page',C.x,C.y+34,COL.amp,13);
+    drawCompass(ctx,comp.x,comp.y,28,nd.a,false);
+    ctx.strokeStyle=COL.accent; ctx.lineWidth=2; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.arc(comp.x,comp.y,36,0,TAU); ctx.stroke(); ctx.setLineDash([]);
+    text(ctx,'drag me',comp.x,comp.y-48,COL.accent,12);
+    const r=Math.hypot(comp.x-C.x,comp.y-C.y), B=400*I/Math.max(r,18);
+    setText($('w-b'),B.toFixed(1)+' µT'); setText($('w-r'),(r/20).toFixed(1)+' cm');
+    setText($('w-say'),(r<85?'Close to the wire (like point P): ':'Far from the wire (like point Q): ')+'field '+(r<85?'strong':'weak')+', needle follows the circle '+(out?'anticlockwise':'clockwise')+'.');
+  }
+  function draw3d(){
+    const P=view3(V.yaw,V.pitch,360,270,1), L=DL(); const up=out;
+    // cardboard
+    const q=[[-190,0,-190],[190,0,-190],[190,0,190],[-190,0,190]].map(a=>P(a[0],a[1],a[2]));
+    L.add(-300,()=>{ctx.save(); ctx.globalAlpha=.35; ctx.fillStyle=COL.muted; ctx.strokeStyle=COL.ink; ctx.lineWidth=2; ctx.beginPath(); q.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; ctx.stroke(); ctx.restore();});
+    [35,65,95,125,155].forEach(r=>{ const pts=[]; for(let k=0;k<=48;k++){const a=k/48*TAU; pts.push(P(Math.cos(a)*r,0,Math.sin(a)*r));}
+      L.add(-250,()=>{ctx.save(); ctx.strokeStyle=COL.ink; ctx.globalAlpha=fil?.8:.35; ctx.lineWidth=fil?2.4:1.6; if(fil)ctx.setLineDash([2,4]); ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke(); ctx.restore();});});
+    // wire
+    line3(L,ctx,P,[0,-190,0],[0,205,0],COL.amp,9,1);
+    if(up)arrow3(L,ctx,P,[0,120,0],[0,215,0],COL.amp,6,16,'Thumb = current'); else arrow3(L,ctx,P,[0,215,0],[0,120,0],COL.amp,6,16,'Thumb = current');
+    // field rings
+    [[-100,62],[-100,100],[100,62],[100,100],[0,62],[0,100]].forEach(([y,r])=>{
+      for(let k=0;k<48;k++){const a=k/48*TAU,b=(k+1)/48*TAU; line3(L,ctx,P,[Math.cos(a)*r,y,Math.sin(a)*r],[Math.cos(b)*r,y,Math.sin(b)*r],COL.field,2.4,.55,'butt');}
+      const n=4, w=t*.9*(up?-1:1)*(I/3); for(let j=0;j<n;j++){const a=w+j/n*TAU; const p=P(Math.cos(a)*r,y,Math.sin(a)*r); const p2=P(Math.cos(a+.1*(up?-1:1))*r,y,Math.sin(a+.1*(up?-1:1))*r);
+        L.add(p[2]+3,()=>{ arrow(ctx,p[0]-(p2[0]-p[0])*1.4,p[1]-(p2[1]-p[1])*1.4,p[0]+(p2[0]-p[0])*1.6,p[1]+(p2[1]-p[1])*1.6,COL.field,4,11);});}
+    });
+    L.run();
+    text(ctx,'Fingers curl = field direction',360,H-24,COL.field,16);
+    setText($('w-b'),'–'); setText($('w-r'),'–');
+    setText($('w-say'),'Thumb along the current ('+(up?'upward':'downward')+'): your curled fingers go '+(up?'anticlockwise':'clockwise')+' when you look down from above. Drag to rotate the picture.');
+  }
+  function draw(){ clear(c); if(vw==='top')drawTop(); else draw3d(); }
+  return {update,draw};
+})();
+
+/* =====================================================
+   LAB 4 : LOOP + SOLENOID  (numerical Biot–Savart)
+   ===================================================== */
+modules.sol=(function(){
+  const c=setup($('cv-sol')), ctx=c.ctx, W=c.W, H=c.H; const CY=210, R=62, SP=26, M=24;
+  let N=1, I=3, dir=1, bar=false, dirty=true; let lines=[], fil=[], xs=[], seg=[];
+  const comp={x:110,y:90}; const nd=new Needle(0);
+  const sy=[],sz=[],lyv=[],lzv=[]; for(let j=0;j<M;j++){const a=(j+.5)/M*TAU, dl=R*TAU/M; sy.push(R*Math.cos(a)); sz.push(R*Math.sin(a)); lyv.push(-Math.sin(a)*dl); lzv.push(Math.cos(a)*dl);}
+  function Bf(px,py){
+    let bx=0,by=0; const Y=-(py-CY);
+    for(let k=0;k<xs.length;k++){const dx=px-xs[k];
+      for(let j=0;j<M;j++){const dy=Y-sy[j], dz=-sz[j]; const r2=dx*dx+dy*dy+dz*dz+36, inv=1/(r2*Math.sqrt(r2));
+        bx+=(lyv[j]*dz-lzv[j]*dy)*inv; by+=lzv[j]*dx*inv;}}
+    return [bx*dir,-by*dir];
+  }
+  function rebuild(){
+    xs=[]; for(let k=0;k<N;k++)xs.push(360+(k-(N-1)/2)*SP);
+    seg=[]; xs.forEach(x=>{seg.push([x,CY-R],[x,CY+R]);});
+    lines=[]; const seeds=[]; for(let k=-3;k<=3;k++)seeds.push([360,CY+k*R*.26]);
+    [R+22,R+52,R+95].forEach(o=>{seeds.push([360,CY-o],[360,CY+o]);});
+    seeds.forEach(s=>{
+      const f=trace(s[0],s[1],1), b=trace(s[0],s[1],-1); b.reverse(); lines.push(b.concat(f.slice(1)));
+    });
+    fil=[]; for(let gx=10;gx<W;gx+=18)for(let gy=10;gy<H;gy+=18){
+      const x=gx+(rnd()-.5)*10,y=gy+(rnd()-.5)*10; if(seg.some(s=>Math.hypot(s[0]-x,s[1]-y)<9))continue;
+      const b=Bf(x,y); fil.push({x,y,a:Math.atan2(b[1],b[0]),m:Math.hypot(b[0],b[1])});
+    }
+    dirty=false;
+  }
+  function trace(x,y,sign){
+    const pts=[[x,y]]; let px=x,py=y;
+    for(let i=0;i<650;i++){
+      let b=Bf(px,py),m=Math.hypot(b[0],b[1])||1; const hx=px+sign*b[0]/m*1.8,hy=py+sign*b[1]/m*1.8;
+      b=Bf(hx,hy); m=Math.hypot(b[0],b[1])||1; px+=sign*b[0]/m*3.6; py+=sign*b[1]/m*3.6; pts.push([px,py]);
+      if(px<-10||px>W+10||py<-10||py>H+10)break;
+      if(i>40&&Math.hypot(px-x,py-y)<4)break;
+      let hit=false; for(let s=0;s<seg.length;s++){if(Math.abs(seg[s][0]-px)<7&&Math.abs(seg[s][1]-py)<7){hit=true;break;}} if(hit)break;
+    }
+    return pts;
+  }
+  bindRange('s-n','s-nv',v=>v+(v===1?' turn':' turns'),v=>{N=v;dirty=true;});
+  bindRange('s-i','s-iv',v=>v.toFixed(1)+' A',v=>{I=v;});
+  $('s-rev').onclick=()=>{dir*=-1;dirty=true;};
+  $('s-bar').onclick=e=>{bar=!bar; e.target.textContent='Bar magnet overlay: '+(bar?'ON':'OFF');};
+  makeDrag(c,p=>Math.hypot(p.x-comp.x,p.y-comp.y)<44,p=>{comp.x=clamp(p.x,24,W-24);comp.y=clamp(p.y,24,H-24);});
+  function update(dt){ if(dirty)rebuild(); const b=Bf(comp.x,comp.y); nd.step(Math.atan2(b[1],b[0]),dt); }
+  function draw(){
+    if(dirty)rebuild(); clear(c);
+    ctx.strokeStyle=COL.ink; ctx.lineWidth=1.6; ctx.lineCap='round';
+    fil.forEach(f=>{ctx.globalAlpha=clamp(Math.pow(f.m/(0.1*Math.max(1,N*.6)),.5)*.55,.07,.9); const dx=Math.cos(f.a)*4.6,dy=Math.sin(f.a)*4.6; ctx.beginPath(); ctx.moveTo(f.x-dx,f.y-dy); ctx.lineTo(f.x+dx,f.y+dy); ctx.stroke();});
+    ctx.globalAlpha=1;
+    const bc=Bf(360,CY), rightN=bc[0]>0;
+    lines.forEach(pts=>{
+      ctx.strokeStyle=COL.field; ctx.lineWidth=2; ctx.globalAlpha=.9; ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke(); ctx.globalAlpha=1;
+      let acc=60; for(let i=1;i<pts.length;i++){acc+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); if(acc>110){acc=0; chevron(ctx,pts[i][0],pts[i][1],Math.atan2(pts[i][1]-pts[i-1][1],pts[i][0]-pts[i-1][0]),6,COL.field);}}
+    });
+    if(bar){const x0=xs[0]-14,x1=xs[N-1]+14,w=Math.max(60,x1-x0),mx=(x0+x1)/2; ctx.globalAlpha=.55; ctx.fillStyle=rightN?COL.south:COL.north; ctx.fillRect(mx-w/2,CY-18,w/2,36); ctx.fillStyle=rightN?COL.north:COL.south; ctx.fillRect(mx,CY-18,w/2,36); ctx.globalAlpha=1; ctx.strokeStyle=COL.ink; ctx.lineWidth=2; ctx.strokeRect(mx-w/2,CY-18,w,36);}
+    xs.forEach(x=>{
+      ctx.globalAlpha=.4; ctx.strokeStyle=COL.amp; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(x,CY-R); ctx.lineTo(x,CY+R); ctx.stroke(); ctx.globalAlpha=1;
+      curSym(ctx,x,CY-R,8,dir>0,COL.amp,COL.card); curSym(ctx,x,CY+R,8,dir<0,COL.amp,COL.card);
+    });
+    const lx=xs[0]-42, rx=xs[N-1]+42;
+    text(ctx,rightN?'S':'N',lx,CY,rightN?COL.south:COL.north,26); text(ctx,rightN?'N':'S',rx,CY,rightN?COL.north:COL.south,26);
+    drawCompass(ctx,comp.x,comp.y,28,nd.a,false); ctx.strokeStyle=COL.accent; ctx.lineWidth=2; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.arc(comp.x,comp.y,36,0,TAU); ctx.stroke(); ctx.setLineDash([]);
+    text(ctx,'drag me',comp.x,comp.y-48,COL.accent,12);
+    const Bmag=Math.hypot(bc[0],bc[1])*I*100;
+    setText($('s-bc'),Bmag.toFixed(0)+' µT'); setText($('s-pole'),rightN?'S pole':'N pole');
+    setText($('s-say'), N===1?'One turn: lines pass through the loop in the same direction and, at the very centre, look like a straight line.':
+      N<6?'A few turns: inside the lines straighten and bunch together. Field at centre is about '+N+' times one turn.':
+      'Many turns ('+N+'): inside is straight, parallel and evenly spaced, so the field is uniform. Outside it looks like a bar magnet. Right end is the '+(rightN?'north':'south')+' pole.');
+  }
+  function enter(){dirty=true;}
+  return {enter,update,draw};
+})();
+
+/* =====================================================
+   LAB 5 : ELECTROMAGNET
+   ===================================================== */
+modules.em=(function(){
+  const c=setup($('cv-em')), ctx=c.ctx, W=c.W, H=c.H; const TIP=255, TABLE=418;
+  let on=false, core=true, N=20, I=2, t=0;
+  const clips=[]; for(let i=0;i<10;i++)clips.push({x:200+i*32+(rnd()-.5)*8,rx:200+i*32+(rnd()-.5)*8,y:TABLE,vy:0,rot:(rnd()-.5)*.8});
+  bindRange('e-n','e-nv',v=>v+' turns',v=>{N=v;}); bindRange('e-i','e-iv',v=>v.toFixed(1)+' A',v=>{I=v;});
+  const keyB=$('e-key'); keyB.onclick=()=>{on=!on; keyB.textContent='Switch: '+(on?'ON':'OFF'); keyB.classList.toggle('on',on);};
+  const coreB=$('e-core'); coreB.onclick=()=>{core=!core; coreB.textContent='Iron core: '+(core?'ON':'OFF'); coreB.classList.toggle('on',!core);};
+  const S=()=>N*I*(core?1:.15), count=()=>on?Math.min(9,Math.floor(S()/7)):0;
+  function update(dt){
+    t+=dt; const cnt=count();
+    clips.forEach((cl,i)=>{
+      if(i<cnt){const ty=TIP+16+i*14, tx=360+(i%2?4:-4); cl.y+=(ty-cl.y)*Math.min(1,dt*9); cl.x+=(tx-cl.x)*Math.min(1,dt*9); cl.vy=0; cl.rot*=.9;}
+      else{ if(cl.y<TABLE){cl.vy+=1100*dt; cl.y=Math.min(TABLE,cl.y+cl.vy*dt); if(cl.y>=TABLE)cl.vy=0;} cl.x+=(cl.rx-cl.x)*Math.min(1,dt*3); }
+    });
+  }
+  function clip(x,y,rot){ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.strokeStyle='#8a97a8'; ctx.lineWidth=3; rrect(ctx,-13,-6,26,12,6); ctx.stroke(); ctx.lineWidth=2; rrect(ctx,-8,-3,16,6,3); ctx.stroke(); ctx.restore();}
+  function draw(){
+    clear(c);
+    ctx.fillStyle=COL.line; ctx.fillRect(0,TABLE+8,W,H-TABLE-8); text(ctx,'table',60,TABLE+30,COL.muted,13);
+    // wires and battery
+    ctx.strokeStyle=COL.muted; ctx.lineWidth=5; ctx.lineJoin='round'; ctx.beginPath(); ctx.moveTo(330,120); ctx.lineTo(150,120); ctx.lineTo(150,175); ctx.moveTo(330,225); ctx.lineTo(150,225); ctx.lineTo(150,205); ctx.stroke();
+    ctx.fillStyle=COL.card; ctx.fillRect(120,175,60,30); ctx.strokeStyle=COL.ink; ctx.lineWidth=3; ctx.strokeRect(120,175,60,30); text(ctx,'+',132,190,COL.north,18); text(ctx,'−',168,190,COL.south,18); text(ctx,'battery',150,152,COL.muted,12);
+    if(on){let n=14; for(let k=0;k<n;k++){const u=((k/n)+t*.25*(I/2))%1; let x,y; const pts=[[330,225],[150,225],[150,205]]; ctx.fillStyle=COL.amp; ctx.beginPath(); ctx.arc(330-(330-150)*u,225,4,0,TAU); ctx.fill(); ctx.beginPath(); ctx.arc(330-(330-150)*u,120,4,0,TAU); ctx.fill();}}
+    // glow
+    if(on&&count()>=0){const g=ctx.createRadialGradient(360,TIP,5,360,TIP,40+S()*.6); g.addColorStop(0,'rgba(230,57,70,.45)'); g.addColorStop(1,'rgba(230,57,70,0)'); ctx.fillStyle=g; ctx.fillRect(100,100,520,330);}
+    // nail / core
+    ctx.save(); if(core){ctx.fillStyle='#9aa7b8'; ctx.strokeStyle=COL.ink; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(350,70); ctx.lineTo(370,70); ctx.lineTo(370,TIP-10); ctx.lineTo(360,TIP+2); ctx.lineTo(350,TIP-10); ctx.closePath(); ctx.fill(); ctx.stroke(); text(ctx,'soft iron core',470,90,COL.muted,13);}
+    else{ctx.setLineDash([5,5]); ctx.strokeStyle=COL.muted; ctx.lineWidth=2; ctx.strokeRect(350,70,20,TIP-80); text(ctx,'air (no core)',470,90,COL.muted,13);}
+    ctx.restore();
+    // coil windings
+    const turns=Math.round(6+N*.5); ctx.strokeStyle='#c97a2b'; ctx.lineWidth=5; ctx.lineCap='round';
+    for(let k=0;k<turns;k++){const y=105+k*(110/turns); ctx.beginPath(); ctx.moveTo(338,y+8); ctx.lineTo(382,y-4); ctx.stroke();}
+    text(ctx,'coil',420,160,COL.muted,13);
+    if(on){text(ctx,'S',360,52,COL.south,20); text(ctx,'N',360,TIP+14,COL.north,20);}
+    clips.forEach(cl=>clip(cl.x,cl.y,cl.rot));
+    // readouts
+    const cnt=count(); setText($('e-c'),String(cnt)); setText($('e-s'),String(Math.round(S())));
+    setText($('e-say'),!on?'Switch off: no current, no magnet. The clips just lie there.':cnt===0?'Magnet is on but too weak to lift a clip. Add turns, current or the iron core.':'Lifting '+cnt+' clip'+(cnt>1?'s':'')+'. Turn the switch off and watch them all drop.');
+  }
+  return {update,draw};
+})();
+/* =====================================================
+   LAB 6 : FORCE ON A CURRENT-CARRYING ROD (Activity 12.7)
+   ===================================================== */
+modules.force=(function(){
+  const c=setup($('cv-force')), ctx=c.ctx, W=c.W, H=c.H; const PIV={x:360,y:14}, LEN=236;
+  let on=false, sI=1, sB=1, I=2, Bm=1.5, Ln=1, phi=0, w=0, t=0;
+  bindRange('f-i','f-iv',v=>v.toFixed(1)+' A',v=>{I=v;});
+  bindRange('f-b','f-bv',v=>v.toFixed(1)+' T',v=>{Bm=v;});
+  bindRange('f-l','f-lv',v=>v.toFixed(1)+' ×',v=>{Ln=v;});
+  const keyB=$('f-key'); keyB.onclick=()=>{on=!on; keyB.textContent='Key: '+(on?'ON':'OFF'); keyB.classList.toggle('on',on);};
+  $('f-rev').onclick=()=>{sI*=-1;}; $('f-pole').onclick=()=>{sB*=-1;};
+  const Fv=()=>on?Bm*I*Ln:0;
+  const dirX=()=>-sI*sB;                       // F = I × B  (I along ±z, B along ±y)
+  const eq=()=>dirX()*0.75*Math.tanh(0.09*Fv());
+  function update(dt){
+    t+=dt; const n=Math.max(1,Math.ceil(dt/0.008)),h=dt/n;
+    for(let i=0;i<n;i++){w+=(-36*(phi-eq())-3.0*w)*h; phi+=w*h;}
+  }
+  function draw(){
+    clear(c);
+    const rx=PIV.x+LEN*Math.sin(phi), ry=PIV.y+LEN*Math.cos(phi);
+    // stand + string (behind magnet)
+    ctx.fillStyle=COL.muted; ctx.fillRect(240,0,240,10);
+    ctx.strokeStyle=COL.ink; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(PIV.x,PIV.y); ctx.lineTo(rx,ry); ctx.stroke();
+    // magnet: yoke + poles
+    ctx.fillStyle='#8895a7'; ctx.fillRect(80,70,70,360); ctx.strokeStyle=COL.ink; ctx.lineWidth=3; ctx.strokeRect(80,70,70,360);
+    const topN=sB<0; // field up => N bottom, S top
+    ctx.fillStyle=topN?COL.north:COL.south; ctx.fillRect(150,70,450,70); ctx.strokeRect(150,70,450,70);
+    ctx.fillStyle=topN?COL.south:COL.north; ctx.fillRect(150,360,450,70); ctx.strokeRect(150,360,450,70);
+    text(ctx,topN?'N':'S',560,105,'#fff',30); text(ctx,topN?'S':'N',560,395,'#fff',30);
+    text(ctx,'horse-shoe magnet',115,250,COL.ink,13,'center'); 
+    // field arrows
+    const up=sB>0; ctx.globalAlpha=clamp(.25+Bm*.2,.3,.85);
+    for(let x=200;x<=520;x+=64){ if(Math.abs(x-rx)<26)continue; if(up)arrow(ctx,x,350,x,150,COL.field,3,11); else arrow(ctx,x,150,x,350,COL.field,3,11);}
+    ctx.globalAlpha=1; text(ctx,'field B',630,250,COL.field,15);
+    arrow(ctx,630,up?290:210,630,up?215:285,COL.field,4,13);
+    // rod
+    ctx.beginPath(); ctx.arc(rx,ry,16,0,TAU); ctx.fillStyle='#c4ccd8'; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle=COL.ink; ctx.stroke();
+    if(on)curSym(ctx,rx,ry,12,sI>0,COL.amp,COL.card); else text(ctx,'AB',rx,ry,COL.ink,12);
+    // force arrow
+    const F=Fv();
+    if(F>0.01){const L=clamp(30+F*4,30,170), d=dirX(); arrow(ctx,rx,ry-34,rx+d*L,ry-34,COL.force,7,18); text(ctx,'Force',rx+d*L/2,ry-54,COL.force,16);}
+    text(ctx,'view along the rod from end A',360,H-12,COL.muted,13);
+    setText($('f-F'),F.toFixed(1)); const deg=Math.abs(eq())*180/Math.PI;
+    setText($('f-d'),F<0.01?'–':(dirX()<0?'Left ':'Right ')+deg.toFixed(0)+'°');
+    const cur=sI>0?'towards you (dot)':'away from you (cross)', fld=up?'up':'down', frc=dirX()<0?'LEFT':'RIGHT';
+    setText($('f-say'),!on?'Key open: no current, no force. The rod hangs straight.':
+      'Left hand: forefinger '+fld+' (field), middle finger '+cur+' (current). Thumb points '+frc+'. The rod swings '+frc.toLowerCase()+'.');
+  }
+  return {update,draw};
+})();
+
+/* =====================================================
+   LAB 7 : FLEMING 3D HANDS
+   ===================================================== */
+modules.fleming=(function(){
+  const c=setup($('cv-hand')), ctx=c.ctx, W=c.W, H=c.H;
+  const DIRS=[{v:[0,1,0],n:'up',b:'↑ Up'},{v:[0,-1,0],n:'down',b:'↓ Down'},{v:[1,0,0],n:'to the right',b:'→ Right'},{v:[-1,0,0],n:'to the left',b:'← Left'},
+              {v:[0,0,1],n:'towards you (out of the page)',b:'⊙ Out of page'},{v:[0,0,-1],n:'away from you (into the page)',b:'⊗ Into page'}];
+  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+  const idx=v=>DIRS.findIndex(d=>d.v[0]===v[0]&&d.v[1]===v[1]&&d.v[2]===v[2]);
+  const isZero=v=>!v[0]&&!v[1]&&!v[2];
+  let mode='L', Bi=5, Xi=2; const V={yaw:.62,pitch:.38};
+  orbit(c,{get yaw(){return V.yaw},set yaw(v){V.yaw=v},get pitch(){return V.pitch},set pitch(v){V.pitch=v}});
+  const COLB=()=>COL.south, COLI=()=>COL.amp, COLF=()=>COL.force, COLM=()=>COL.accent;
+  function result(){return mode==='L'?cross(DIRS[Xi].v,DIRS[Bi].v):cross(DIRS[Xi].v,DIRS[Bi].v);} // L: F=I×B ; R: I=v×B
+  function legend(){
+    const chip=(t,col,dark)=>'<span style="background:'+col+';color:'+(dark?'#1a1200':'#fff')+'">'+t+'</span>';
+    setHTML($('h-leg'), mode==='L'?chip('Forefinger = Field B',COLB())+chip('Middle finger = Current I',COLI(),1)+chip('Thumb = Force F',COLF(),0)
+                                 :chip('Forefinger = Field B',COLB())+chip('Thumb = Motion v',COLM())+chip('Middle finger = Induced current I',COLI(),1));
+  }
+  function picker(label,sel,cb){
+    const d=document.createElement('div'); d.innerHTML='<div style="font-weight:800;font-size:14.5px;margin:2px 0 4px">'+label+'</div>';
+    const row=document.createElement('div'); row.className='dir';
+    DIRS.forEach((x,i)=>{const b=document.createElement('button'); b.textContent=x.b; b.setAttribute('aria-pressed',i===sel?'true':'false'); b.onclick=()=>{cb(i); renderCtl();}; row.appendChild(b);});
+    d.appendChild(row); return d;
+  }
+  function renderCtl(){
+    const box=$('h-ctl'); box.innerHTML='';
+    box.appendChild(picker('Field direction (forefinger)',Bi,i=>{Bi=i;}));
+    box.appendChild(picker(mode==='L'?'Current direction (middle finger)':'Motion of the wire (thumb)',Xi,i=>{Xi=i;}));
+    legend();
+    $('h-rule').innerHTML= mode==='L'?'<b>Fleming\'s left-hand rule (motors).</b> Stretch thumb, forefinger and middle finger of your <b>left</b> hand at right angles. <b>Fo</b>refinger = <b>Fi</b>eld, <b>Mi</b>ddle = Current ("mid-current"), <b>Th</b>umb = <b>Th</b>rust (force).'
+                                     :'<b>Fleming\'s right-hand rule (generators).</b> Same three fingers of your <b>right</b> hand. Thumb = <b>motion</b> of the conductor, forefinger = <b>field</b>, middle finger = <b>induced current</b>.';
+    const r=result(), zr=isZero(r);
+    $('h-say').textContent= zr?'Field and '+(mode==='L'?'current':'motion')+' are along the same line, so there is '+(mode==='L'?'no force':'no induced current')+'. Pick a direction at right angles.':
+       (mode==='L'?'Force on the wire points ':'Induced current flows ')+DIRS[idx(r)].n+'.';
+  }
+  function setMode(m){mode=m; setPressed(['h-L','h-R'],m==='L'?'h-L':'h-R'); renderCtl();}
+  $('h-L').onclick=()=>setMode('L'); $('h-R').onclick=()=>setMode('R');
+  /* --- drawing --- */
+  function finger(P,o,tip,len,wd,col,label,L,front){
+    const a=P(0,0,0), b=P(tip[0]*len,tip[1]*len,tip[2]*len), e=P(tip[0]*(len+55),tip[1]*(len+55),tip[2]*(len+55));
+    L.add(b[2],()=>{
+      ctx.save(); ctx.lineCap='round'; ctx.strokeStyle=SKIN_D; ctx.lineWidth=wd+5; ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+      ctx.strokeStyle=SKIN; ctx.lineWidth=wd; ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+      ctx.strokeStyle=SKIN_D; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(b[0],b[1],wd*.28,0,TAU); ctx.stroke();
+      ctx.restore(); arrow(ctx,b[0],b[1],e[0],e[1],col,6,16);
+      const dx=e[0]-b[0],dy=e[1]-b[1],l=Math.hypot(dx,dy)||1; text(ctx,label,e[0]+dx/l*40,e[1]+dy/l*18,col,15,'center','800');
+    });
+  }
+  function draw(){
+    clear(c); const P=view3(V.yaw,V.pitch,360,280,1), L=DL();
+    // faint axes
+    [[[1,0,0],'right'],[[0,1,0],'up'],[[0,0,1],'toward you']].forEach(([v,n])=>{
+      line3(L,ctx,P,[-v[0]*200,-v[1]*200,-v[2]*200],[v[0]*200,v[1]*200,v[2]*200],COL.muted,1.5,.35,'butt');
+      const e=P(v[0]*214,v[1]*214,v[2]*214); L.add(e[2]-400,()=>text(ctx,n,e[0],e[1],COL.muted,12,'center','700'));
+    });
+    const r=result(), zr=isZero(r), Bv=DIRS[Bi].v, Xv=DIRS[Xi].v;
+    const O=P(0,0,0);
+    const hasPerp=!(Bv[0]===Xv[0]&&Bv[1]===Xv[1]&&Bv[2]===Xv[2])&&!(Bv[0]===-Xv[0]&&Bv[1]===-Xv[1]&&Bv[2]===-Xv[2]);
+    // index = field
+    finger(P,O,Bv,115,22,COLB(),'Field B',L);
+    if(mode==='L'){
+      finger(P,O,Xv,115,22,COLI(),'Current I',L);
+      if(!zr)finger(P,O,r,95,26,COLF(),'Force F',L);
+    }else{
+      finger(P,O,Xv,95,26,COLM(),'Motion v',L);
+      if(!zr)finger(P,O,r,115,22,COLI(),'Induced I',L);
+    }
+    // palm
+    L.add(-5,()=>{ctx.save(); ctx.beginPath(); ctx.arc(O[0],O[1],34,0,TAU); ctx.fillStyle=SKIN; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle=SKIN_D; ctx.stroke(); ctx.restore(); text(ctx,mode==='L'?'LEFT':'RIGHT',O[0],O[1]-4,'#5a3a1a',13); text(ctx,'hand',O[0],O[1]+10,'#5a3a1a',11,'center','700');});
+    L.run();
+    if(zr)text(ctx,'Parallel directions: '+(mode==='L'?'zero force':'zero induced current'),360,H-26,COL.warn,17);
+  }
+  /* --- challenge --- */
+  let q=null, streak=0, best=0, answered=false;
+  const ans=$('h-ans'); DIRS.forEach((d,i)=>{const b=document.createElement('button'); b.textContent=d.b; b.onclick=()=>answer(i); ans.appendChild(b);});
+  function newQ(){
+    answered=false; $('h-why').classList.remove('show'); [...ans.children].forEach(b=>{b.disabled=false;b.setAttribute('aria-pressed','false');});
+    const kind=['wire','proton','electron','induce'][Math.floor(Math.random()*4)];
+    const B=Math.floor(Math.random()*6); const axis=Math.floor(B/2); let X; do{X=Math.floor(Math.random()*6);}while(Math.floor(X/2)===axis);
+    const Bv=DIRS[B].v, Xv=DIRS[X].v; let r, txt, why;
+    if(kind==='wire'){r=cross(Xv,Bv); txt='Current in a wire flows <b>'+DIRS[X].n+'</b>. The magnetic field points <b>'+DIRS[B].n+'</b>. Which way is the force on the wire?';
+      why='Left hand: forefinger '+DIRS[B].n+', middle finger '+DIRS[X].n+'. Thumb: <b>'+DIRS[idx(r)].n+'</b>.';}
+    else if(kind==='proton'){r=cross(Xv,Bv); txt='A <b>proton</b> moves <b>'+DIRS[X].n+'</b> through a field pointing <b>'+DIRS[B].n+'</b>. Which way is the force on it?';
+      why='A proton is positive, so its motion is the current. Forefinger '+DIRS[B].n+', middle finger '+DIRS[X].n+'. Thumb: <b>'+DIRS[idx(r)].n+'</b>.';}
+    else if(kind==='electron'){const I=Xv.map(x=>-x+0); r=cross(I,Bv); const oi=idx(I); txt='An <b>electron</b> moves <b>'+DIRS[X].n+'</b> through a field pointing <b>'+DIRS[B].n+'</b>. Which way is the force on it?';
+      why='An electron is negative, so the <b>current points the opposite way</b>: '+DIRS[oi].n+'. Forefinger '+DIRS[B].n+', middle finger '+DIRS[oi].n+'. Thumb: <b>'+DIRS[idx(r)].n+'</b>.';}
+    else{r=cross(Xv,Bv); txt='A straight wire is moved <b>'+DIRS[X].n+'</b> through a field pointing <b>'+DIRS[B].n+'</b>. Which way does the <b>induced current</b> flow? (Use the right hand.)';
+      why='Right hand: thumb '+DIRS[X].n+' (motion), forefinger '+DIRS[B].n+' (field). Middle finger: <b>'+DIRS[idx(r)].n+'</b>.';}
+    q={kind,B,X,ans:idx(r),why};
+    $('h-q').innerHTML=txt;
+  }
+  function answer(i){
+    if(answered||!q)return; answered=true; const ok=i===q.ans;
+    [...ans.children].forEach((b,k)=>{b.disabled=true; if(k===q.ans)b.setAttribute('aria-pressed','true');});
+    streak=ok?streak+1:0; best=Math.max(best,streak); $('h-score').textContent='Streak '+streak+' · Best '+best;
+    const w=$('h-why'); w.innerHTML=(ok?'<b>Correct!</b> ':'<b>Not quite.</b> ')+q.why+' <button class="btn small" id="h-show">Show on 3D hand</button>'; w.classList.add('show');
+    $('h-show').onclick=()=>{mode=q.kind==='induce'?'R':'L'; Bi=q.B; Xi=q.kind==='electron'?idx(DIRS[q.X].v.map(x=>-x+0)):q.X; setMode(mode); window.scrollTo({top:$('cv-hand').getBoundingClientRect().top+window.scrollY-120,behavior:'smooth'});};
+    if(ok&&streak>=5)markDone('fleming');
+  }
+  $('h-nq').onclick=newQ;
+  function enter(){renderCtl(); if(!q)newQ();}
+  return {enter,draw};
+})();
+/* =====================================================
+   SHARED : 3D coil + end view renderers (motor & generator)
+   Axes: x right (field), y up, z toward viewer = along the axle
+   ===================================================== */
+const ABC='#e8710a', CDC='#0d9488';
+function commutator3(L,ctx,P,st,zc,rc){
+  const th=st.theta;
+  if(st.ring==='split'){
+    [[th-Math.PI/2,ABC],[th+Math.PI/2,CDC]].forEach(([a0,col])=>{
+      for(let k=0;k<=14;k++){const a=a0+k/14*Math.PI; line3(L,ctx,P,[rc*Math.cos(a),rc*Math.sin(a),zc-12],[rc*Math.cos(a),rc*Math.sin(a),zc+12],col,6,1,'butt');}
+    });
+  }else{
+    [[zc+16,ABC],[zc-16,CDC]].forEach(([z,col])=>{
+      for(let k=0;k<28;k++){const a=k/28*TAU,b=(k+1)/28*TAU; line3(L,ctx,P,[rc*Math.cos(a),rc*Math.sin(a),z],[rc*Math.cos(b),rc*Math.sin(b),z],col,7,1,'butt');}
+    });
+  }
+}
+function draw3D(c,V,st,opt){
+  const ctx=c.ctx; clear(c); const P=view3(V.yaw,V.pitch,c.W/2+10,c.H/2+10,1.05), L=DL();
+  const r=72,Lz=64,th=st.theta,cs=Math.cos(th),sn=Math.sin(th),zc=-Lz-52,rc=24;
+  const A=[r*cs,r*sn,Lz],B=[r*cs,r*sn,-Lz],C=[-r*cs,-r*sn,-Lz],D=[-r*cs,-r*sn,Lz];
+  const nL=st.sB>0;
+  box3(L,ctx,P,[-225,0,0],[34,88,78],nL?COL.north:COL.south,.5,nL?'N':'S');
+  box3(L,ctx,P,[225,0,0],[34,88,78],nL?COL.south:COL.north,.5,nL?'S':'N');
+  [[-40,-92],[40,-92],[-40,92],[40,92]].forEach(([y,z])=>{ if(nL)arrow3(L,ctx,P,[-175,y,z],[175,y,z],COL.field,3,11); else arrow3(L,ctx,P,[175,y,z],[-175,y,z],COL.field,3,11); });
+  line3(L,ctx,P,[0,0,Lz+70],[0,0,zc-34],'#8a97a8',6,1);
+  line3(L,ctx,P,A,B,ABC,10,1); line3(L,ctx,P,C,D,CDC,10,1);
+  line3(L,ctx,P,B,C,'#b36b22',5,1); line3(L,ctx,P,D,A,'#b36b22',5,1);
+  if(st.ring==='split'){ line3(L,ctx,P,B,[rc*cs,rc*sn,zc],ABC,3,1); line3(L,ctx,P,C,[-rc*cs,-rc*sn,zc],CDC,3,1);}
+  else{ line3(L,ctx,P,B,[rc*cs,rc*sn,zc+16],ABC,3,1); line3(L,ctx,P,C,[-rc*cs,-rc*sn,zc-16],CDC,3,1);}
+  commutator3(L,ctx,P,st,zc,rc);
+  box3(L,ctx,P,[rc+16,0,zc],[9,7,18],'#555',.95); box3(L,ctx,P,[-rc-16,0,zc],[9,7,18],'#555',.95);
+  const lab=(p,s,col)=>{const q=P(p[0],p[1],p[2]); L.add(q[2]+30,()=>text(ctx,s,q[0],q[1],col||COL.ink,16));};
+  lab([r*cs*1.22,r*sn*1.22,Lz+8],'A',ABC); lab([r*cs*1.22,r*sn*1.22,-Lz-8],'B',ABC); lab([-r*cs*1.22,-r*sn*1.22,-Lz-8],'C',CDC); lab([-r*cs*1.22,-r*sn*1.22,Lz+8],'D',CDC);
+  lab([rc+42,0,zc],opt.rightLabel,COL.ink); lab([-rc-42,0,zc],opt.leftLabel,COL.ink); lab([0,-28,zc-34],st.ring==='split'?'split ring':'slip rings',COL.muted);
+  if(st.sAB){ arrow3(L,ctx,P,[r*cs,r*sn,-26*st.sAB],[r*cs,r*sn,26*st.sAB],COL.amp,5,13); arrow3(L,ctx,P,[-r*cs,-r*sn,26*st.sAB],[-r*cs,-r*sn,-26*st.sAB],COL.amp,5,13);}
+  if(opt.forces&&st.fy){ arrow3(L,ctx,P,[r*cs,r*sn,0],[r*cs,r*sn+48*st.fy,0],COL.force,6,15); arrow3(L,ctx,P,[-r*cs,-r*sn,0],[-r*cs,-r*sn-48*st.fy,0],COL.force,6,15); }
+  L.run();
+}
+function curvedArrow(ctx,cx,cy,rad,ccw,col,w){
+  const mid=-Math.PI*.75, half=.7, a0=ccw?mid+half:mid-half, a1=ccw?mid-half:mid+half;
+  ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=w||5; ctx.lineCap='round'; ctx.beginPath(); ctx.arc(cx,cy,rad,a0,a1,ccw); ctx.stroke(); ctx.restore();
+  const tx=ccw?Math.sin(a1):-Math.sin(a1), ty=ccw?-Math.cos(a1):Math.cos(a1);
+  chevron(ctx,cx+rad*Math.cos(a1),cy+rad*Math.sin(a1),Math.atan2(ty,tx),10,col);
+}
+function drawEnd(c,g,st,opt){
+  const ctx=c.ctx, cx=g.cx, cy=g.cy, r=g.r, th=st.theta, cs=Math.cos(th), sn=Math.sin(th);
+  clear(c);
+  const ABx=cx+r*cs, ABy=cy-r*sn, CDx=cx-r*cs, CDy=cy+r*sn, nL=st.sB>0;
+  ctx.fillStyle=nL?COL.north:COL.south; ctx.fillRect(g.n0,g.by0,g.n1-g.n0,g.by1-g.by0);
+  ctx.fillStyle=nL?COL.south:COL.north; ctx.fillRect(g.s0,g.by0,g.s1-g.s0,g.by1-g.by0);
+  ctx.strokeStyle=COL.ink; ctx.lineWidth=3; ctx.strokeRect(g.n0,g.by0,g.n1-g.n0,g.by1-g.by0); ctx.strokeRect(g.s0,g.by0,g.s1-g.s0,g.by1-g.by0);
+  text(ctx,nL?'N':'S',(g.n0+g.n1)/2,(g.by0+g.by1)/2,'#fff',32); text(ctx,nL?'S':'N',(g.s0+g.s1)/2,(g.by0+g.by1)/2,'#fff',32);
+  ctx.globalAlpha=clamp(.25+st.Bm*.18,.3,.8);
+  for(let k=-2;k<=2;k++){const y=cy+k*r*.52; if(nL)arrow(ctx,g.n1+8,y,g.s0-8,y,COL.field,2.6,10); else arrow(ctx,g.s0-8,y,g.n1+8,y,COL.field,2.6,10);}
+  ctx.globalAlpha=1; text(ctx,'field B (N to S)',cx,g.by0-12,COL.field,13);
+  // coil
+  ctx.lineCap='round'; ctx.lineWidth=8; ctx.strokeStyle=ABC; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(ABx,ABy); ctx.stroke();
+  ctx.strokeStyle=CDC; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(CDx,CDy); ctx.stroke();
+  // commutator
+  const rc=g.rc;
+  if(st.ring==='split'){
+    ctx.lineWidth=11; ctx.lineCap='butt'; ctx.strokeStyle=ABC; ctx.beginPath(); ctx.arc(cx,cy,rc,-(th+Math.PI/2),-(th-Math.PI/2),false); ctx.stroke();
+    ctx.strokeStyle=CDC; ctx.beginPath(); ctx.arc(cx,cy,rc,-(th-Math.PI/2),-(th-Math.PI/2)+Math.PI,false); ctx.stroke();
+  }else{
+    ctx.lineWidth=7; ctx.strokeStyle=ABC; ctx.beginPath(); ctx.arc(cx,cy,rc+6,0,TAU); ctx.stroke(); ctx.strokeStyle=CDC; ctx.beginPath(); ctx.arc(cx,cy,rc-5,0,TAU); ctx.stroke();
+  }
+  ctx.fillStyle=COL.ink; ctx.fillRect(cx+rc+9,cy-8,26,16); ctx.fillRect(cx-rc-35,cy-8,26,16);
+  if(st.ring==='slip'){ctx.fillRect(cx-rc-9,cy-4,10,8);}
+  text(ctx,opt.rightLabel,cx+rc+54,cy,COL.ink,16); text(ctx,opt.leftLabel,cx-rc-54,cy,COL.ink,16);
+  ctx.beginPath(); ctx.arc(cx,cy,5,0,TAU); ctx.fillStyle=COL.ink; ctx.fill();
+  // coil sides
+  if(st.sAB){
+    ctx.beginPath(); ctx.arc(ABx,ABy,15,0,TAU); ctx.fillStyle=ABC; ctx.fill(); curSym(ctx,ABx,ABy,11,st.sAB>0,COL.ink,COL.card);
+    ctx.beginPath(); ctx.arc(CDx,CDy,15,0,TAU); ctx.fillStyle=CDC; ctx.fill(); curSym(ctx,CDx,CDy,11,st.sAB<0,COL.ink,COL.card);
+  }else{ [[ABx,ABy,ABC],[CDx,CDy,CDC]].forEach(p=>{ctx.beginPath(); ctx.arc(p[0],p[1],15,0,TAU); ctx.fillStyle=p[2]; ctx.fill();}); }
+  text(ctx,'AB',ABx+(cs>=0?26:-26),ABy,ABC,15); text(ctx,'CD',CDx+(cs>=0?-26:26),CDy,CDC,15);
+  if(opt.forces&&st.fy){
+    const f=r*.62; arrow(ctx,ABx,ABy-18*st.fy,ABx,ABy-18*st.fy-f*st.fy,COL.force,6,16); arrow(ctx,CDx,CDy+18*st.fy,CDx,CDy+18*st.fy+f*st.fy,COL.force,6,16);
+    text(ctx,'F',ABx+(cs>=0?16:-16),ABy-18*st.fy-f*st.fy*.6,COL.force,17); text(ctx,'F',CDx+(cs>=0?-16:16),CDy+18*st.fy+f*st.fy*.6,COL.force,17);
+    if(Math.abs(st.torque)>0.02)curvedArrow(ctx,cx,cy,r+30,st.torque>0,COL.accent,5);
+  }
+  if(opt.velocity&&Math.abs(st.omega)>0.15){
+    const sg=Math.sign(st.omega), vx=-sn*sg, vy=-cs*sg; arrow(ctx,ABx,ABy,ABx+vx*58,ABy+vy*58,COL.accent,5,14); text(ctx,'v',ABx+vx*76,ABy+vy*76,COL.accent,16);
+  }
+}
+
+/* =====================================================
+   LAB 8 : MOTOR
+   ===================================================== */
+modules.motor=(function(){
+  const c3=setup($('cv-motor')), c2=setup($('cv-motor2'));
+  let run=true, frozen=false, sV=1, sB=1, ring='split', Vb=6, Bm=1.5, N=5, th=.3, om=0;
+  const V3={yaw:.75,pitch:.38};
+  const g={cx:360,cy:250,r:112,n0:40,n1:140,s0:580,s1:680,by0:120,by1:380,rc:34};
+  orbit(c3,{get yaw(){return V3.yaw},set yaw(v){V3.yaw=v},get pitch(){return V3.pitch},set pitch(v){V3.pitch=v}});
+  bindRange('m-v','m-vv',v=>v.toFixed(1)+' V',v=>{Vb=v;});
+  bindRange('m-b','m-bv',v=>v.toFixed(1)+' T',v=>{Bm=v;});
+  bindRange('m-n','m-nv',v=>v+' turns',v=>{N=v;});
+  const sl=$('m-a'); sl.disabled=true;
+  sl.addEventListener('input',()=>{ if(frozen){th=+sl.value*Math.PI/180; om=0;} $('m-av').textContent=sl.value+'°'; });
+  $('m-run').onclick=e=>{run=!run; e.target.textContent='Switch: '+(run?'ON':'OFF'); e.target.classList.toggle('on',!run);};
+  $('m-frz').onclick=e=>{frozen=!frozen; om=0; sl.disabled=!frozen; if(frozen){sl.value=Math.round(((th*180/Math.PI)%360+360)%360);} e.target.textContent=frozen?'Release (let it spin)':'Freeze at angle'; e.target.classList.toggle('on',frozen);};
+  $('m-rev').onclick=()=>{sV*=-1;}; $('m-pole').onclick=()=>{sB*=-1;};
+  function setRing(r){ring=r; setPressed(['m-rA','m-rB'],r==='slip'?'m-rA':'m-rB');}
+  $('m-rA').onclick=()=>setRing('slip'); $('m-rB').onclick=()=>setRing('split');
+  const sABof=()=>{const cs=Math.cos(th); return run?(ring==='split'?sV*(cs>=0?1:-1):sV):0;};
+  const torque=()=>{ if(!run)return 0; const cs=Math.cos(th), K=.25*N*Vb*Bm; return K*sV*sB*(ring==='split'?Math.abs(cs):cs); };
+  function update(dt){
+    if(frozen)return;
+    const n=Math.max(1,Math.ceil(dt/.008)), h=dt/n;
+    for(let i=0;i<n;i++){const tq=torque(); om+=((tq-.7*om-.12*om*Math.abs(om))/.6)*h; th+=om*h;}
+    if(th>1e4||th<-1e4)th%=TAU;
+    sl.value=Math.round(((th*180/Math.PI)%360+360)%360);
+  }
+  function draw(){
+    const sAB=sABof(), tq=torque(), fy=sAB*sB;
+    const st={theta:th,ring,sV,sB,Bm,sAB,fy,torque:tq,omega:om};
+    const lbl={rightLabel:sV>0?'+':'−',leftLabel:sV>0?'−':'+',forces:true};
+    draw3D(c3,V3,st,lbl); drawEnd(c2,g,st,lbl);
+    const deg=((th*180/Math.PI)%360+360)%360; $('m-av').textContent=Math.round(deg)+'°';
+    setText($('m-rpm'),(Math.abs(om)/TAU).toFixed(1)+'/s'); setText($('m-tq'),Math.abs(tq).toFixed(1));
+    const cs=Math.abs(Math.cos(th)); let msg;
+    if(!run)msg='Switch is off. No current, no force. The coil coasts to a stop.';
+    else if(ring==='slip'&&!frozen&&Math.abs(om)<.25)msg='Stalled! Without the split ring the current never reverses, so the coil just wobbles to rest at the vertical position.';
+    else if(cs>.9)msg='Coil parallel to the field: the two forces are at right angles to the coil, so the turning effect is maximum.';
+    else if(cs<.12)msg=ring==='split'?'Vertical position: forces act along the coil and only stretch it, so no turning effect. The gap in the split ring meets the brushes and the current reverses.':'Vertical position: no turning effect. Slip rings do not reverse the current, so past this point the forces would pull the coil back.';
+    else msg='Fleming left-hand rule on AB gives a push '+(fy>0?'up':'down')+' and on CD '+(fy>0?'down':'up')+'. Together they turn the coil '+(tq>0?'anticlockwise':'clockwise')+'.';
+    setText($('m-say'),msg);
+  }
+  return {update,draw};
+})();
+
+/* =====================================================
+   LAB 9 : GENERATOR
+   ===================================================== */
+modules.gen=(function(){
+  const c3=setup($('cv-gen')), c2=setup($('cv-gen2'));
+  let th=.4, om=0, auto=false, ring='slip', spd=1.2, Bm=1.5, N=5, pk=0, accum=0, dragging=false, phiPrev=0, sB=1, t=0;
+  const hist=new Array(320).fill(0); const V3={yaw:.75,pitch:.38};
+  const g={cx:250,cy:185,r:92,n0:22,n1:84,s0:416,s1:478,by0:100,by1:270,rc:30};
+  orbit(c3,{get yaw(){return V3.yaw},set yaw(v){V3.yaw=v},get pitch(){return V3.pitch},set pitch(v){V3.pitch=v}});
+  const reset=()=>{pk=0;};
+  bindRange('g-s','g-sv',v=>v.toFixed(1)+' turns/s',v=>{spd=v;reset();});
+  bindRange('g-b','g-bv',v=>v.toFixed(1)+' T',v=>{Bm=v;reset();});
+  bindRange('g-n','g-nv',v=>v+' turns',v=>{N=v;reset();});
+  $('g-auto').onclick=e=>{auto=!auto; e.target.textContent='Auto-spin: '+(auto?'ON':'OFF'); e.target.classList.toggle('on',auto); reset();};
+  function setRing(r){ring=r; setPressed(['g-rA','g-rB'],r==='slip'?'g-rA':'g-rB'); reset();}
+  $('g-rA').onclick=()=>setRing('slip'); $('g-rB').onclick=()=>setRing('split');
+  const ang=p=>Math.atan2(-(p.y-g.cy),p.x-g.cx);
+  makeDrag(c2,p=>{ if(Math.hypot(p.x-g.cx,p.y-g.cy)>g.r+60)return false; dragging=true; phiPrev=ang(p); return true;},
+    p=>{const a=ang(p),d=wrapPi(a-phiPrev); phiPrev=a; th+=d; accum+=d;}, ()=>{dragging=false;});
+  const sAB=()=>Math.abs(om)<.05?0:-Math.sign(om)*(Math.cos(th)>=0?1:-1);
+  const emf=()=>-.05*N*Bm*om*Math.cos(th);
+  const out=()=>ring==='split'?Math.abs(emf()):emf();
+  function update(dt){
+    t+=dt;
+    if(dragging){om=.5*om+.5*(accum/Math.max(dt,.004)); accum=0;}
+    else if(auto){om=TAU*spd; th+=om*dt;}
+    else{om=0; accum=0;}
+    om=clamp(om,-40,40);
+    const e=out(); pk=Math.max(pk,Math.abs(e)); hist.push(e); hist.shift();
+  }
+  function draw(){
+    const e=out(), sa=sAB(), st={theta:th,ring,sV:1,sB,Bm,sAB:sa,fy:0,torque:0,omega:om};
+    const lbl={rightLabel:'to bulb',leftLabel:'to bulb',forces:false,velocity:true};
+    draw3D(c3,V3,st,lbl); drawEnd(c2,g,st,lbl);
+    const ctx=c2.ctx;
+    // grab hint
+    if(!auto&&Math.abs(om)<.2){ text(ctx,'drag the coil round',g.cx,g.cy+g.r+52,COL.accent,14); }
+    // bulb
+    const br=1-Math.exp(-Math.abs(e)/3), bx=605, by=95;
+    ctx.save(); const gr=ctx.createRadialGradient(bx,by,4,bx,by,70); gr.addColorStop(0,'rgba(255,214,70,'+(.9*br)+')'); gr.addColorStop(1,'rgba(255,214,70,0)'); ctx.fillStyle=gr; ctx.fillRect(bx-80,by-80,160,160); ctx.restore();
+    ctx.beginPath(); ctx.arc(bx,by,28,0,TAU); ctx.fillStyle='rgba(255,226,120,'+(.2+.8*br)+')'; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle=COL.ink; ctx.stroke();
+    ctx.fillStyle=COL.ink; ctx.fillRect(bx-12,by+26,24,14); text(ctx,'bulb',bx,by+56,COL.muted,13);
+    // galvanometer
+    const gx=605, gy=270; ctx.beginPath(); ctx.arc(gx,gy,52,Math.PI,TAU); ctx.closePath(); ctx.fillStyle=COL.card; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle=COL.ink; ctx.stroke();
+    for(let k=-4;k<=4;k++){const a=-Math.PI/2+k*.3; ctx.beginPath(); ctx.moveTo(gx+Math.cos(a)*44,gy+Math.sin(a)*44); ctx.lineTo(gx+Math.cos(a)*52,gy+Math.sin(a)*52); ctx.stroke();}
+    const na=-Math.PI/2+clamp(e/10,-1,1)*1.2; ctx.strokeStyle=COL.north; ctx.lineWidth=4; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx+Math.cos(na)*46,gy+Math.sin(na)*46); ctx.stroke();
+    text(ctx,'0',gx,gy-60,COL.muted,12); text(ctx,'galvanometer',gx,gy+20,COL.muted,13);
+    // graph
+    const x0=30,x1=690,y0=345,y1=485,ym=(y0+y1)/2; ctx.fillStyle=COL.card; ctx.fillRect(x0,y0,x1-x0,y1-y0); ctx.strokeStyle=COL.line; ctx.lineWidth=2; ctx.strokeRect(x0,y0,x1-x0,y1-y0);
+    ctx.strokeStyle=COL.muted; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x0,ym); ctx.lineTo(x1,ym); ctx.stroke();
+    const scale=Math.max(6,pk*1.15); ctx.strokeStyle=COL.accent; ctx.lineWidth=3; ctx.lineJoin='round'; ctx.beginPath();
+    hist.forEach((v,i)=>{const x=x0+i/(hist.length-1)*(x1-x0), y=ym-clamp(v/scale,-1,1)*(y1-y0)/2*.9; i?ctx.lineTo(x,y):ctx.moveTo(x,y);}); ctx.stroke();
+    text(ctx,'Output voltage over time ('+(ring==='slip'?'AC':'pulsating DC')+')',x0+10,y0+14,COL.muted,13,'left'); text(ctx,'0',x0+8,ym-9,COL.muted,11,'left');
+    setText($('g-e'),(ring==='slip'&&e>0.05?'+':'')+e.toFixed(1)+' V'); setText($('g-pk'),pk.toFixed(1)+' V');
+    const cs=Math.abs(Math.cos(th)); let msg;
+    if(Math.abs(om)<.15)msg='Coil is not moving, so no field lines are being cut: voltage 0, even with a strong magnet. Spin it!';
+    else if(cs>.9)msg='Coil parallel to the field: the sides cut across the field lines fastest. Voltage is at its peak.';
+    else if(cs<.12)msg='Coil perpendicular to the field: the sides move along the field lines and cut none. Voltage is zero. '+(ring==='slip'?'The current is about to change direction.':'');
+    else msg='Right-hand rule on AB: thumb = motion, forefinger = field, middle finger = induced current ('+(sa>0?'towards you':'away from you')+').';
+    setText($('g-say'),msg);
+  }
+  return {update,draw};
+})();
+/* =====================================================
+   LAB 10 : DOMESTIC CIRCUITS
+   ===================================================== */
+modules.home=(function(){
+  const c=setup($('cv-home')), ctx=c.ctx, W=c.W, H=c.H;
+  const APPS=[{n:'Bulb',P:60,x:120},{n:'Fan',P:80,x:235},{n:'TV',P:150,x:350},{n:'Iron',P:1000,x:470,metal:true},{n:'Oven',P:2000,x:595,metal:true}];
+  const on=APPS.map(()=>false); let rating=5, blown=false, cause='', short=false, earth=true, fault=false, heat=0, t=0;
+  const btns=[]; const box=$('r-apps');
+  APPS.forEach((a,i)=>{const b=document.createElement('button'); b.className='btn small'; b.textContent=a.n+' '+a.P+' W'; b.onclick=()=>toggle(i); box.appendChild(b); btns.push(b);});
+  function toggle(i){on[i]=!on[i]; btns[i].classList.toggle('on',on[i]);}
+  function setRate(r){rating=r; setPressed(['r-5','r-15'],r===5?'r-5':'r-15'); setText($('r-lim'),r+' A');}
+  $('r-5').onclick=()=>setRate(5); $('r-15').onclick=()=>setRate(15);
+  $('r-short').onclick=()=>{if(!blown)short=true;};
+  $('r-fix').onclick=()=>{blown=false; heat=0; short=false; fault=false; cause=''; $('r-fault').textContent='Insulation fault';};
+  $('r-earth').onclick=e=>{earth=!earth; e.target.textContent='Earth wire: '+(earth?'CONNECTED':'CUT'); e.target.classList.toggle('on',!earth);};
+  $('r-fault').onclick=e=>{if(blown)return; fault=!fault; e.target.textContent=fault?'Fix insulation':'Insulation fault';};
+  makeDrag(c,p=>{APPS.forEach((a,i)=>{if(Math.abs(p.x-a.x)<48&&p.y>295&&p.y<400)toggle(i);}); return false;});
+  const load=()=>APPS.reduce((s,a,i)=>s+(on[i]?a.P/220:0),0);
+  const total=()=>blown?0:(short||(fault&&earth))?60:load();
+  function update(dt){
+    t+=dt; if(blown)return; const I=total();
+    if(I>rating){heat+=dt*Math.pow(I/rating,2)*.9; if(heat>=1){blown=true; heat=1; cause=short?'short':(fault&&earth)?'earth':'overload';}}
+    else heat=Math.max(0,heat-dt*.6);
+  }
+  function wire(x1,y1,x2,y2,col,w){ctx.strokeStyle=col; ctx.lineWidth=w||5; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();}
+  function appliance(a,i){
+    const x=a.x, y=300, onn=on[i]&&!blown, bad=fault&&a.n==='Iron';
+    ctx.fillStyle=COL.card; ctx.strokeStyle=bad&&!earth?COL.north:COL.ink; ctx.lineWidth=bad&&!earth?5:3; rrect(ctx,x-44,y,88,92,12); ctx.fill(); ctx.stroke();
+    const cx=x, cy=y+36;
+    if(a.n==='Bulb'){ctx.beginPath(); ctx.arc(cx,cy,17,0,TAU); ctx.fillStyle=onn?'#ffd84a':COL.line; ctx.fill(); ctx.strokeStyle=COL.ink; ctx.lineWidth=2; ctx.stroke(); if(onn){ctx.save(); ctx.globalAlpha=.3; ctx.beginPath(); ctx.arc(cx,cy,30,0,TAU); ctx.fillStyle='#ffd84a'; ctx.fill(); ctx.restore();}}
+    else if(a.n==='Fan'){ctx.save(); ctx.translate(cx,cy); ctx.rotate(onn?t*12:0); ctx.fillStyle=onn?COL.south:COL.muted; for(let k=0;k<3;k++){ctx.rotate(TAU/3); ctx.beginPath(); ctx.ellipse(13,0,13,5,0,0,TAU); ctx.fill();} ctx.restore();}
+    else if(a.n==='TV'){ctx.fillStyle=onn?COL.south:COL.line; ctx.fillRect(cx-22,cy-15,44,30); ctx.strokeStyle=COL.ink; ctx.lineWidth=2; ctx.strokeRect(cx-22,cy-15,44,30);}
+    else if(a.n==='Iron'){ctx.beginPath(); ctx.moveTo(cx-22,cy+12); ctx.lineTo(cx+24,cy+12); ctx.lineTo(cx+6,cy-12); ctx.lineTo(cx-22,cy-12); ctx.closePath(); ctx.fillStyle=onn?COL.north:COL.muted; ctx.fill(); ctx.strokeStyle=COL.ink; ctx.lineWidth=2; ctx.stroke();}
+    else{ctx.fillStyle=onn?COL.amp:COL.line; ctx.fillRect(cx-24,cy-16,48,32); ctx.strokeStyle=COL.ink; ctx.lineWidth=2; ctx.strokeRect(cx-24,cy-16,48,32); ctx.fillStyle=COL.ink; ctx.beginPath(); ctx.arc(cx-10,cy,4,0,TAU); ctx.arc(cx+10,cy,4,0,TAU); ctx.fill();}
+    text(ctx,a.n+(a.metal?' (metal)':''),x,y+68,COL.ink,12); text(ctx,(a.P/220).toFixed(1)+' A · '+(onn?'ON':'off'),x,y+83,onn?COL.good:COL.muted,11);
+  }
+  function draw(){
+    clear(c); const I=total(), flowing=!blown&&I>0.01;
+    // supply
+    ctx.fillStyle=COL.card; ctx.strokeStyle=COL.ink; ctx.lineWidth=3; rrect(ctx,8,70,64,86,10); ctx.fill(); ctx.stroke(); text(ctx,'Mains',40,95,COL.ink,13); text(ctx,'220 V',40,115,COL.north,15); text(ctx,'supply',40,136,COL.muted,11);
+    // buses
+    wire(72,100,700,100,COL.north,6); wire(72,140,700,140,'#3a4252',6); wire(60,468,700,468,COL.good,6);
+    text(ctx,'live (red)',690,84,COL.north,12,'right'); text(ctx,'neutral (black)',690,158,COL.muted,12,'right'); text(ctx,'earth (green)',690,452,COL.good,12,'right');
+    // fuse
+    const fx=96; ctx.fillStyle=COL.card; ctx.strokeStyle=COL.ink; ctx.lineWidth=3; rrect(ctx,fx,86,62,28,8); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle=blown?COL.muted:`rgb(${Math.round(120+135*heat)},${Math.round(120-90*heat)},${Math.round(120-90*heat)})`; ctx.lineWidth=3; ctx.beginPath();
+    if(blown){ctx.moveTo(fx+8,100); ctx.lineTo(fx+24,100); ctx.moveTo(fx+38,100); ctx.lineTo(fx+54,100);} else {ctx.moveTo(fx+8,100); ctx.lineTo(fx+54,100);} ctx.stroke();
+    if(heat>.1&&!blown){ctx.save(); ctx.globalAlpha=heat*.6; ctx.fillStyle='#ff5a36'; ctx.beginPath(); ctx.arc(fx+31,100,26,0,TAU); ctx.fill(); ctx.restore();}
+    text(ctx,'fuse',fx+31,72,COL.muted,12);
+    // drops
+    APPS.forEach((a,i)=>{
+      wire(a.x-14,100,a.x-14,300,COL.north,4); wire(a.x+14,140,a.x+14,300,'#3a4252',4);
+      if(a.metal){wire(a.x,392,a.x,468,earth?COL.good:COL.muted,4); if(!earth){ctx.setLineDash([5,6]); wire(a.x,392,a.x,468,COL.muted,4); ctx.setLineDash([]);} }
+      appliance(a,i);
+      if(on[i]&&!blown){ for(let k=0;k<4;k++){const u=((k/4)+t*.6)%1; ctx.fillStyle=COL.amp; ctx.beginPath(); ctx.arc(a.x-14,100+u*200,3.5,0,TAU); ctx.fill();}}
+    });
+    if(flowing){const n=Math.min(40,6+Math.round(I*3)); for(let k=0;k<n;k++){const u=((k/n)+t*(.15+I*.02))%1; ctx.fillStyle=COL.amp; ctx.beginPath(); ctx.arc(170+u*500,100,4,0,TAU); ctx.fill();}}
+    // earth plate
+    ctx.strokeStyle=earth?COL.good:COL.muted; ctx.lineWidth=4; wire(60,468,60,500,earth?COL.good:COL.muted,5); [[44,500,16],[50,507,10],[56,513,4]].forEach(l=>{wire(60-l[2]+8,l[1],60+l[2]-8,l[1],earth?COL.good:COL.muted,4);});
+    text(ctx,'earth plate',100,505,COL.muted,12,'left');
+    if(!earth){text(ctx,'✂ cut',170,468,COL.north,16); ctx.fillStyle=COL.soft; ctx.fillRect(150,460,40,16); text(ctx,'✂ cut',170,468,COL.north,14);}
+    // fault visuals
+    const ir=APPS[3];
+    if(fault){
+      ctx.strokeStyle=COL.north; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(ir.x-14,300); for(let k=0;k<6;k++)ctx.lineTo(ir.x-14+(k%2?10:-6)+(Math.sin(t*40+k)*3),300+k*9); ctx.stroke();
+      if(earth){ for(let k=0;k<3;k++){const u=((k/3)+t*2.4)%1; chevron(ctx,ir.x,392+u*76,Math.PI/2,7,COL.good);} text(ctx,'big leakage current → earth',ir.x-20,430,COL.good,12,'right'); }
+      else{ // child touching the iron
+        const px=ir.x-96, py=372; ctx.strokeStyle=COL.ink; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(px,py-58,12,0,TAU); ctx.moveTo(px,py-46); ctx.lineTo(px,py-8); ctx.moveTo(px,py-8); ctx.lineTo(px-10,py+30); ctx.moveTo(px,py-8); ctx.lineTo(px+10,py+30); ctx.moveTo(px,py-38); ctx.lineTo(ir.x-44,py-34); ctx.stroke();
+        text(ctx,'220 V!',ir.x,284,COL.north,16); text(ctx,'DANGER: body is live',ir.x-70,py-86,COL.north,13);
+      }
+    }
+    if(blown){ctx.fillStyle='rgba(194,65,12,.92)'; rrect(ctx,200,28,320,34,10); ctx.fill(); text(ctx,'FUSE BLOWN: power cut',360,45,'#fff',18);}
+    // readouts
+    setText($('r-i'),blown?'0 A (cut)':I.toFixed(1)+' A');
+    let msg;
+    if(blown)msg=cause==='short'?'Short circuit: live touched neutral, resistance became tiny, the current shot up and the fuse melted. Press Replace fuse.':
+      cause==='earth'?'The earth wire gave the leak an easy path to the ground. A large current flowed, the fuse melted and cut the supply, and the metal body stayed at earth potential. You are safe.':
+      'Total current was more than the '+rating+' A limit, so the fuse melted. Switch something off, then Replace fuse.';
+    else if(fault&&!earth)msg='DANGER: the iron\'s metal body is now live at 220 V and the fuse does not trip. Touching it gives a severe shock. This is why metal appliances need an earth wire.';
+    else if(I>rating)msg='Warning: '+I.toFixed(1)+' A is above the '+rating+' A limit. The fuse is heating up…';
+    else msg='Total current '+I.toFixed(1)+' A, limit '+rating+' A. Each appliance gets the full 220 V because they are in parallel. Current = power ÷ 220 V.';
+    setText($('r-say'),msg);
+  }
+  return {update,draw};
+})();
+
+modules.final={};
+
+/* =====================================================
+   MAIN LOOP
+   ===================================================== */
+let last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000); last=now;
+  try{
+    hero.frame(dt);
+    const m=modules[cur];
+    if(m){ if(m.update)m.update(dt); if(m.draw)m.draw(); }
+  }catch(err){ console.error(err); }
+  requestAnimationFrame(frame);
+}
+const start=(location.hash||'').slice(1);
+show(LABS.some(l=>l.id===start)?start:'oersted',true);
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
