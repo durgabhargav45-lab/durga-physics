@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Light Lab – Reflection and Refraction (Class 10)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef2f9; --surface:#ffffff; --surface2:#e7edf8; --ink:#14213d; --muted:#556180; --line:#d2dbee;
+  --accent:#5444d6; --accent-ink:#ffffff; --good:#0f7a57; --bad:#c3274a; --warn:#a85f00;
+  --r1:#ffc233; --r2:#3ddbd9; --r3:#ff7aa8; --r4:#b69cff; --obj:#8ff0a4;
+  --stage:#0a0f24; --stage-line:#222b55;
+  --display:'Baloo 2','Trebuchet MS',system-ui,sans-serif; --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1125; --surface:#161b36; --surface2:#1f2648; --ink:#e9eeff; --muted:#9ca8ca; --line:#2b3461;
+    --accent:#9186ff; --accent-ink:#0d1125; --good:#4fe0a2; --bad:#ff7391; --warn:#ffbc55; --stage-line:#2c3566;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1125; --surface:#161b36; --surface2:#1f2648; --ink:#e9eeff; --muted:#9ca8ca; --line:#2b3461;
+  --accent:#9186ff; --accent-ink:#0d1125; --good:#4fe0a2; --bad:#ff7391; --warn:#ffbc55; --stage-line:#2c3566;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--display);line-height:1.12;margin:0 0 .4em;letter-spacing:.1px}
+h1{font-size:clamp(2.1rem,6vw,3.4rem);font-weight:800}
+h2{font-size:clamp(1.55rem,3.6vw,2.1rem);font-weight:700}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0 0 .8em}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.brand{display:flex;align-items:baseline;gap:10px;padding:14px 0 6px;flex-wrap:wrap}
+.brand b{font-family:var(--display);font-size:1.5rem;font-weight:800}
+.brand span{color:var(--muted);font-size:.9rem;font-weight:600}
+.tabsbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabsin{display:flex;gap:8px;align-items:center;max-width:1080px;margin:0 auto;padding:8px 16px}
+#tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none;padding:2px}
+#tabs::-webkit-scrollbar{display:none}
+#tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 .92rem var(--body);padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#tabs button.done::after{content:" ✓";font-weight:800}
+.xp{flex:0 0 auto;font:800 .9rem var(--body);background:var(--surface2);border-radius:999px;padding:7px 12px;white-space:nowrap}
+.themebtn{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 11px;font:700 .85rem var(--body);cursor:pointer}
+main{padding:22px 0 80px}
+.tab{display:none}.tab.on{display:block}
+.lead{font-size:1.08rem;color:var(--muted);max-width:68ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.stage{position:relative;background:var(--stage);border:1px solid var(--stage-line);border-radius:14px;overflow:hidden}
+.stage canvas{display:block;width:100%;touch-action:pan-y;cursor:grab}
+.stage canvas.nodrag{cursor:default}
+.stage .hint{position:absolute;left:10px;top:8px;font:700 12px var(--body);color:#aeb9e6;pointer-events:none;background:rgba(10,15,36,.6);padding:3px 8px;border-radius:8px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
+.row label{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row output{font-variant-numeric:tabular-nums;font-weight:800;min-width:5.2em;display:inline-block}
+input[type=range]{accent-color:var(--accent);min-width:150px;flex:1 1 150px;max-width:340px;height:28px}
+select{font:700 .92rem var(--body);padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn{font:800 .92rem var(--body);border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:9px 16px;border-radius:999px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,#tabs button:focus-visible,.chip:focus-visible,.seg button:focus-visible,select:focus-visible,input:focus-visible,.themebtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--ink);font:800 .9rem var(--body);padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:700 .88rem var(--body);padding:7px 12px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--surface2)}
+.chip .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.chip.seen::after{content:"✓";color:var(--good);font-weight:900}
+.caption{background:var(--surface2);border-radius:12px;padding:10px 14px;font-weight:700;min-height:3.2em;border-left:5px solid var(--accent)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+.kv dt{color:var(--muted);font-weight:700}.kv dd{margin:0;font-weight:800}
+.pill{display:inline-block;background:var(--surface2);border-radius:999px;padding:3px 11px;font-weight:800;font-size:.88rem}
+.pill.good{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 3px;font-weight:800}
+.fr i{font-style:normal;border-bottom:2px solid currentColor;padding:0 4px}.fr b{font-weight:800;padding:0 4px}
+.steps{font-size:1rem;line-height:2.1}
+.steps .ln{display:block;border-left:4px solid var(--line);padding-left:12px;margin:4px 0}
+.steps .ans{border-left-color:var(--good);color:var(--good);font-weight:800}
+.num-n{color:#c23b8a;font-weight:800}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .num-n{color:#ff8fc2}}
+:root[data-theme="dark"] .num-n{color:#ff8fc2}
+.mag{position:relative;height:210px;display:flex;gap:30px;justify-content:center;align-items:flex-start;background:var(--surface2);border-radius:12px;padding:0 10px}
+.mag .base{position:absolute;left:10px;right:10px;top:120px;border-top:2px dashed var(--muted);opacity:.6}
+.mag .col{position:relative;width:70px;height:100%;text-align:center}
+.mag .bar{position:absolute;left:18px;width:34px;border-radius:6px;transition:height .25s,top .25s}
+.mag .col span{position:absolute;bottom:4px;left:0;right:0;font-size:.8rem;font-weight:800;color:var(--muted)}
+.stations{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.stations button{all:unset;box-sizing:border-box;display:flex;gap:14px;align-items:center;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;cursor:pointer}
+.stations button:hover{border-color:var(--accent)}
+.stations button:focus-visible{outline:3px solid var(--accent)}
+.stations .ic{width:42px;height:42px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;flex:0 0 auto}
+.stations b{font-family:var(--display);font-size:1.12rem;display:block}
+.stations small{color:var(--muted);font-weight:600;font-size:.9rem}
+.stations .ok{margin-left:auto;color:var(--good);font-weight:900;font-size:1.2rem}
+table.t{border-collapse:collapse;width:100%;font-size:.93rem}
+table.t th,table.t td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+table.t th{background:var(--surface2)}
+.scroll-x{overflow-x:auto}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);font-weight:800;padding:10px 18px;border-radius:999px;opacity:0;transition:.3s;z-index:50;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.qopt{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.qopt .chip.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 18%,transparent)}
+.qopt .chip.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,transparent)}
+input.num{font:800 1rem var(--body);padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);width:7.5em;background:var(--surface);color:var(--ink)}
+input.num.right{border-color:var(--good)}input.num.wrong{border-color:var(--bad)}
+.gsub{margin-bottom:14px}
+.callout{border-left:5px solid var(--warn);background:var(--surface2);padding:10px 14px;border-radius:10px;font-weight:600}
+details.card summary{cursor:pointer;font-weight:800}
+.big{font-family:var(--display);font-size:1.6rem;font-weight:800}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-weight:700;font-size:.85rem;color:var(--muted)}
+@media (max-width:560px){main{padding-top:14px}.card{padding:13px}.xp{display:none}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><b>Light Lab</b><span>Class 10 · Light – Reflection and Refraction</span></div>
+</div>
+<div class="tabsbar"><div class="tabsin">
+  <nav id="tabs" role="tablist" aria-label="Chapter stations"></nav>
+  <div class="xp" aria-live="polite"><span id="xp">0</span> XP</div>
+  <button class="themebtn" id="themebtn" aria-label="Switch light or dark page theme">Theme</button>
+</div></div>
+<main class="wrap">
+
+<!-- HOME -->
+<section id="home" class="tab on" aria-label="Start">
+  <h1>See the path of light.</h1>
+  <p class="lead">Every question in this chapter is really one skill: follow the ray. Slide along the mirror below and watch the two angles.</p>
+  <div class="stage" style="margin:14px 0 22px"><canvas id="heroCv" aria-label="A torch beam bouncing off a mirror. Slide to move the bounce point."></canvas><div class="hint">Slide or drag across the mirror</div></div>
+  <h2>Your route through the chapter</h2>
+  <ul class="stations" id="stations"></ul>
+</section>
+
+<!-- REFLECTION -->
+<section id="reflect" class="tab" aria-label="Reflection">
+  <h2>Reflection: light bouncing back</h2>
+  <p class="lead">Two laws explain every mirror you will meet, flat or curved. Test them with your own hands.</p>
+  <div class="grid2" style="margin-bottom:14px">
+    <div class="card"><h3>Law 1</h3><p><b>Angle of incidence = angle of reflection.</b> Both angles are measured from the <b>normal</b> (the dashed line at 90° to the mirror), never from the mirror surface.</p></div>
+    <div class="card"><h3>Law 2</h3><p>The incident ray, the normal and the reflected ray all lie in the <b>same plane</b>.</p></div>
+  </div>
+  <div class="stage"><canvas id="lawCv" aria-label="Law of reflection simulator"></canvas><div class="hint">Drag the torch around the normal</div></div>
+  <div class="row"><label>Angle of incidence <input type="range" id="lawI" min="0" max="85" step="1" value="40"><output id="lawIo">40°</output></label>
+    <button class="btn ghost" id="lawTry">Challenge: make i = 60°</button></div>
+  <div class="caption" id="lawCap">Drag the torch. The reflected ray copies the angle, like a ball bouncing off a wall.</div>
+
+  <h2 style="margin-top:30px">Plane mirror: where is the image?</h2>
+  <p class="lead">Your brain thinks light travels straight. So it believes the light comes from <b>behind</b> the mirror, along the dashed lines.</p>
+  <div class="stage"><canvas id="planeCv" aria-label="Plane mirror image formation"></canvas><div class="hint">Drag the eye. Slide the object.</div></div>
+  <div class="row"><label>Object distance <input type="range" id="planeD" min="3" max="22" step="0.5" value="12"><output id="planeDo"></output></label></div>
+  <div class="grid2">
+    <div class="card"><dl class="kv"><dt>Object distance</dt><dd id="pOd"></dd><dt>Image distance</dt><dd id="pId"></dd></dl></div>
+    <div class="card"><b>Plane mirror image is:</b> <span class="pill">virtual</span> <span class="pill">erect</span> <span class="pill">same size</span> <span class="pill">laterally inverted</span>. Look at the letter F: the image is flipped left-to-right.</div>
+  </div>
+  <div class="callout" style="margin-top:12px">Activity 9.1 at home: look into the inside and outside of a shiny spoon. The inside acts like a concave mirror, the back like a convex mirror. The next stations explain what you saw.</div>
+</section>
+
+<!-- ANATOMY -->
+<section id="anatomy" class="tab" aria-label="Mirror parts">
+  <h2>Meet the curved mirror</h2>
+  <p class="lead">Six words, all on one picture. Tap a word and the diagram shows it.</p>
+  <div class="row"><div class="seg" id="anKind"><button data-k="concave" aria-pressed="true">Concave mirror</button><button data-k="convex" aria-pressed="false">Convex mirror</button></div>
+    <label>Radius of curvature R <input type="range" id="anR" min="12" max="28" step="1" value="20"><output id="anRo"></output></label></div>
+  <div class="stage"><canvas id="anCv" class="nodrag" aria-label="Parts of a spherical mirror"></canvas></div>
+  <div class="chips" id="anChips" style="margin:12px 0"></div>
+  <div class="caption" id="anCap">Tap a word above.</div>
+  <div class="row"><button class="btn" id="anSun">Activity 9.2: send sunlight</button><span class="legend">Never look at the Sun, or at sunlight reflected from a mirror.</span></div>
+  <div class="callout"><b>R = 2f.</b> Move the R slider: the focus F always stays exactly halfway between P and C.</div>
+</section>
+
+<!-- MIRROR LAB -->
+<section id="mirror" class="tab" aria-label="Mirror lab">
+  <h2>Mirror lab: build Table 9.1 yourself</h2>
+  <p class="lead">Drag the object along the axis. Four special rays are drawn for you. <b>Where two reflected rays meet, the image forms.</b></p>
+  <div class="labmount" id="mirrorLab"></div>
+</section>
+
+<!-- REFRACTION -->
+<section id="refract" class="tab" aria-label="Refraction">
+  <h2>Refraction: why light bends</h2>
+  <p class="lead">Light moves at different speeds in different materials. When a beam enters a new material at a slant, one side slows (or speeds up) first, so the whole beam turns.</p>
+  <div class="stage"><canvas id="snCv" aria-label="Refraction at a boundary between two media"></canvas><div class="hint">Drag the torch to change the angle</div></div>
+  <div class="row">
+    <label>Top <select id="snM1"></select></label>
+    <label>Bottom <select id="snM2"></select></label>
+    <label>Angle i <input type="range" id="snI" min="0" max="85" step="1" value="45"><output id="snIo"></output></label>
+  </div>
+  <div class="row"><label><input type="checkbox" id="snWave" checked> Show wavefronts (the beam's crests)</label></div>
+  <div class="grid2">
+    <div class="card"><h3>What the numbers say</h3><div id="snNum" class="steps"></div></div>
+    <div class="card"><h3>Speed of light here</h3><div id="snSpeed"></div><p style="margin-top:10px" id="snRule" class="caption"></p></div>
+  </div>
+
+  <h2 style="margin-top:30px">Activity 9.7: why does the coin look raised?</h2>
+  <p class="lead">Your eye follows the bent ray backwards in a straight line. That is why the coin seems to float up.</p>
+  <div class="stage"><canvas id="coinCv" aria-label="Apparent depth of a coin in water" class="nodrag"></canvas></div>
+  <div class="row">
+    <label>Liquid <select id="coinM"></select></label>
+    <label>Depth <input type="range" id="coinD" min="4" max="14" step="0.5" value="10"><output id="coinDo"></output></label>
+    <label>Where you look from <input type="range" id="coinA" min="5" max="70" step="1" value="35"><output id="coinAo"></output></label>
+  </div>
+  <div class="caption" id="coinCap"></div>
+</section>
+
+<!-- SLAB -->
+<section id="slab" class="tab" aria-label="Glass slab">
+  <h2>Glass slab: in, bend, out, shifted</h2>
+  <p class="lead">A ray bends towards the normal on entering glass and away from it on leaving. Because the two faces are parallel, the ray comes out <b>parallel</b> to where it started, just <b>shifted sideways</b>.</p>
+  <div class="stage"><canvas id="slCv" aria-label="Refraction through a rectangular glass slab"></canvas><div class="hint">Drag the torch to change i</div></div>
+  <div class="row">
+    <label>Angle i <input type="range" id="slI" min="0" max="80" step="1" value="50"><output id="slIo"></output></label>
+    <label>Thickness <input type="range" id="slT" min="3" max="9" step="0.5" value="6"><output id="slTo"></output></label>
+    <label>Material <select id="slM"></select></label>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Angles</h3><div id="slNum" class="steps"></div></div>
+    <div class="card"><h3>Try this</h3><p>1. Set i = 0°: no bending, no shift.<br>2. Raise i: the shift <b>d</b> grows.<br>3. Make the slab thicker: <b>d</b> grows again.<br>4. Pick diamond: the ray bends much more.</p><p><b>Always true:</b> emergent angle e = incident angle i.</p></div>
+  </div>
+
+  <h2 style="margin-top:30px">Lab: find the refractive index with pins</h2>
+  <p class="lead">This is the real experiment from your syllabus. Pins <b>P1</b> and <b>P2</b> mark the incident ray. Drag <b>P3</b> and <b>P4</b> so that, looking through the slab, all four pins line up. Pins glow amber when close, green when aligned.</p>
+  <div class="stage"><canvas id="pinCv" aria-label="Pin experiment on a glass slab"></canvas><div class="hint" id="pinHint">Drag P3 and P4</div></div>
+  <div class="row"><button class="btn" id="pinDone" disabled>Remove the slab and measure</button><button class="btn ghost" id="pinNew" disabled>New trial</button><span id="pinStat" class="pill">Trial 1 of 3</span></div>
+  <div class="scroll-x"><table class="t" id="pinTab"><thead><tr><th>Trial</th><th>i</th><th>r</th><th>sin i</th><th>sin r</th><th>n = sin i / sin r</th></tr></thead><tbody></tbody></table></div>
+  <div class="caption" id="pinCap" style="margin-top:10px"></div>
+</section>
+
+<!-- LENS LAB -->
+<section id="lens" class="tab" aria-label="Lens lab">
+  <h2>Lens lab: same idea, light goes through</h2>
+  <p class="lead">Three rays decide everything: one parallel to the axis, one through the centre (it does not bend), one through the focus.</p>
+  <div class="labmount" id="lensLab"></div>
+</section>
+
+<!-- GAMES -->
+<section id="games" class="tab" aria-label="Games">
+  <h2>Games</h2>
+  <p class="lead">Each game trains one hard part of the chapter. Pick one.</p>
+  <div class="chips gsub" id="gnav"></div>
+  <div id="g-laser" class="gpanel">
+    <div class="card" style="margin-bottom:10px"><b>Laser Maze.</b> Rotate the mirrors so the beam reaches the glowing target. Drag a mirror's handle around its centre. Watch i and r agree at every bounce.</div>
+    <div class="stage"><canvas id="lzCv" tabindex="0" aria-label="Laser maze game"></canvas></div>
+    <div class="row"><span id="lzLvl" class="pill"></span><button class="btn ghost" id="lzPrev">◀ Mirror −5°</button><button class="btn ghost" id="lzNext">Mirror +5° ▶</button><button class="btn" id="lzGo" disabled>Next level</button></div>
+    <div class="caption" id="lzCap"></div>
+  </div>
+  <div id="g-sun" class="gpanel" hidden>
+    <div class="card" style="margin-bottom:10px"><b>Sun Burner.</b> Sunlight (parallel rays) hits a concave mirror. Set the mirror's radius of curvature so the rays meet exactly on the paper. Remember R = 2f.</div>
+    <div class="stage"><canvas id="sbCv" class="nodrag" aria-label="Sun burner game"></canvas></div>
+    <div class="row"><label>Radius R <input type="range" id="sbR" min="10" max="40" step="0.5" value="30"><output id="sbRo"></output></label><span id="sbRd" class="pill"></span><button class="btn" id="sbGo" disabled>Next paper</button></div>
+    <div class="caption" id="sbCap"></div>
+  </div>
+  <div id="g-rules" class="gpanel" hidden>
+    <div class="card" style="margin-bottom:10px"><b>Ray Rules Rapid Fire.</b> A ray hits a mirror or lens. Which path does it take next? Ten rays per round.</div>
+    <div class="stage"><canvas id="rrCv" class="nodrag" aria-label="Ray rules quiz"></canvas></div>
+    <div class="row"><span id="rrQ" style="font-weight:800"></span></div>
+    <div class="chips" id="rrOpts"></div>
+    <div class="caption" id="rrCap" style="margin-top:10px"></div>
+    <div class="row"><span class="pill" id="rrScore"></span><button class="btn" id="rrNext" hidden>Next ray</button></div>
+  </div>
+  <div id="g-det" class="gpanel" hidden>
+    <div class="card" style="margin-bottom:10px"><b>Image Detective.</b> Study where the object stands, then predict its image. Press Check and the rays reveal the truth. Eight cases per round.</div>
+    <div class="stage"><canvas id="idCv" class="nodrag" aria-label="Image detective game"></canvas></div>
+    <div id="idQ" style="font-weight:800;margin:10px 0 4px"></div>
+    <div id="idForm"></div>
+    <div class="row"><button class="btn" id="idCheck">Check</button><button class="btn ghost" id="idHint">Hint: show one ray</button><button class="btn" id="idNext" hidden>Next case</button><span class="pill" id="idScore"></span></div>
+    <div class="caption" id="idCap"></div>
+  </div>
+  <div id="g-num" class="gpanel" hidden>
+    <div class="card" style="margin-bottom:10px"><b>Number Crunch.</b> Use the sign convention, then the formula. Signs matter: a minus sign is part of the answer.</div>
+    <div class="card"><div id="ncQ" style="font-weight:700;font-size:1.05rem;margin-bottom:10px"></div><div class="row" id="ncIn"></div>
+      <div class="row"><button class="btn" id="ncCheck">Check</button><button class="btn ghost" id="ncHint">Sign convention hint</button><button class="btn ghost" id="ncSteps">Show steps</button><button class="btn" id="ncNext">New problem</button><span class="pill" id="ncScore"></span></div>
+      <div class="caption" id="ncCap" style="margin-bottom:10px"></div><div id="ncSol" class="steps"></div></div>
+  </div>
+</section>
+
+<!-- SHEET -->
+<section id="sheet" class="tab" aria-label="Cheat sheet">
+  <h2>Cheat sheet</h2>
+  <div class="grid2" id="sheetTop"></div>
+  <h3 style="margin-top:22px">Concave mirror (Table 9.1)</h3><div class="scroll-x" id="shT1"></div>
+  <h3 style="margin-top:22px">Convex lens (Table 9.4)</h3><div class="scroll-x" id="shT2"></div>
+  <h3 style="margin-top:22px">Mirror versus lens</h3><div class="scroll-x" id="shT3"></div>
+</section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const unit=(x,y)=>{const l=Math.hypot(x,y)||1;return {x:x/l,y:y/l}};
+const FONT="Nunito, system-ui, sans-serif";
+const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=(v,d=1)=>{let n=Math.abs(v)<Math.pow(10,-d)/2?0:v;let s=n.toFixed(d);if(s.indexOf('.')>=0)s=s.replace(/0+$/,'').replace(/\.$/,'');return s.replace('-','\u2212')};
+const frac=(a,b)=>`<span class="fr"><i>${a}</i><b>${b}</b></span>`;
+const rnd=(a,b)=>a+Math.random()*(b-a), pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function css(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim()}
+
+/* ---------- progress ---------- */
+const Progress={xp:0,keys:{},visited:{}};
+try{const s=JSON.parse(localStorage.getItem('lightlab')||'null');if(s){Progress.xp=s.xp||0;Progress.keys=s.keys||{};Progress.visited=s.visited||{}}}catch(e){}
+function saveProgress(){try{localStorage.setItem('lightlab',JSON.stringify(Progress))}catch(e){}}
+let toastT;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200)}
+function award(key,xp,msg){ if(key&&Progress.keys[key])return false; if(key)Progress.keys[key]=1; Progress.xp+=xp; $('#xp').textContent=Progress.xp; saveProgress(); toast((msg?msg+'  ':'')+'+'+xp+' XP'); refreshStations(); return true}
+function sfx(f1,f2){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;sfx.c=sfx.c||new AC();const c=sfx.c,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(f1,c.currentTime);if(f2)o.frequency.exponentialRampToValueAtTime(f2,c.currentTime+.18);g.gain.setValueAtTime(.07,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.25);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+.26)}catch(e){}}
+const good=()=>sfx(520,880), bad=()=>sfx(220,160);
+
+/* ---------- stage manager ---------- */
+const stages=[];
+function makeStage(cv,o){
+  const s={cv,ctx:cv.getContext('2d'),W:0,H:0,o};
+  s.resize=()=>{const w=Math.max(260,cv.parentElement.clientWidth||260);const h=Math.round(clamp(w*(o.ratio||.5),o.minH||260,o.maxH||480));const dpr=Math.min(window.devicePixelRatio||1,2);
+    if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+    cv.style.height=h+'px';s.W=w;s.H=h;s.ctx.setTransform(dpr,0,0,dpr,0,0);o.onResize&&o.onResize(s)};
+  s.resize();
+  if(window.ResizeObserver)new ResizeObserver(()=>s.resize()).observe(cv.parentElement);
+  window.addEventListener('resize',s.resize);
+  stages.push(s);return s;
+}
+let lastT=0;
+function frame(ts){const t=ts/1000,dt=Math.min(.05,t-lastT);lastT=t;
+  for(const s of stages){ if(s.cv.offsetParent===null)continue; if(!s.W)s.resize(); try{s.o.draw(s.ctx,s.W,s.H,t,dt,s)}catch(e){console.error(e)} }
+  requestAnimationFrame(frame)}
+function posOf(cv,e){const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*(cv.clientWidth/r.width),y:(e.clientY-r.top)*(cv.clientHeight/r.height)}}
+function dragger(cv,{down,move,up}){
+  cv.addEventListener('pointerdown',e=>{const p=posOf(cv,e);if(down&&down(p,e)===false)return;try{cv.setPointerCapture(e.pointerId)}catch(_){}cv._dr=true;move&&move(p,e)});
+  cv.addEventListener('pointermove',e=>{if(cv._dr)move&&move(posOf(cv,e),e)});
+  const end=e=>{if(cv._dr){cv._dr=false;up&&up(e)}};
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+}
+
+/* ---------- canvas drawing helpers ---------- */
+function line(ctx,pts,color,w,alpha=1,dash=null,glow=0){
+  ctx.save();ctx.globalAlpha=alpha;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(dash||[]);
+  if(glow){ctx.strokeStyle=color;ctx.globalAlpha=alpha*.22;ctx.lineWidth=w+glow;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.globalAlpha=alpha}
+  ctx.strokeStyle=color;ctx.lineWidth=w;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.restore()}
+function dot(ctx,x,y,r,color,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore()}
+function glowDot(ctx,x,y,r,color){const g=ctx.createRadialGradient(x,y,0,x,y,r*3);g.addColorStop(0,color);g.addColorStop(.3,color);g.addColorStop(1,'rgba(0,0,0,0)');ctx.save();ctx.globalAlpha=.9;ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*3,0,Math.PI*2);ctx.fill();ctx.restore();dot(ctx,x,y,r*.7,'#fff',.95)}
+function arrowHead(ctx,x,y,ang,size,color){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-size,size*.55);ctx.lineTo(-size,-size*.55);ctx.closePath();ctx.fill();ctx.restore()}
+function tag(ctx,text,x,y,o={}){ctx.save();const size=o.size||12;ctx.font=`800 ${size}px ${FONT}`;const w=ctx.measureText(text).width;const al=o.align||'center';let bx=al==='center'?x-w/2:al==='left'?x:x-w;
+  if(o.bg){ctx.fillStyle=o.bg;const pad=4;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx-pad,y-size*.5-pad+1,w+pad*2,size+pad*2-2,6);else ctx.rect(bx-pad,y-size*.5-pad+1,w+pad*2,size+pad*2-2);ctx.fill()}
+  ctx.fillStyle=o.color||'#e8ecff';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(text,bx,y);ctx.restore()}
+function arc(ctx,x,y,r,a0,a1,color,w=2,ccw=false){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=w;ctx.beginPath();ctx.arc(x,y,r,a0,a1,ccw);ctx.stroke();ctx.restore()}
+function pointAt(pts,s){let acc=0;for(let i=1;i<pts.length;i++){const l=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);if(s<=acc+l||i===pts.length-1){const k=l?clamp((s-acc)/l,0,1):0;return [pts[i-1][0]+(pts[i][0]-pts[i-1][0])*k,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*k]}acc+=l}return pts[pts.length-1]}
+function plen(pts){let a=0;for(let i=1;i<pts.length;i++)a+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);return a}
+function partial(pts,s){const out=[pts[0]];let acc=0;for(let i=1;i<pts.length;i++){const l=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);if(acc+l>=s){const k=l?(s-acc)/l:0;out.push([pts[i-1][0]+(pts[i][0]-pts[i-1][0])*k,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*k]);return out}out.push(pts[i]);acc+=l}return out}
+function pulses(ctx,pts,color,t,n=3){if(RM)return;const L=plen(pts);if(L<10)return;const gap=Math.max(140,L/n);for(let k=0;k*gap<L+gap;k++){const s=((t*170)+k*gap)%(L+gap*.0001+1);if(s<=L){const p=pointAt(pts,s);glowDot(ctx,p[0],p[1],3.2,color)}}}
+function stageBg(ctx,W,H,grid=true){ctx.fillStyle='#0a0f24';ctx.fillRect(0,0,W,H);if(grid){ctx.strokeStyle='rgba(150,170,255,.05)';ctx.lineWidth=1;ctx.beginPath();for(let x=0;x<W;x+=30){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H)}for(let y=0;y<H;y+=30){ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5)}ctx.stroke()}}
+function torch(ctx,x,y,ang,color='#ffd45e'){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle='#3b4678';ctx.strokeStyle='#8c9be0';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect?ctx.roundRect(-34,-9,34,18,4):ctx.rect(-34,-9,34,18);ctx.fill();ctx.stroke();ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(7,-13);ctx.lineTo(7,13);ctx.lineTo(0,9);ctx.closePath();ctx.fill();ctx.restore()}
+
+/* ---------- tabs ---------- */
+const TABS=[['home','Start'],['reflect','Reflection'],['anatomy','Mirror parts'],['mirror','Mirror lab'],['refract','Refraction'],['slab','Glass slab'],['lens','Lens lab'],['games','Games'],['sheet','Cheat sheet']];
+const tabsEl=$('#tabs');
+TABS.forEach(([id,label])=>{const b=document.createElement('button');b.textContent=label;b.setAttribute('role','tab');b.dataset.t=id;b.addEventListener('click',()=>showTab(id));tabsEl.appendChild(b)});
+function showTab(id,push=true){
+  $$('.tab').forEach(s=>s.classList.toggle('on',s.id===id));
+  $$('#tabs button').forEach(b=>{b.setAttribute('aria-selected',b.dataset.t===id);b.classList.toggle('done',!!Progress.visited[b.dataset.t]&&b.dataset.t!==id)});
+  if(id!=='home'){Progress.visited[id]=1;saveProgress()}
+  if(push)try{history.replaceState(null,'','#'+id)}catch(e){}
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+  setTimeout(()=>stages.forEach(s=>s.cv.offsetParent!==null&&s.resize()),30);
+  refreshStations();
+}
+$('#themebtn').addEventListener('click',()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark'});
+
+/* ---------- optics engine (world units: cm, x right, y up; surface at x=0) ---------- */
+const Optics={
+  image(fam,f,u){ // f signed, u negative
+    const den=fam==='mirror'?(u-f):(u+f); if(Math.abs(den)<1e-6)return {inf:true,v:Infinity,m:Infinity};
+    const v=u*f/den, m=fam==='mirror'?-v/u:v/u; return {inf:false,v,m};
+  },
+  ids(fam){return fam==='mirror'?['par','foc','cen','pole']:['par','cen','foc']},
+  // returns {H:{x,y}, d:{x,y}, tipPts} for ray 'id' from object tip, or null
+  trace(fam,f,tip,id){
+    const F=Math.abs(f),xt=tip.x,yt=tip.y;
+    const viaT=(Tx)=>{const den=xt-Tx;if(Math.abs(den)<0.05)return null;return {x:0,y:-yt*Tx/den}};
+    if(fam==='mirror'){
+      const conc=f<0;
+      if(id==='par'){return {H:{x:0,y:yt},d:unit(-F,-yt*(conc?1:-1))}}
+      if(id==='foc'){const H=viaT(f);return H&&{H,d:{x:-1,y:0}}}
+      if(id==='cen'){const H=viaT(2*f);if(!H)return null;const di=unit(H.x-xt,H.y-yt);return {H,d:{x:-di.x,y:-di.y}}}
+      if(id==='pole'){const H={x:0,y:0};const di=unit(-xt,-yt);return {H,d:{x:-di.x,y:di.y}}}
+    }else{
+      const conv=f>0;
+      if(id==='par'){return {H:{x:0,y:yt},d:unit(F,-yt*(conv?1:-1))}}
+      if(id==='cen'){const di=unit(-xt,-yt);return {H:{x:0,y:0},d:di}}
+      if(id==='foc'){const H=viaT(-f);return H&&{H,d:{x:1,y:0}}}
+    }
+    return null;
+  },
+  // ray meta
+  meta(fam,kind,id){
+    const M={
+      mirror:{
+        par:{n:'Parallel',c:'--r1',r:{concave:'Ray 1: a ray parallel to the principal axis passes through the focus F after reflection.',convex:'Ray 1: a ray parallel to the principal axis appears to diverge from the focus F (behind the mirror) after reflection.'}},
+        foc:{n:'Through F',c:'--r2',r:{concave:'Ray 2: a ray passing through F reflects parallel to the principal axis.',convex:'Ray 2: a ray heading towards F (behind the mirror) reflects parallel to the principal axis.'}},
+        cen:{n:'Through C',c:'--r3',r:{concave:'Ray 3: a ray passing through C hits the mirror at 90° and retraces its own path.',convex:'Ray 3: a ray heading towards C hits the mirror at 90° and retraces its own path.'}},
+        pole:{n:'To the pole P',c:'--r4',r:{concave:'Ray 4: a ray striking the pole P reflects with equal angles, on the other side of the axis (i = r).',convex:'Ray 4: a ray striking the pole P reflects with equal angles, on the other side of the axis (i = r).'}}
+      },
+      lens:{
+        par:{n:'Parallel',c:'--r1',r:{convex:'Ray 1: a ray parallel to the principal axis passes through the far focus F₂ after refraction.',concave:'Ray 1: a ray parallel to the principal axis appears to come from the near focus F₁ after refraction.'}},
+        cen:{n:'Through O',c:'--r2',r:{convex:'Ray 2: a ray through the optical centre O goes straight, with no bending.',concave:'Ray 2: a ray through the optical centre O goes straight, with no bending.'}},
+        foc:{n:'Through F',c:'--r3',r:{convex:'Ray 3: a ray through the near focus F₁ emerges parallel to the principal axis.',concave:'Ray 3: a ray heading towards the far focus F₂ emerges parallel to the principal axis.'}}
+      }};
+    const m=M[fam][id];return {name:m.n,color:css(m.c),rule:m.r[kind]};
+  },
+  zone(fam,kind,F,U,visMax){ // object zone key
+    const e=.35;
+    if(kind==='concave'&&fam==='mirror'||kind==='convex'&&fam==='lens'){
+      if(Math.abs(U-2*F)<=e)return'at2F'; if(Math.abs(U-F)<=e)return'atF';
+      if(U>=visMax-.6)return'inf'; if(U>2*F)return'beyond'; if(U>F)return'mid'; return'within';
+    }return'any';
+  }
+};
+const ZNAME={mirror:{inf:'At infinity (very far)',beyond:'Beyond C',at2F:'At C',mid:'Between C and F',atF:'At F',within:'Between P and F',any:'In front of the mirror'},
+             lens:{inf:'At infinity (very far)',beyond:'Beyond 2F₁',at2F:'At 2F₁',mid:'Between F₁ and 2F₁',atF:'At F₁',within:'Between F₁ and O',any:'In front of the lens'}};
+function geom(fam,W,H){const S=W<620?W/78:W/107;const ox=fam==='mirror'?W*.74:W*.5;const oy=H*.53;return {S,ox,oy,X:x=>ox+x*S,Y:y=>oy-y*S,visMax:Math.min(60,Math.floor(ox/S-3)),h:W<620?6:5,hh:Math.min(9,(oy-12)/S)}}
+
+/* describe image */
+function describe(fam,kind,f,u,h,visMax){
+  const F=Math.abs(f),U=-u,im=Optics.image(fam,f,u),zk=Optics.zone(fam,kind,F,U,visMax),e=.35;
+  const o={zone:zk,zname:ZNAME[fam][zk],im,F,U};
+  if(im.inf){o.real=true;o.erect=false;o.size='Highly enlarged';o.pos='At infinity';o.hImg=Infinity;o.nature='Real and inverted';return o}
+  const v=im.v,m=im.m;
+  o.real=fam==='mirror'?v<0:v>0;o.erect=m>0;o.hImg=m*h;
+  const am=Math.abs(m);
+  o.size=zk==='inf'?'Highly diminished, point-sized':am>1.03?'Enlarged':am<.97?'Diminished':'Same size';
+  const V=Math.abs(v);
+  if(fam==='mirror'){
+    if(kind==='convex')o.pos='Behind the mirror, between P and F';
+    else if(!o.real)o.pos='Behind the mirror';
+    else o.pos=zk==='inf'?'At the focus F':Math.abs(V-2*F)<=e?'At C':V>2*F?'Beyond C':V>F+e?'Between F and C':'At the focus F';
+  }else{
+    if(kind==='concave')o.pos='Between F₁ and O, on the same side as the object';
+    else if(!o.real)o.pos='On the same side of the lens as the object';
+    else o.pos=zk==='inf'?'At the focus F₂':Math.abs(V-2*F)<=e?'At 2F₂':V>2*F?'Beyond 2F₂':V>F+e?'Between F₂ and 2F₂':'At the focus F₂';
+  }
+  o.nature=(o.real?'Real':'Virtual')+' and '+(o.erect?'erect':'inverted');
+  return o;
+}
+
+/* base picture: axis, zones, points, surface */
+function drawBase(ctx,W,H,s,o={}){
+  const g=geom(s.fam,W,H),{S,ox,oy,X,Y}=g,F=Math.abs(s.f);
+  stageBg(ctx,W,H);
+  const conc=(s.fam==='mirror'&&s.kind==='concave')||(s.fam==='lens'&&s.kind==='convex');
+  if(o.bands!==false&&conc){
+    const bands=[[-1e3,-2*F,'#6aa9ff','Beyond '+(s.fam==='mirror'?'C':'2F₁')],[-2*F,-F,'#ffd166',s.fam==='mirror'?'C to F':'2F₁ to F₁'],[-F,0,'#ff7aa8',s.fam==='mirror'?'F to P':'F₁ to O']];
+    bands.forEach(b=>{const x0=Math.max(0,X(b[0])),x1=X(b[1]);ctx.fillStyle=b[2];ctx.globalAlpha=.07;ctx.fillRect(x0,0,x1-x0,H);ctx.globalAlpha=1;if(o.labels!==false)tag(ctx,b[3],(Math.max(x0,0)+x1)/2,14,{color:b[2],size:11})});
+  }
+  // axis
+  line(ctx,[[0,oy],[W,oy]],'rgba(210,220,255,.45)',1.4);
+  // ruler ticks
+  ctx.save();ctx.strokeStyle='rgba(210,220,255,.25)';ctx.beginPath();for(let c=-80;c<=80;c+=5){const x=X(c);if(x<0||x>W)continue;ctx.moveTo(x,oy-(c%10?3:5));ctx.lineTo(x,oy+(c%10?3:5))}ctx.stroke();ctx.restore();
+  // plane line
+  line(ctx,[[ox,6],[ox,H-6]],'rgba(200,210,255,.18)',1,1,[3,5]);
+  // key points
+  const pts=s.fam==='mirror'?[['P',0],['F',s.f],['C',2*s.f]]:[['O',0],['F₁',-F],['F₂',F],['2F₁',-2*F],['2F₂',2*F]];
+  pts.forEach(([n,x])=>{const px=X(x);if(px<4||px>W-4)return;dot(ctx,px,oy,3.4,n==='P'||n==='O'?'#fff':'#ffd166');if(o.labels!==false)tag(ctx,n,px,oy+(n==='P'||n==='O'?18:17),{color:n==='P'||n==='O'?'#fff':'#ffd166',size:12})});
+  if(s.fam==='mirror')drawMirror(ctx,g,s);else drawLens(ctx,g,s);
+  return g;
+}
+function drawMirror(ctx,g,s){
+  const {S,ox,oy}=g,F=Math.abs(s.f),R=2*F*S,conc=s.kind==='concave';
+  const cx=ox+(conc?-R:R),sg=conc?1:-1,a=Math.asin(Math.min(g.hh*S/R,.9));
+  ctx.save();ctx.lineCap='round';
+  ctx.strokeStyle='rgba(150,170,255,.35)';ctx.lineWidth=1;ctx.beginPath();
+  for(let t=-a;t<=a;t+=.04){const x=cx+sg*R*Math.cos(t)+(conc?7:7),y=oy+R*Math.sin(t);t===-a?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke();
+  for(let t=-a;t<=a;t+=.06){const x=cx+sg*R*Math.cos(t),y=oy+R*Math.sin(t);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+9,y+5);ctx.stroke()}
+  ctx.strokeStyle='#e6ecff';ctx.lineWidth=3.5;ctx.beginPath();
+  for(let t=-a;t<=a+.001;t+=.03){const x=cx+sg*R*Math.cos(t),y=oy+R*Math.sin(t);t===-a?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke();ctx.restore();
+}
+function drawLens(ctx,g,s){
+  const {S,ox,oy}=g,hh=g.hh*S,conv=s.kind==='convex',w=conv?15:12;
+  ctx.save();ctx.fillStyle='rgba(90,200,230,.18)';ctx.strokeStyle='#8fe3ff';ctx.lineWidth=2.4;ctx.beginPath();
+  if(conv){ctx.moveTo(ox,oy-hh);ctx.quadraticCurveTo(ox-w*2,oy,ox,oy+hh);ctx.quadraticCurveTo(ox+w*2,oy,ox,oy-hh)}
+  else{ctx.moveTo(ox-w,oy-hh);ctx.quadraticCurveTo(ox,oy,ox-w,oy+hh);ctx.lineTo(ox+w,oy+hh);ctx.quadraticCurveTo(ox,oy,ox+w,oy-hh);ctx.closePath()}
+  ctx.fill();ctx.stroke();
+  const tipY=conv?[oy-hh,oy+hh]:[oy-hh,oy+hh];ctx.fillStyle='#8fe3ff';
+  if(conv){arrowHead(ctx,ox,oy-hh,-Math.PI/2,9,'#8fe3ff');arrowHead(ctx,ox,oy+hh,Math.PI/2,9,'#8fe3ff')}
+  else{arrowHead(ctx,ox,oy-hh+0,Math.PI/2,9,'#8fe3ff');arrowHead(ctx,ox,oy+hh,-Math.PI/2,9,'#8fe3ff')}
+  ctx.restore();
+}
+function drawArrowObj(ctx,x,y0,y1,color,o={}){
+  ctx.save();ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.setLineDash(o.dashed?[6,5]:[]);ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=o.w||3.4;ctx.lineCap='round';
+  if(o.glow){ctx.globalAlpha*=.25;ctx.lineWidth=(o.w||3.4)+7;ctx.beginPath();ctx.moveTo(x,y0);ctx.lineTo(x,y1);ctx.stroke();ctx.globalAlpha=o.alpha==null?1:o.alpha;ctx.lineWidth=o.w||3.4}
+  ctx.beginPath();ctx.moveTo(x,y0);ctx.lineTo(x,y1);ctx.stroke();ctx.setLineDash([]);
+  const dir=y1<y0?-1:1;ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x-7,y1-dir*13);ctx.lineTo(x+7,y1-dir*13);ctx.closePath();ctx.fill();ctx.restore();
+}
+/* scene: rays + object + image. s={fam,kind,f,u,h,show:{id:prog}, imgAlpha} */
+function drawScene(ctx,W,H,s,t,o={}){
+  const g=drawBase(ctx,W,H,s,o),{X,Y,S}=g;
+  const tip={x:s.u,y:s.h},info=Optics.image(s.fam,s.f,s.u),imgTip=info.inf?null:{x:info.v,y:info.m*s.h};
+  const ids=Optics.ids(s.fam);let full=0;
+  const far=Math.max(W,H)*2;
+  ids.forEach(id=>{
+    const pr=s.show&&s.show[id];if(!pr)return;
+    const tr=Optics.trace(s.fam,s.f,tip,id);if(!tr)return;
+    const meta=Optics.meta(s.fam,s.kind,id),col=meta.color;
+    const A=[X(tip.x),Y(tip.y)],Hh=[X(tr.H.x),Y(tr.H.y)],E=[Hh[0]+tr.d.x*far,Hh[1]-tr.d.y*far];
+    const pts=[A,Hh,E];
+    const L=plen(pts),sh=partial(pts,L*clamp(pr,0,1));
+    line(ctx,sh,col,2.3,1,null,6);
+    if(pr>=1){full++;
+      // virtual extension
+      if(imgTip){const tI=(imgTip.x-tr.H.x)*tr.d.x+(imgTip.y-tr.H.y)*tr.d.y;if(tI<0){line(ctx,[Hh,[X(imgTip.x),Y(imgTip.y)]],col,1.8,.8,[5,5])}}
+      else if(o.showBack!==false&&s.fam==='mirror'===false){}
+      pulses(ctx,pts,col,t+ids.indexOf(id)*.37,3);
+      dot(ctx,Hh[0],Hh[1],3,col);
+    }
+  });
+  // object
+  const base=[X(s.u),Y(0)],top=[X(s.u),Y(s.h)];
+  drawArrowObj(ctx,base[0],base[1],top[1],css('--obj'),{glow:true});
+  if(o.labels!==false)tag(ctx,'Object',base[0],Math.max(34,top[1]-20),{color:css('--obj'),size:12});
+  // image
+  const alpha=clamp(s.imgAlpha==null?(full>=2?1:0):s.imgAlpha,0,1);
+  if(imgTip&&alpha>0){
+    const real=(s.fam==='mirror')?info.v<0:info.v>0;const ix=X(imgTip.x);
+    if(ix>-30&&ix<W+30){
+      drawArrowObj(ctx,ix,Y(0),Y(imgTip.y),'#ffffff',{dashed:!real,alpha:alpha*(real?1:.85),glow:real,w:real?3.6:2.6});
+      const ty=Y(imgTip.y);const lab=real?'Real image':'Virtual image';
+      tag(ctx,lab,clamp(ix,50,W-50),clamp(ty<Y(0)?ty-18:ty+18,16,H-14),{color:'#ffffff',size:12});
+      if(full>=2)glowDot(ctx,ix,ty,3.2,'#ffffff');
+    }
+  }
+  if(info.inf&&alpha>0&&full>=2)tag(ctx,'Rays come out parallel: image at infinity',W/2,H-16,{color:'#ffffff',size:13});
+  return g;
+}
+
+/* ---------- home ---------- */
+const STN=[['reflect','Reflection','Two laws, and where a plane mirror puts the image','M4 18h16M7 14l5-9 5 9'],
+['anatomy','Mirror parts','P, C, F, R and f, and why R = 2f','M6 4c6 3 6 13 0 16'],
+['mirror','Mirror lab','Move the object, build Table 9.1, use the mirror formula','M7 5c7 3 7 11 0 14M4 12h14'],
+['refract','Refraction','Why light bends, refractive index, the raised coin','M4 8h16M4 16h16M8 4l4 8 4 8'],
+['slab','Glass slab','Shifted ray, and the pin experiment to find n','M5 7h14v10H5zM9 3l2 4M13 17l3 4'],
+['lens','Lens lab','Convex and concave lens, lens formula, power','M12 3c-6 5-6 13 0 18 6-5 6-13 0-18'],
+['games','Games','Laser maze, sun burner, ray rules, image detective, number crunch','M6 9h12v8H6zM9 13h2M14 13h1'],
+['sheet','Cheat sheet','Every rule and table on one page','M6 4h12v16H6zM9 9h6M9 13h6']];
+function refreshStations(){const ul=$('#stations');ul.innerHTML='';STN.forEach(([id,t,d,p])=>{const li=document.createElement('li');const b=document.createElement('button');
+  b.innerHTML=`<span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${p}"/></svg></span><span><b>${t}</b><small>${d}</small></span>${Progress.visited[id]?'<span class="ok">✓</span>':''}`;
+  b.addEventListener('click',()=>showTab(id));li.appendChild(b);ul.appendChild(li)});
+  $$('#tabs button').forEach(b=>{const on=b.getAttribute('aria-selected')==='true';b.classList.toggle('done',!!Progress.visited[b.dataset.t]&&!on&&b.dataset.t!=='home')})}
+
+/* shared: reflection ray drawing on a horizontal mirror */
+function bounceScene(ctx,W,H,O,iDeg,t,L,label=true){
+  const i=rad(iDeg),mx0=W*.08,mx1=W*.92;
+  // mirror
+  ctx.save();ctx.strokeStyle='rgba(150,170,255,.4)';ctx.lineWidth=1;ctx.beginPath();for(let x=mx0;x<mx1;x+=11){ctx.moveTo(x,O.y+3);ctx.lineTo(x-7,O.y+12)}ctx.stroke();ctx.restore();
+  line(ctx,[[mx0,O.y],[mx1,O.y]],'#e6ecff',4);
+  line(ctx,[[O.x,O.y],[O.x,O.y-L-18]],'rgba(255,255,255,.5)',1.4,1,[5,5]);
+  tag(ctx,'normal',O.x+24,O.y-L-12,{color:'#c8d2ff',size:11});
+  const S0=[O.x-Math.sin(i)*L,O.y-Math.cos(i)*L],E=[O.x+Math.sin(i)*L,O.y-Math.cos(i)*L];
+  const c1=css('--r1');
+  line(ctx,[S0,[O.x,O.y]],c1,2.6,1,null,7);line(ctx,[[O.x,O.y],E],c1,2.6,1,null,7);
+  pulses(ctx,[S0,[O.x,O.y],E],c1,t,3);
+  const r=Math.min(L*.5,70);
+  arc(ctx,O.x,O.y,r,-Math.PI/2-i,-Math.PI/2,'#ffffff',2);arc(ctx,O.x,O.y,r+8,-Math.PI/2,-Math.PI/2+i,'#ffffff',2);
+  if(label&&iDeg>7){tag(ctx,'i = '+Math.round(iDeg)+'°',O.x-Math.sin(i/2)*(r+30),O.y-Math.cos(i/2)*(r+30),{color:'#fff',size:13,bg:'rgba(10,15,36,.7)'});
+    tag(ctx,'r = '+Math.round(iDeg)+'°',O.x+Math.sin(i/2)*(r+30),O.y-Math.cos(i/2)*(r+30),{color:'#fff',size:13,bg:'rgba(10,15,36,.7)'})}
+  dot(ctx,O.x,O.y,4,'#fff');
+  return {S0,E};
+}
+const hero={x:.55,auto:true};
+const heroSt=makeStage($('#heroCv'),{section:$('#home'),ratio:.34,minH:210,maxH:300,draw(ctx,W,H,t){
+  stageBg(ctx,W,H);if(hero.auto&&!RM)hero.x=.5+.22*Math.sin(t*.7);
+  const O={x:W*(.2+.6*hero.x),y:H*.8},tx=W*.1,ty=H*.2;
+  const dx=O.x-tx,dy=O.y-ty,iDeg=deg(Math.atan2(dx,dy)),L=Math.hypot(dx,dy);
+  // custom: torch fixed at left; draw incident to O and reflected away
+  const ang=Math.atan2(dy,dx),c1=css('--r1');
+  ctx.save();ctx.strokeStyle='rgba(150,170,255,.4)';ctx.lineWidth=1;ctx.beginPath();for(let x=W*.04;x<W*.96;x+=11){ctx.moveTo(x,O.y+3);ctx.lineTo(x-7,O.y+12)}ctx.stroke();ctx.restore();
+  line(ctx,[[W*.04,O.y],[W*.96,O.y]],'#e6ecff',4);
+  line(ctx,[[O.x,O.y],[O.x,O.y-H*.55]],'rgba(255,255,255,.45)',1.3,1,[5,5]);
+  const E=[O.x+dx*1.0,O.y-dy*1.0];
+  line(ctx,[[tx,ty],[O.x,O.y]],c1,2.8,1,null,8);line(ctx,[[O.x,O.y],E],c1,2.8,1,null,8);
+  pulses(ctx,[[tx,ty],[O.x,O.y],E],c1,t,3);
+  torch(ctx,tx-2,ty,ang);
+  const r=46,a=Math.atan2(dx,dy);
+  arc(ctx,O.x,O.y,r,-Math.PI/2-a,-Math.PI/2,'#fff',2);arc(ctx,O.x,O.y,r+7,-Math.PI/2,-Math.PI/2+a,'#fff',2);
+  tag(ctx,'i = '+Math.round(iDeg)+'°',O.x-Math.sin(a/2)*(r+34),O.y-Math.cos(a/2)*(r+34),{color:'#fff',size:13,bg:'rgba(10,15,36,.7)'});
+  tag(ctx,'r = '+Math.round(iDeg)+'°',O.x+Math.sin(a/2)*(r+34),O.y-Math.cos(a/2)*(r+34),{color:'#fff',size:13,bg:'rgba(10,15,36,.7)'});
+  dot(ctx,O.x,O.y,4,'#fff');
+}});
+dragger($('#heroCv'),{move(p){hero.auto=false;hero.x=clamp((p.x/heroSt.W-.2)/.6,.05,.98)}});
+
+/* ---------- reflection: law ---------- */
+const law={i:40,target:60};
+const lawSt=makeStage($('#lawCv'),{section:$('#reflect'),ratio:.5,minH:260,maxH:400,draw(ctx,W,H,t){
+  stageBg(ctx,W,H);const O={x:W/2,y:H*.78},L=Math.min(H*.62,W*.36);
+  const {S0}=bounceScene(ctx,W,H,O,law.i,t,L);
+  torch(ctx,S0[0],S0[1],Math.atan2(O.y-S0[1],O.x-S0[0]));
+  // target marker
+  const tg=rad(law.target);if(law.chal){const q=[O.x-Math.sin(tg)*(L+30),O.y-Math.cos(tg)*(L+30)];tag(ctx,'aim for '+law.target+'°',q[0],q[1],{color:css('--r2'),size:12})}
+}});
+function setLaw(i,from){law.i=clamp(Math.round(i),0,85);$('#lawI').value=law.i;$('#lawIo').textContent=law.i+'°';
+  $('#lawCap').textContent=law.i===0?'i = 0°: the ray travels along the normal and bounces straight back.':`i = ${law.i}° so r = ${law.i}°. Angles are measured from the normal, not from the mirror.`;
+  if(law.chal&&Math.abs(law.i-law.target)<=1){award('law'+law.target,10,'Nailed '+law.target+'°!');good();law.target=pick([20,30,45,55,65,75].filter(x=>x!==law.target));$('#lawTry').textContent='Challenge: make i = '+law.target+'°'}}
+$('#lawI').addEventListener('input',e=>setLaw(+e.target.value));
+$('#lawTry').addEventListener('click',()=>{law.chal=true;$('#lawTry').textContent='Challenge: make i = '+law.target+'°';setLaw(law.i)});
+dragger($('#lawCv'),{move(p){const W=lawSt.W,H=lawSt.H;const dx=W/2-p.x,dy=H*.78-p.y;setLaw(deg(Math.atan2(dx,Math.max(dy,1))))}});
+
+/* ---------- reflection: plane mirror ---------- */
+const pl={d:12,ex:null,ey:null,mode:null};
+const plSt=makeStage($('#planeCv'),{section:$('#reflect'),ratio:.5,minH:270,maxH:380,onResize(s){if(pl.ex==null||pl.ex>s.W*.5){pl.ex=s.W*.14;pl.ey=s.H*.36}},draw(ctx,W,H,t){
+  stageBg(ctx,W,H);const xm=W*.56,S=W/50,base=H*.84,size=Math.min(64,H*.2),cap=size*.72;
+  // mirror
+  ctx.save();ctx.strokeStyle='rgba(150,170,255,.4)';ctx.beginPath();for(let y=8;y<H-8;y+=11){ctx.moveTo(xm+3,y);ctx.lineTo(xm+12,y+7)}ctx.stroke();ctx.restore();
+  line(ctx,[[xm,6],[xm,H-6]],'#e6ecff',4);
+  const xo=xm-pl.d*S,xi=xm+pl.d*S;
+  line(ctx,[[0,base],[W,base]],'rgba(255,255,255,.15)',1);
+  // object F and image F
+  ctx.save();ctx.font=`800 ${size}px ${FONT}`;ctx.textAlign='center';ctx.fillStyle=css('--obj');ctx.fillText('F',xo,base);ctx.restore();
+  ctx.save();ctx.globalAlpha=.65;ctx.translate(xi,base);ctx.scale(-1,1);ctx.font=`800 ${size}px ${FONT}`;ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.18)';ctx.strokeStyle='#fff';ctx.setLineDash([4,3]);ctx.lineWidth=1.5;ctx.fillText('F',0,0);ctx.strokeText('F',0,0);ctx.restore();
+  // rays from two points to the eye
+  const E={x:pl.ex,y:pl.ey};
+  [[base-cap,css('--r1')],[base-cap*.45,css('--r2')]].forEach(([py,col])=>{
+    const T={x:xo,y:py},Ti={x:xi,y:py};const k=(xm-E.x)/(Ti.x-E.x);const qy=E.y+(Ti.y-E.y)*k;
+    if(qy<6||qy>H-6)return;const Q=[xm,qy];
+    line(ctx,[[T.x,T.y],Q,[E.x,E.y]],col,2.2,1,null,6);line(ctx,[Q,[Ti.x,Ti.y]],col,1.8,.85,[5,5]);pulses(ctx,[[T.x,T.y],Q,[E.x,E.y]],col,t,2);dot(ctx,Q[0],Q[1],3,col)});
+  // eye
+  ctx.save();ctx.translate(E.x,E.y);ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,0,15,9,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#2a3a8c';ctx.beginPath();ctx.arc(4,0,5,0,Math.PI*2);ctx.fill();ctx.restore();
+  tag(ctx,'eye',E.x,E.y-20,{color:'#c8d2ff',size:11});
+  // distances
+  const dy=base+16;line(ctx,[[xo,dy],[xm,dy]],'#cfd7ff',1.4);line(ctx,[[xm,dy],[xi,dy]],'#cfd7ff',1.4,.8,[4,3]);
+  tag(ctx,pl.d+' cm',(xo+xm)/2,dy+14,{size:12,color:css('--obj')});tag(ctx,pl.d+' cm',(xm+xi)/2,dy+14,{size:12,color:'#fff'});
+  tag(ctx,'Object',xo,base-cap-14,{size:12,color:css('--obj')});tag(ctx,'Image (behind mirror)',xi,base-cap-14,{size:12,color:'#fff'});
+}});
+function setPlane(d){pl.d=clamp(Math.round(d*2)/2,3,22);$('#planeD').value=pl.d;$('#planeDo').textContent=pl.d+' cm';$('#pOd').textContent=pl.d+' cm';$('#pId').textContent=pl.d+' cm (behind the mirror)'}
+$('#planeD').addEventListener('input',e=>{setPlane(+e.target.value);award('plane',5,'Equal distances!')});
+dragger($('#planeCv'),{down(p){pl.mode=Math.hypot(p.x-pl.ex,p.y-pl.ey)<42?'eye':'obj'},move(p){if(pl.mode==='eye'){pl.ex=clamp(p.x,20,plSt.W*.56-60);pl.ey=clamp(p.y,24,plSt.H-30)}else{setPlane((plSt.W*.56-p.x)/(plSt.W/50))}}});
+setPlane(12);setLaw(40);
+
+/* ---------- mirror anatomy ---------- */
+const AN={kind:'concave',R:20,hl:null,sun:null};
+const ANI={P:['P · Pole','The centre of the mirror\'s reflecting surface. It sits on the mirror itself.'],
+C:['C · Centre of curvature','The centre of the sphere the mirror was cut from. It is not part of the mirror: in front of a concave mirror, behind a convex one.'],
+R:['R · Radius of curvature','The radius of that sphere. The distance PC equals R.'],
+axis:['Principal axis','The straight line through P and C. It meets the mirror at 90° at the pole.'],
+F:['F · Principal focus','Concave: rays parallel to the axis meet here after reflection. Convex: they seem to come from here.'],
+f:['f · Focal length','The distance from P to F. For a small aperture, R = 2f, so F is exactly halfway between P and C.'],
+ap:['Aperture (MN)','The width of the reflecting surface. In this chapter the aperture is much smaller than R.']};
+const anChips=$('#anChips');
+Object.keys(ANI).forEach(k=>{const b=document.createElement('button');b.className='chip';b.setAttribute('aria-pressed','false');b.textContent=ANI[k][0].replace(' · ',' ');b.dataset.k=k;
+  b.addEventListener('click',()=>{AN.hl=AN.hl===k?null:k;AN.sun=null;$$('#anChips .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.k===AN.hl));$('#anCap').innerHTML=AN.hl?`<b>${ANI[k][0]}.</b> ${ANI[k][1]}`:'Tap a word above.';Progress.keys.an=Progress.keys.an||{};Progress.keys.an[k]=1;if(Object.keys(Progress.keys.an).length>=7)award('anatomy',20,'All 7 parts found!')});anChips.appendChild(b)});
+$$('#anKind button').forEach(b=>b.addEventListener('click',()=>{AN.kind=b.dataset.k;AN.sun=null;$$('#anKind button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+$('#anR').addEventListener('input',e=>{AN.R=+e.target.value;$('#anRo').textContent=`${AN.R} cm (f = ${fmt(AN.R/2)})`});$('#anRo').textContent='20 cm (f = 10)';
+$('#anSun').addEventListener('click',()=>{AN.sun=performance.now()/1000;AN.hl=null;$$('#anChips .chip').forEach(c=>c.setAttribute('aria-pressed','false'));$('#anCap').textContent=AN.kind==='concave'?'Concave mirror: parallel rays all meet at F. That bright spot is the image of the Sun, and why Activity 9.2 can burn paper.':'Convex mirror: parallel rays spread out. They only seem to come from F, behind the mirror.';award('sun'+AN.kind,10)});
+const anSt=makeStage($('#anCv'),{section:$('#anatomy'),ratio:.52,minH:290,maxH:420,draw(ctx,W,H,t){
+  stageBg(ctx,W,H);const S=W/60,oy=H*.5,R=AN.R,conc=AN.kind==='concave',ox=W*(conc?.64:.28),sg=conc?1:-1,Cx=ox+(conc?-R*S:R*S),Fx=ox+(conc?-R*S/2:R*S/2);
+  const hl=AN.hl,dim=k=>hl&&hl!==k?.35:1;
+  // sphere
+  ctx.save();ctx.strokeStyle='rgba(150,170,255,.3)';ctx.setLineDash([6,6]);ctx.beginPath();ctx.arc(Cx,oy,R*S,0,Math.PI*2);ctx.stroke();ctx.restore();
+  // axis
+  line(ctx,[[0,oy],[W,oy]],hl==='axis'?css('--r1'):'rgba(210,220,255,.55)',hl==='axis'?4:1.5,dim('axis'));
+  // mirror arc
+  const a=Math.asin(Math.min(7/R,.9));
+  ctx.save();ctx.lineCap='round';ctx.strokeStyle='rgba(150,170,255,.45)';ctx.lineWidth=1;for(let q=-a;q<=a;q+=.07){const x=Cx+sg*R*S*Math.cos(q),y=oy+R*S*Math.sin(q);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+9,y+5);ctx.stroke()}
+  ctx.strokeStyle='#e6ecff';ctx.lineWidth=hl==='ap'?6:4;ctx.globalAlpha=dim('ap');ctx.beginPath();for(let q=-a;q<=a+.001;q+=.03){const x=Cx+sg*R*S*Math.cos(q),y=oy+R*S*Math.sin(q);q===-a?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke();ctx.restore();
+  const My=oy-R*S*Math.sin(a),Ny=oy+R*S*Math.sin(a),Mx=Cx+sg*R*S*Math.cos(a);
+  // aperture line
+  line(ctx,[[Mx+26,My],[Mx+26,Ny]],hl==='ap'?css('--r1'):'rgba(200,210,255,.5)',hl==='ap'?3:1.2,dim('ap'));tag(ctx,'M',Mx+40,My,{size:12,color:'#c8d2ff'});tag(ctx,'N',Mx+40,Ny,{size:12,color:'#c8d2ff'});
+  if(hl==='ap')tag(ctx,'aperture',Mx+34,oy+40,{size:12,color:css('--r1'),align:'left'});
+  // R line
+  const Y1=oy+Math.min(R*S*.28,70);
+  line(ctx,[[Cx,oy],[ox,oy]],hl==='R'?css('--r3'):'rgba(255,122,168,.7)',hl==='R'?5:2,dim('R'),hl==='R'?8:0);
+  tag(ctx,'R = '+R+' cm',(Cx+ox)/2,oy-(conc?20:20),{size:13,color:css('--r3')});
+  // f line below axis
+  line(ctx,[[ox,oy+16],[Fx,oy+16]],hl==='f'?css('--r2'):'rgba(61,219,217,.8)',hl==='f'?5:2.5,dim('f'),hl==='f'?8:0);
+  tag(ctx,'f = '+fmt(R/2)+' cm',(ox+Fx)/2,oy+36,{size:13,color:css('--r2')});
+  // points
+  const pt=(x,n,key,col,dy)=>{const hlx=hl===key;glowDot(ctx,x,oy,hlx?6:3.4,hlx?col:'#fff');ctx.globalAlpha=dim(key);tag(ctx,n,x,oy+dy,{size:hlx?18:14,color:col});ctx.globalAlpha=1};
+  pt(ox,'P','P','#ffffff',-24);pt(Cx,'C','C','#ff9fc0',-24);pt(Fx,'F','F','#ffd166',-24);
+  tag(ctx,conc?'reflecting side faces left':'reflecting side faces left (bulges out)',W*.04,H-16,{size:11,color:'#8d99cc',align:'left'});
+  // sun rays
+  if(AN.sun!=null){const pr=clamp((t-AN.sun)/2.2,0,1);for(let k=0;k<7;k++){const y0=(k-3)*R*.075;const hx=conc?Cx+Math.sqrt(R*R-y0*y0)*S:Cx-Math.sqrt(R*R-y0*y0)*S;
+      const P=[hx,oy-y0*S],n=unit((Cx-P[0]),(oy-P[1]));let d={x:1,y:0};const dn=d.x*n.x+d.y*n.y;const rd={x:d.x-2*dn*n.x,y:d.y-2*dn*n.y};
+      const E=[P[0]+rd.x*W,P[1]+rd.y*W],pts=[[0,P[1]],P,E];const col=css('--r1');
+      line(ctx,partial(pts,plen(pts)*pr*1.0),col,2,1,null,5);
+      if(pr>=1){pulses(ctx,pts,col,t,2);if(!conc)line(ctx,[P,[Fx,oy]],col,1.3,.7,[4,4])}}
+    if(pr>=1){glowDot(ctx,Fx,oy,6,'#ffd166');tag(ctx,conc?'Rays meet at F':'Rays seem to come from F',Fx,oy+(conc?60:-46),{size:13,color:'#ffd166',bg:'rgba(10,15,36,.75)'})}}
+}});
+
+/* ---------- mirror & lens labs ---------- */
+function createLab(mount,fam){
+  const kinds=fam==='mirror'?[['concave','Concave mirror'],['convex','Convex mirror']]:[['convex','Convex lens'],['concave','Concave lens']];
+  const S={kind:kinds[0][0],F:10,U:30,h:5,on:{par:true,foc:true,cen:true,pole:false},show:{},seen:{},timers:[],visMax:50,imgAlpha:null,last:null};
+  const surf=fam==='mirror'?'mirror':'lens',pole=fam==='mirror'?'P':'O';
+  mount.innerHTML=`
+  <div class="row"><div class="seg" data-r="kind"></div>
+    <label>Focal length f <input type="range" data-r="f" min="6" max="14" step="0.5" value="10"><output data-r="fo"></output></label></div>
+  <div class="stage"><canvas data-r="cv" tabindex="0" aria-label="${surf} ray diagram. Arrow keys move the object."></canvas><div class="hint">Drag to move the object</div></div>
+  <div class="row"><label>Object distance <input type="range" data-r="u" min="2" max="50" step="0.5"><output data-r="uo"></output></label></div>
+  <div class="row"><b>Jump to</b><div class="chips" data-r="zones"></div></div>
+  <div class="row"><b>Rays</b><div class="chips" data-r="rays"></div><button class="btn" data-r="play">▶ Draw rays one by one</button></div>
+  <div class="caption" data-r="cap"></div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>The image</h3><div data-r="res"></div></div>
+    <div class="card"><h3>Magnification</h3><div class="mag" data-r="mag"></div><p data-r="magT" style="margin:10px 0 0;font-weight:700"></p></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>${fam==='mirror'?'Mirror':'Lens'} formula, step by step</h3><div class="steps" data-r="form"></div></div>
+  <details class="card" style="margin-top:12px"><summary>Sign convention (open this before every numerical)</summary>
+    <p style="margin-top:10px">1. Light travels left to right. The object is on the left, so <b>u is always negative</b>.<br>
+    2. Measure every distance from <b>${pole}</b>. Right of ${pole} is <b>+</b>, left is <b>−</b>.<br>
+    3. Heights above the principal axis are <b>+</b>, below are <b>−</b>. An upright image has +h′, an inverted one has −h′.<br>
+    4. ${fam==='mirror'?'<b>Concave mirror: f is −. Convex mirror: f is +.</b>':'<b>Convex lens: f is +. Concave lens: f is −.</b>'}</p></details>`;
+  const q=n=>mount.querySelector(`[data-r="${n}"]`);
+  const sec=mount.closest('section');
+  const sf=()=>(fam==='mirror'?(S.kind==='concave'?-1:1):(S.kind==='convex'?1:-1))*S.F;
+  const conv=()=>(fam==='mirror'&&S.kind==='concave')||(fam==='lens'&&S.kind==='convex');
+  const st=makeStage(q('cv'),{section:sec,ratio:.5,minH:300,maxH:460,onResize(s){const g=geom(fam,s.W,s.H);S.h=g.h;S.visMax=g.visMax;q('u').max=S.visMax;if(S.U>S.visMax)setU(S.visMax)},
+    draw(ctx,W,H,t,dt){
+      Optics.ids(fam).forEach(id=>{if(S.show[id]>0&&S.show[id]<1)S.show[id]=Math.min(1,S.show[id]+dt/(RM?.01:1.1))});
+      drawScene(ctx,W,H,{fam,kind:S.kind,f:sf(),u:-S.U,h:S.h,show:S.show,imgAlpha:S.imgAlpha},t);
+    }});
+  // kind buttons
+  kinds.forEach(([k,l])=>{const b=document.createElement('button');b.textContent=l;b.dataset.k=k;b.setAttribute('aria-pressed',k===S.kind);b.addEventListener('click',()=>{S.kind=k;$$('button',q('kind')).forEach(x=>x.setAttribute('aria-pressed',x===b));buildZones();replayRays();setU(S.U,true);setCap('')});q('kind').appendChild(b)});
+  // ray chips
+  Optics.ids(fam).forEach((id,i)=>{const b=document.createElement('button');b.className='chip';b.dataset.id=id;b.setAttribute('aria-pressed',!!S.on[id]);
+    const m=Optics.meta(fam,'convex',id);b.innerHTML=`<span class="dot" style="background:${m.color}"></span>${i+1} ${m.name}`;
+    b.addEventListener('click',()=>{stopPlay();S.on[id]=!S.on[id];b.setAttribute('aria-pressed',S.on[id]);if(S.on[id]){S.show[id]=.001;setCap(Optics.meta(fam,S.kind,id).rule)}else delete S.show[id];updateInfo()});q('rays').appendChild(b)});
+  function replayRays(){Optics.ids(fam).forEach(id=>{if(S.on[id])S.show[id]=.001;else delete S.show[id]})}
+  replayRays();
+  function setCap(t){q('cap').innerHTML=t||`Drag the object, or tap a zone. ${fam==='mirror'?'Four':'Three'} special rays are drawn. Where two meet, the image forms.`}
+  function stopPlay(){S.timers.forEach(clearTimeout);S.timers=[]}
+  q('play').addEventListener('click',()=>{stopPlay();S.show={};S.imgAlpha=null;const ids=Optics.ids(fam).filter(id=>S.on[id]);if(ids.length<2){Optics.ids(fam).forEach((id,i)=>{S.on[id]=i<3;});$$('.chip',q('rays')).forEach(c=>c.setAttribute('aria-pressed',!!S.on[c.dataset.id]));}
+    const run=Optics.ids(fam).filter(id=>S.on[id]);
+    run.forEach((id,i)=>S.timers.push(setTimeout(()=>{S.show[id]=.001;setCap(Optics.meta(fam,S.kind,id).rule)},i*2400)));
+    S.timers.push(setTimeout(()=>{const d=describe(fam,S.kind,sf(),-S.U,S.h,S.visMax);setCap(d.im.inf?'The rays come out parallel, so they never meet: the image is at infinity.':'Where two rays cross, the image forms. '+(d.real?'The rays really meet, so the image is real.':'The rays only seem to meet when traced backwards (dashed), so the image is virtual.'))},run.length*2400-300))});
+  // zones
+  function buildZones(){const z=q('zones');z.innerHTML='';let items;const F=S.F,vm=S.visMax;
+    if(conv()){items=[['inf',vm,'Very far'],['beyond',clamp(2.6*F,2*F+2,vm-3),fam==='mirror'?'Beyond C':'Beyond 2F'],['at2F',2*F,fam==='mirror'?'At C':'At 2F'],['mid',1.5*F,fam==='mirror'?'C to F':'2F to F'],['atF',F,'At F'],['within',F*.5,fam==='mirror'?'F to P':'F to O']]}
+    else items=[['far',vm,'Far'],['mid',2.2*F,'Middle'],['near',.5*F,'Close']];
+    items.forEach(([k,U,l])=>{const b=document.createElement('button');b.className='chip'+(S.seen[S.kind+k]?' seen':'');b.dataset.k=k;b.dataset.u=U;b.textContent=l;b.addEventListener('click',()=>{setU(U);S.seen[S.kind+k]=1;b.classList.add('seen');checkUnlock(k)});z.appendChild(b)})}
+  function checkUnlock(k){S.seen[S.kind+'~'+k]=1;if(conv()){const all=['inf','beyond','at2F','mid','atF','within'].every(z=>S.seen[S.kind+'~'+z]);if(all)award(fam+'zones',40,fam==='mirror'?'Table 9.1 built by you!':'Table 9.4 built by you!')}
+    else{const all=['far','mid','near'].every(z=>S.seen[S.kind+'~'+z]);if(all)award(fam+S.kind,15,'Always '+(fam==='mirror'?'virtual, erect, small':'virtual, erect, small')+'!')}}
+  function setU(U,quiet){const F=S.F;U=clamp(U,2,S.visMax);if(conv()){if(Math.abs(U-F)<.6)U=F;else if(Math.abs(U-2*F)<.6)U=2*F;}U=Math.round(U*2)/2===U?U:Math.round(U*10)/10;S.U=U;q('u').value=U;q('uo').textContent='u = −'+fmt(U)+' cm';
+    const d=describe(fam,S.kind,sf(),-U,S.h,S.visMax);
+    if(!quiet){const key=conv()?d.zone:(U>=S.visMax-.6?'far':U<=F*.7?'near':'mid');
+      if(conv()?['inf','beyond','at2F','mid','atF','within'].includes(key):['far','mid','near'].includes(key)){S.seen[S.kind+key]=1;S.seen[S.kind+'~'+key]=1;const c=q('zones').querySelector(`[data-k="${key}"]`);c&&c.classList.add('seen');checkUnlock(key)}}
+    updateInfo()}
+  function updateInfo(){
+    const f=sf(),u=-S.U,d=describe(fam,S.kind,f,u,S.h,S.visMax),im=d.im,n=x=>`<span class="num-n">${x}</span>`;
+    q('res').innerHTML=`<dl class="kv"><dt>Object</dt><dd>${d.zname}</dd><dt>Image position</dt><dd>${d.pos}</dd><dt>Size</dt><dd>${d.size}</dd><dt>Nature</dt><dd>${d.nature}</dd></dl>`+(Optics.ids(fam).filter(i=>S.on[i]).length<2?'<p class="callout" style="margin-top:10px">Switch on at least two rays to locate the image.</p>':'');
+    // magnification bars
+    const m=im.m,mh=40,ih=im.inf?95:clamp(Math.abs(m)*mh,3,95);
+    q('mag').innerHTML=`<div class="base"></div><div class="col"><div class="bar" style="top:${120-mh}px;height:${mh}px;background:#2fbf71"></div><span>Object</span></div><div class="col"><div class="bar" style="top:${(m>0)?120-ih:120}px;height:${ih}px;background:var(--accent)"></div><span>Image</span></div>`;
+    q('magT').innerHTML=im.inf?'m is enormous: the image is at infinity.':`m = ${n(fmt(m,2))}. ${Math.abs(m)>1.03?'Image is '+fmt(Math.abs(m),2)+' times as tall.':Math.abs(m)<.97?'Image is '+fmt(Math.abs(m),2)+' times as tall.':'Image is the same height.'} ${m>0?'Plus sign: upright.':'Minus sign: upside down.'}`;
+    // formula steps
+    const L=[];const num=x=>n(fmt(x,1));
+    if(fam==='mirror'){
+      L.push(`${frac(1,'v')} + ${frac(1,'u')} = ${frac(1,'f')}`);
+      L.push(`u = ${num(u)} cm, &nbsp;f = ${num(f)} cm`);
+      L.push(`${frac(1,'v')} = ${frac(1,'f')} − ${frac(1,'u')} = ${frac(1,'('+fmt(f,1)+')')} − ${frac(1,'('+fmt(u,1)+')')} = ${im.inf?'0':fmt(1/f-1/u,3)}`);
+      L.push(im.inf?`<span class="ln ans">v = ∞ (image at infinity)</span>`:`<span class="ln ans">v = ${fmt(im.v,1)} cm → ${im.v<0?'in front of the mirror: real':'behind the mirror: virtual'}</span>`);
+      if(!im.inf){L.push(`m = ${frac('h′','h')} = − ${frac('v','u')} = − ${frac('('+fmt(im.v,1)+')','('+fmt(u,1)+')')} = ${n(fmt(im.m,2))}`);L.push(`h′ = m × h = ${fmt(im.m,2)} × ${S.h} = ${fmt(im.m*S.h,1)} cm`)}
+    }else{
+      L.push(`${frac(1,'v')} − ${frac(1,'u')} = ${frac(1,'f')}`);
+      L.push(`u = ${num(u)} cm, &nbsp;f = ${num(f)} cm`);
+      L.push(`${frac(1,'v')} = ${frac(1,'f')} + ${frac(1,'u')} = ${frac(1,'('+fmt(f,1)+')')} + ${frac(1,'('+fmt(u,1)+')')} = ${im.inf?'0':fmt(1/f+1/u,3)}`);
+      L.push(im.inf?`<span class="ln ans">v = ∞ (emerging rays are parallel)</span>`:`<span class="ln ans">v = ${fmt(im.v,1)} cm → ${im.v>0?'other side of the lens: real':'same side as the object: virtual'}</span>`);
+      if(!im.inf){L.push(`m = ${frac('h′','h')} = ${frac('v','u')} = ${frac('('+fmt(im.v,1)+')','('+fmt(u,1)+')')} = ${n(fmt(im.m,2))}`);L.push(`h′ = m × h = ${fmt(im.m,2)} × ${S.h} = ${fmt(im.m*S.h,1)} cm`)}
+      L.push(`Power P = ${frac(1,'f (in metres)')} = ${frac(1,fmt(f/100,2))} = ${n((f>0?'+':'')+fmt(100/f,1))} dioptre`);
+    }
+    q('form').innerHTML=L.map(x=>x.startsWith('<span class="ln')?x:`<span class="ln">${x}</span>`).join('');
+  }
+  q('f').addEventListener('input',e=>{S.F=+e.target.value;q('fo').textContent='f = '+(sf()>0?'+':'−')+fmt(S.F)+' cm';buildZones();setU(S.U,true)});
+  q('u').addEventListener('input',e=>setU(+e.target.value));
+  const kfocus=q('cv');kfocus.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();setU(S.U+(e.key==='ArrowLeft'?1:-1)*(e.shiftKey?3:.5))}});
+  dragger(q('cv'),{move(p){const g=geom(fam,st.W,st.H);setU((g.ox-p.x)/g.S)}});
+  const sync=()=>{q('fo').textContent='f = '+(sf()>0?'+':'−')+fmt(S.F)+' cm'};
+  sync();buildZones();setU(30,true);setCap('');
+  new MutationObserver(()=>{if(sec.classList.contains('on')){const g=geom(fam,st.W,st.H);S.visMax=g.visMax;q('u').max=S.visMax}}).observe(sec,{attributes:true,attributeFilter:['class']});
+  return {S,setU,st};
+}
+const mirrorLab=createLab($('#mirrorLab'),'mirror');
+const lensLab=createLab($('#lensLab'),'lens');
+
+/* ---------- media ---------- */
+const MEDIA=[['Air',1.0003,'#00000000'],['Ice',1.31],['Water',1.33],['Alcohol',1.36],['Kerosene',1.44],['Fused quartz',1.46],['Turpentine oil',1.47],['Benzene',1.50],['Crown glass',1.52],['Rock salt',1.54],['Dense flint glass',1.65],['Ruby',1.71],['Sapphire',1.77],['Diamond',2.42]];
+const nShow=n=>n<1.01?'1.00':n.toFixed(2);
+function fillSelect(sel,def,skipAir){sel.innerHTML='';MEDIA.forEach((m,i)=>{if(skipAir&&i===0)return;const o=document.createElement('option');o.value=i;o.textContent=`${m[0]} (${nShow(m[1])})`;if(m[0]===def)o.selected=true;sel.appendChild(o)})}
+const tint=n=>`rgba(80,190,235,${clamp((n-1)*.2,0,.34)})`;
+const C0=3e8;
+const spd=n=>(C0/n/1e8).toFixed(2)+' × 10⁸ m/s';
+
+/* ---------- Snell sim ---------- */
+const sn={i:45,m1:0,m2:8};
+fillSelect($('#snM1'),'Air');fillSelect($('#snM2'),'Crown glass');
+$('#snM1').addEventListener('change',e=>{sn.m1=+e.target.value;updSn()});$('#snM2').addEventListener('change',e=>{sn.m2=+e.target.value;updSn()});
+$('#snI').addEventListener('input',e=>{sn.i=+e.target.value;updSn()});
+$('#snWave').addEventListener('change',()=>{});
+function snR(){const n1=MEDIA[sn.m1][1],n2=MEDIA[sn.m2][1],s=n1*Math.sin(rad(sn.i))/n2;return {n1,n2,s,tir:s>1,r:s>1?null:deg(Math.asin(s))}}
+function updSn(){const o=snR();$('#snIo').textContent=sn.i+'°';
+  const n=x=>`<span class="num-n">${x}</span>`;
+  let h=`<span class="ln">n₁ = ${n(nShow(o.n1))} &nbsp; n₂ = ${n(nShow(o.n2))}</span><span class="ln">i = ${n(sn.i+'°')}, &nbsp;sin i = ${n(Math.sin(rad(sn.i)).toFixed(3))}</span>`;
+  if(o.tir){h+=`<span class="ln">sin r would be ${n(o.s.toFixed(2))} (more than 1!)</span><span class="ln ans">No refracted ray exists</span>`}
+  else{h+=`<span class="ln">sin r = ${frac('n₁ sin i','n₂')} = ${n(o.s.toFixed(3))} → r = ${n(o.r.toFixed(1)+'°')}</span><span class="ln ans">n₂₁ = ${frac('sin i','sin r')} = ${frac('v₁','v₂')} = ${n(nShow(o.n2/o.n1))}</span>`}
+  $('#snNum').innerHTML=h;
+  $('#snSpeed').innerHTML=[['Top',o.n1],['Bottom',o.n2]].map(([l,nn])=>`<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-weight:800"><span>${l}</span><span>${spd(nn)}</span></div><div style="height:12px;background:var(--surface2);border-radius:8px"><div style="height:12px;width:${100/nn}%;background:var(--accent);border-radius:8px"></div></div></div>`).join('');
+  let rule;
+  if(o.tir)rule='Going from a denser to a rarer medium at a big angle: all the light reflects back. (You will meet this as total internal reflection in higher classes.)';
+  else if(sn.i===0)rule='Straight along the normal: light slows down or speeds up but does not change direction.';
+  else if(o.n2>o.n1)rule='Light enters a denser medium (slower), so it bends TOWARDS the normal. r is smaller than i.';
+  else if(o.n2<o.n1)rule='Light enters a rarer medium (faster), so it bends AWAY from the normal. r is bigger than i.';
+  else rule='Same optical density: no bending at all.';
+  $('#snRule').textContent=rule;
+  if(o.n2>o.n1&&sn.i>0)award('snellD',5);if(o.n2<o.n1&&!o.tir&&sn.i>0)award('snellR',5);}
+const snSt=makeStage($('#snCv'),{section:$('#refract'),ratio:.56,minH:300,maxH:460,draw(ctx,W,H,t){
+  stageBg(ctx,W,H,false);const o=snR(),O={x:W/2,y:H/2},i=rad(sn.i),L=Math.min(H*.42,W*.36);
+  ctx.fillStyle=tint(o.n1);ctx.fillRect(0,0,W,O.y);ctx.fillStyle=tint(o.n2);ctx.fillRect(0,O.y,W,H-O.y);
+  line(ctx,[[0,O.y],[W,O.y]],'rgba(230,236,255,.85)',2);
+  line(ctx,[[O.x,12],[O.x,H-12]],'rgba(255,255,255,.45)',1.2,1,[5,5]);tag(ctx,'normal',O.x+26,18,{size:11,color:'#c8d2ff'});
+  tag(ctx,MEDIA[sn.m1][0]+'  n = '+nShow(o.n1),12,O.y-14,{align:'left',size:13,color:'#dbe3ff'});tag(ctx,MEDIA[sn.m2][0]+'  n = '+nShow(o.n2),12,O.y+16,{align:'left',size:13,color:'#dbe3ff'});
+  const S0=[O.x-Math.sin(i)*L,O.y-Math.cos(i)*L],c1=css('--r1');
+  const d1={x:Math.sin(i),y:Math.cos(i)};
+  // wavefronts
+  if($('#snWave').checked){
+    const lam1=Math.max(18,W/26),w1=Math.min(70,H*.15);ctx.save();
+    const ph=RM?0:t*.9;
+    // medium 1
+    ctx.save();ctx.beginPath();ctx.rect(0,0,W,O.y);ctx.clip();ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1.8;
+    for(let k=-60;k<=0;k++){const s=lam1*(k+ph%1);if(s>0||s<-L)continue;const c={x:O.x+d1.x*s,y:O.y+d1.y*s};const pp={x:-d1.y,y:d1.x};ctx.beginPath();ctx.moveTo(c.x-pp.x*w1/2,c.y-pp.y*w1/2);ctx.lineTo(c.x+pp.x*w1/2,c.y+pp.y*w1/2);ctx.stroke()}
+    ctx.restore();
+    if(!o.tir){const r=rad(o.r),d2={x:Math.sin(r),y:Math.cos(r)},lam2=lam1*o.n1/o.n2,w2=w1*Math.cos(r)/Math.cos(i);
+      ctx.save();ctx.beginPath();ctx.rect(0,O.y,W,H-O.y);ctx.clip();ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1.8;
+      for(let k=0;k<=80;k++){const s=lam2*(k+ph%1);if(s<0||s>L*1.05)continue;const c={x:O.x+d2.x*s,y:O.y+d2.y*s};const pp={x:-d2.y,y:d2.x};ctx.beginPath();ctx.moveTo(c.x-pp.x*w2/2,c.y-pp.y*w2/2);ctx.lineTo(c.x+pp.x*w2/2,c.y+pp.y*w2/2);ctx.stroke()}
+      ctx.restore()}
+    ctx.restore();
+  }
+  // rays
+  const lineW=2.6;
+  if(o.tir){const E=[O.x+Math.sin(i)*L,O.y-Math.cos(i)*L];line(ctx,[S0,[O.x,O.y],E],c1,lineW,1,null,7);pulses(ctx,[S0,[O.x,O.y],E],c1,t,3)}
+  else{const r=rad(o.r),E=[O.x+Math.sin(r)*L,O.y+Math.cos(r)*L];line(ctx,[S0,[O.x,O.y],E],c1,lineW,1,null,7);pulses(ctx,[S0,[O.x,O.y],E],c1,t,3);
+    if(sn.i>0){const rr=Math.min(L*.4,62);arc(ctx,O.x,O.y,rr,Math.PI/2-r,Math.PI/2,'#fff',2);tag(ctx,'r = '+Math.round(o.r)+'°',O.x+Math.sin(r/2)*(rr+34),O.y+Math.cos(r/2)*(rr+34),{size:13,color:'#fff',bg:'rgba(10,15,36,.7)'})}}
+  torch(ctx,S0[0],S0[1],Math.atan2(O.y-S0[1],O.x-S0[0]));
+  if(sn.i>0){const rr=Math.min(L*.4,62)+10;arc(ctx,O.x,O.y,rr,-Math.PI/2-i,-Math.PI/2,'#fff',2);tag(ctx,'i = '+sn.i+'°',O.x-Math.sin(i/2)*(rr+32),O.y-Math.cos(i/2)*(rr+32),{size:13,color:'#fff',bg:'rgba(10,15,36,.7)'})}
+  dot(ctx,O.x,O.y,4,'#fff');
+}});
+dragger($('#snCv'),{move(p){const W=snSt.W,H=snSt.H;const a=deg(Math.atan2(W/2-p.x,Math.max(1,H/2-p.y)));sn.i=clamp(Math.round(a),0,85);$('#snI').value=sn.i;updSn()}});
+updSn();
+
+/* ---------- coin ---------- */
+const coin={m:2,d:10,a:35};
+fillSelect($('#coinM'),'Water',true);
+const updCoin=()=>{const n=MEDIA[coin.m][1];$('#coinDo').textContent=coin.d+' cm';$('#coinAo').textContent=coin.a+'°';
+  const ta=rad(coin.a),tw=Math.asin(Math.sin(ta)/n),app=coin.d*Math.tan(tw)/Math.tan(ta);
+  $('#coinCap').innerHTML=`Real depth ${fmt(coin.d)} cm. Looking from ${coin.a}° it seems to be only <b>${fmt(app,1)} cm</b> deep. Looking straight down, apparent depth = ${frac('real depth','n')} = ${frac(fmt(coin.d),nShow(n))} = <b>${fmt(coin.d/n,1)} cm</b>.`};
+$('#coinM').addEventListener('change',e=>{coin.m=+e.target.value;updCoin();award('coin',10,'Raised coin explained!')});
+$('#coinD').addEventListener('input',e=>{coin.d=+e.target.value;updCoin()});$('#coinA').addEventListener('input',e=>{coin.a=+e.target.value;updCoin()});updCoin();
+makeStage($('#coinCv'),{section:$('#refract'),ratio:.5,minH:290,maxH:420,draw(ctx,W,H,t){
+  stageBg(ctx,W,H,false);const n=MEDIA[coin.m][1],S=H/26,ys=H*.34,x0=W*.34,yb=ys+coin.d*S,ta=rad(coin.a),tw=Math.asin(Math.sin(ta)/n);
+  // cup + liquid
+  const cl=x0-W*.26,cr=x0+W*.3;ctx.fillStyle='rgba(80,190,235,.22)';ctx.fillRect(cl,ys,cr-cl,yb+22-ys);
+  line(ctx,[[cl,ys-40],[cl,yb+22],[cr,yb+22],[cr,ys-40]],'rgba(220,230,255,.75)',3);
+  line(ctx,[[0,ys],[W,ys]],'rgba(255,255,255,.5)',1.4,1,[6,4]);tag(ctx,'water surface',cl+10,ys-10,{align:'left',size:11,color:'#c8d2ff'});
+  const Qx=x0+coin.d*S*Math.tan(tw),Q=[Qx,ys],dir={x:Math.sin(ta),y:-Math.cos(ta)};
+  const eye=[Qx+dir.x*H*.42,ys+dir.y*H*.42],c1=css('--r1');
+  line(ctx,[[x0,yb],Q,eye],c1,2.5,1,null,6);pulses(ctx,[[x0,yb],Q,eye],c1,t,2);
+  // apparent
+  const app=coin.d*Math.tan(tw)/Math.tan(ta),yA=ys+app*S;
+  line(ctx,[Q,[x0,yA]],c1,1.8,.85,[5,5]);line(ctx,[[Qx,ys],[Qx,ys-70]],'rgba(255,255,255,.35)',1,1,[3,4]);
+  ctx.save();ctx.fillStyle='#ffcf4d';ctx.strokeStyle='#a87a00';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x0,yb,22,7,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.globalAlpha=.8;ctx.strokeStyle='#fff';ctx.setLineDash([4,3]);ctx.fillStyle='rgba(255,255,255,.14)';ctx.beginPath();ctx.ellipse(x0,yA,22,7,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();
+  tag(ctx,'real coin',x0,yb+18,{size:12,color:'#ffcf4d'});tag(ctx,'what you see',x0-72,yA,{size:12,color:'#fff',align:'center'});
+  // eye
+  ctx.save();ctx.translate(eye[0],eye[1]);ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,0,15,9,Math.atan2(-dir.y,-dir.x)+Math.PI,0,Math.PI*2);ctx.fill();ctx.fillStyle='#2a3a8c';ctx.beginPath();ctx.arc(-dir.x*3,-dir.y*3,5,0,Math.PI*2);ctx.fill();ctx.restore();
+  tag(ctx,'eye',eye[0],eye[1]-20,{size:11,color:'#c8d2ff'});
+}});
+
+/* ---------- glass slab (free) ---------- */
+const sl={i:50,t:6,m:8};
+fillSelect($('#slM'),'Crown glass',true);
+function slCalc(){const n=MEDIA[sl.m][1],i=rad(sl.i),r=Math.asin(Math.sin(i)/n);return {n,i,r,d:sl.t*Math.sin(i-r)/Math.cos(r)}}
+function updSl(){const c=slCalc(),n=x=>`<span class="num-n">${x}</span>`;$('#slIo').textContent=sl.i+'°';$('#slTo').textContent=fmt(sl.t)+' cm';
+  $('#slNum').innerHTML=`<span class="ln">i = ${n(sl.i+'°')} &nbsp;(air → glass, n = ${nShow(c.n)})</span><span class="ln">r = ${n(deg(c.r).toFixed(1)+'°')} &nbsp;(smaller than i: bends towards the normal)</span><span class="ln">e = ${n(sl.i+'°')} &nbsp;(glass → air: bends away, back to i)</span><span class="ln ans">Lateral shift d = ${fmt(c.d,2)} cm</span>`}
+$('#slI').addEventListener('input',e=>{sl.i=+e.target.value;updSl();if(sl.i>=60)award('slabShift',5)});$('#slT').addEventListener('input',e=>{sl.t=+e.target.value;updSl()});$('#slM').addEventListener('change',e=>{sl.m=+e.target.value;updSl()});updSl();
+function slabGeom(W,H){const Sx=H/22,yT=H*.3,T=sl.t*Sx,xA=W*.42;return {Sx,yT,yB:yT+T,T,xA}}
+const slSt=makeStage($('#slCv'),{section:$('#slab'),ratio:.66,minH:320,maxH:500,draw(ctx,W,H,t){
+  stageBg(ctx,W,H);const g=slabGeom(W,H),c=slCalc(),{xA,yT,yB,T}=g;
+  const slabX0=W*.08,slabX1=W*.92;
+  ctx.fillStyle=tint(c.n+.3);ctx.fillRect(slabX0,yT,slabX1-slabX0,T);line(ctx,[[slabX0,yT],[slabX1,yT],[slabX1,yB],[slabX0,yB],[slabX0,yT]],'rgba(143,227,255,.85)',2);
+  tag(ctx,'Glass  n = '+nShow(c.n),slabX0+10,(yT+yB)/2,{align:'left',size:12,color:'#bfeeff'});tag(ctx,'Air',slabX0+10,yT-14,{align:'left',size:12,color:'#c8d2ff'});tag(ctx,'Air',slabX0+10,yB+16,{align:'left',size:12,color:'#c8d2ff'});
+  const A=[xA,yT],B=[xA+T*Math.tan(c.r),yB],L=Math.min(H*.3,xA*.8),c1=css('--r1');
+  const S0=[A[0]-Math.sin(c.i)*L,A[1]-Math.cos(c.i)*L],E=[B[0]+Math.sin(c.i)*L,B[1]+Math.cos(c.i)*L];
+  // normals
+  line(ctx,[[A[0],yT-L*.9],[A[0],yB+L*.5]],'rgba(255,255,255,.4)',1,1,[5,5]);line(ctx,[[B[0],yT-L*.5],[B[0],yB+L*.9]],'rgba(255,255,255,.4)',1,1,[5,5]);
+  // dashed extension
+  const Ap=[A[0]+T*Math.tan(c.i),yB];
+  line(ctx,[A,Ap,[Ap[0]+Math.sin(c.i)*L*.6,Ap[1]+Math.cos(c.i)*L*.6]],'#ffffff',1.6,.55,[5,5]);
+  line(ctx,[S0,A,B,E],c1,2.6,1,null,7);pulses(ctx,[S0,A,B,E],c1,t,3);
+  torch(ctx,S0[0],S0[1],Math.atan2(A[1]-S0[1],A[0]-S0[0]));
+  // arcs
+  const rr=Math.min(46,L*.35);
+  if(sl.i>0){arc(ctx,A[0],A[1],rr,-Math.PI/2-c.i,-Math.PI/2,'#fff',2);tag(ctx,'i',A[0]-Math.sin(c.i/2)*(rr+13),A[1]-Math.cos(c.i/2)*(rr+13),{size:14,color:'#fff'});
+    arc(ctx,A[0],A[1],rr,Math.PI/2-c.r,Math.PI/2,'#fff',2);tag(ctx,'r',A[0]+Math.sin(c.r/2)*(rr+12),A[1]+Math.cos(c.r/2)*(rr+12),{size:14,color:'#fff'});
+    arc(ctx,B[0],B[1],rr,-Math.PI/2-c.r,-Math.PI/2,'#fff',2);tag(ctx,'r',B[0]-Math.sin(c.r/2)*(rr+12),B[1]-Math.cos(c.r/2)*(rr+12),{size:14,color:'#fff'});
+    arc(ctx,B[0],B[1],rr,Math.PI/2-c.i,Math.PI/2,'#fff',2);tag(ctx,'e',B[0]+Math.sin(c.i/2)*(rr+13),B[1]+Math.cos(c.i/2)*(rr+13),{size:14,color:'#fff'})}
+  // lateral shift
+  if(sl.i>2){const D={x:Math.sin(c.i),y:Math.cos(c.i)},k=(B[0]-A[0])*D.x+(B[1]-A[1])*D.y,Fp=[A[0]+D.x*k,A[1]+D.y*k];
+    line(ctx,[B,Fp],css('--r3'),3,1);tag(ctx,'d = '+fmt(c.d,2)+' cm',(B[0]+Fp[0])/2+(B[0]>Fp[0]?26:-26)+(B[0]>Fp[0]?18:-18),(B[1]+Fp[1])/2+(B[0]>Fp[0]?10:-8),{size:12,color:css('--r3'),bg:'rgba(10,15,36,.75)'})}
+  dot(ctx,A[0],A[1],3.5,'#fff');dot(ctx,B[0],B[1],3.5,'#fff');
+}});
+dragger($('#slCv'),{move(p){const W=slSt.W,H=slSt.H,g=slabGeom(W,H);sl.i=clamp(Math.round(deg(Math.atan2(g.xA-p.x,Math.max(1,g.yT-p.y)))),0,80);$('#slI').value=sl.i;updSl();if(sl.i>=60)award('slabShift',5)}});
+
+/* ---------- pin experiment ---------- */
+const pin={trial:0,rows:[],ns:[],iTrue:40,n:1.52,P:[{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0}],drag:-1,measured:false,res:null,init:false};
+function pinGeom(W,H){const T=H*.24,yT=H*.38,xA=W*.42;return {T,yT,yB:yT+T,xA,x0:W*.14,x1:W*.86}}
+function pinNew(){pin.iTrue=Math.round(rnd(28,58));pin.n=+(rnd(1.46,1.66)).toFixed(2);pin.measured=false;pin.res=null;pin.init=false;$('#pinDone').disabled=true;$('#pinNew').disabled=true;$('#pinStat').textContent='Trial '+(pin.rows.length+1)+' of 3';
+  $('#pinCap').textContent='Drag P3 and P4 below the slab until they line up with the images of P1 and P2.';$('#pinHint').textContent='Drag P3 and P4'}
+function pinLayout(W,H){const g=pinGeom(W,H),i=rad(pin.iTrue),D={x:Math.sin(i),y:Math.cos(i)};
+  pin.P[0]={x:g.xA-D.x*H*.3,y:g.yT-D.y*H*.3};pin.P[1]={x:g.xA-D.x*H*.14,y:g.yT-D.y*H*.14};
+  pin.P[2]={x:W*.2,y:H*.9};pin.P[3]={x:W*.33,y:H*.9};pin.init=true}
+function pinTrue(W,H){const g=pinGeom(W,H),i=rad(pin.iTrue),r=Math.asin(Math.sin(i)/pin.n),D={x:Math.sin(i),y:Math.cos(i)};return {g,i,r,D,B:{x:g.xA+g.T*Math.tan(r),y:g.yB}}}
+const pinDist=(P,B,D)=>Math.abs(D.x*(P.y-B.y)-D.y*(P.x-B.x));
+const pinSt=makeStage($('#pinCv'),{section:$('#slab'),ratio:.7,minH:340,maxH:520,onResize(s){pin.init=false},draw(ctx,W,H,t){
+  if(!pin.init)pinLayout(W,H);
+  stageBg(ctx,W,H);const tr=pinTrue(W,H),{g,D,B,i,r}=tr;
+  ctx.fillStyle=pin.measured?'rgba(80,190,235,0)':tint(pin.n+.3);ctx.fillRect(g.x0,g.yT,g.x1-g.x0,g.T);
+  line(ctx,[[g.x0,g.yT],[g.x1,g.yT],[g.x1,g.yB],[g.x0,g.yB],[g.x0,g.yT]],'rgba(143,227,255,.8)',pin.measured?1.3:2,1,pin.measured?[6,5]:null);
+  tag(ctx,'A',g.x0+8,g.yT-10,{align:'left',size:12,color:'#8fe3ff'});tag(ctx,pin.measured?'slab removed':'glass slab',g.x0+8,(g.yT+g.yB)/2,{align:'left',size:12,color:'#bfeeff'});
+  const A={x:g.xA,y:g.yT};
+  const aligned=[2,3].map(k=>pinDist(pin.P[k],B,D));
+  if(pin.measured&&pin.res){const R=pin.res;
+    line(ctx,[[pin.P[0].x,pin.P[0].y],[A.x,A.y]],css('--r1'),2.2,1,null,5);line(ctx,[[A.x,A.y],[R.B2.x,R.B2.y]],css('--r2'),2.2,1,null,5);line(ctx,[[R.B2.x,R.B2.y],[R.E.x,R.E.y]],css('--r3'),2.2,1,null,5);
+    line(ctx,[[A.x,g.yT-60],[A.x,g.yB+60]],'rgba(255,255,255,.45)',1,1,[5,5]);line(ctx,[[R.B2.x,g.yT-40],[R.B2.x,g.yB+70]],'rgba(255,255,255,.45)',1,1,[5,5]);
+    arc(ctx,A.x,A.y,40,-Math.PI/2-R.i,-Math.PI/2,'#fff',2);tag(ctx,'i = '+R.iDeg.toFixed(0)+'°',A.x-Math.sin(R.i/2)*60,A.y-Math.cos(R.i/2)*60,{size:12,color:'#fff',bg:'rgba(10,15,36,.75)'});
+    arc(ctx,A.x,A.y,40,Math.PI/2-R.r,Math.PI/2,'#fff',2);tag(ctx,'r = '+R.rDeg.toFixed(0)+'°',A.x+Math.sin(R.r/2)*64+8,A.y+Math.cos(R.r/2)*64,{size:12,color:'#fff',bg:'rgba(10,15,36,.75)'});
+    tag(ctx,'B',R.B2.x+12,g.yB+14,{size:12,color:'#8fe3ff'});}
+  // pins
+  const cols=['#ffc233','#ffc233','#ff7aa8','#ff7aa8'];
+  pin.P.forEach((P,k)=>{let ring=null;if(k>=2&&!pin.measured){const d=aligned[k-2];ring=d<9?'#4fe0a2':d<26?'#ffb84d':null}
+    if(ring){dot(ctx,P.x,P.y,17,ring,.28);ctx.save();ctx.strokeStyle=ring;ctx.lineWidth=2.4;ctx.beginPath();ctx.arc(P.x,P.y,15,0,Math.PI*2);ctx.stroke();ctx.restore()}
+    line(ctx,[[P.x,P.y],[P.x,P.y+16]],'#cfd7ff',2);dot(ctx,P.x,P.y,7,cols[k]);dot(ctx,P.x-2,P.y-2,2.4,'#fff',.8);tag(ctx,'P'+(k+1),P.x,P.y-17,{size:12,color:cols[k]})});
+  if(!pin.measured){const ok=aligned[0]<9&&aligned[1]<9&&Math.hypot(pin.P[2].x-pin.P[3].x,pin.P[2].y-pin.P[3].y)>70;$('#pinDone').disabled=!ok;
+    $('#pinHint').textContent=ok?'Aligned! Press the button':'Amber = close, green = aligned'}
+}});
+dragger($('#pinCv'),{down(p){if(pin.measured)return false;let b=-1,bd=34;for(const k of [2,3]){const d=Math.hypot(pin.P[k].x-p.x,pin.P[k].y-p.y);if(d<bd){bd=d;b=k}}if(b<0)return false;pin.drag=b},move(p){if(pin.drag<0)return;const g=pinGeom(pinSt.W,pinSt.H);pin.P[pin.drag]={x:clamp(p.x,12,pinSt.W-12),y:clamp(p.y,g.yB+14,pinSt.H-14)}},up(){pin.drag=-1}});
+$('#pinDone').addEventListener('click',()=>{const W=pinSt.W,H=pinSt.H,g=pinGeom(W,H),A={x:g.xA,y:g.yT};
+  const P3=pin.P[2],P4=pin.P[3],dx=P4.x-P3.x,dy=P4.y-P3.y;const k=(g.yB-P3.y)/dy;const B2={x:P3.x+dx*k,y:g.yB};
+  const iDeg=pin.iTrue,rDeg=deg(Math.atan2(B2.x-A.x,g.T)),E={x:B2.x+dx*(H*.35/Math.abs(dy)),y:B2.y+dy*(H*.35/Math.abs(dy))};
+  const E2={x:P3.x+dx*((H*.96-P3.y)/dy),y:H*.96};
+  pin.measured=true;pin.res={B2,E:E2,iDeg,rDeg,i:rad(iDeg),r:rad(rDeg)};
+  const si=Math.sin(rad(iDeg)),sr=Math.sin(rad(rDeg)),n=si/sr;pin.ns.push(n);pin.rows.push(1);
+  const tb=$('#pinTab tbody');tb.innerHTML+=`<tr><td>${pin.ns.length}</td><td>${iDeg.toFixed(0)}°</td><td>${rDeg.toFixed(0)}°</td><td>${si.toFixed(3)}</td><td>${sr.toFixed(3)}</td><td><b>${n.toFixed(2)}</b></td></tr>`;
+  $('#pinDone').disabled=true;award('pin'+pin.ns.length,10,'Trial '+pin.ns.length+' recorded');good();
+  if(pin.ns.length>=3){const mean=pin.ns.reduce((a,b)=>a+b,0)/3;$('#pinCap').innerHTML=`Mean refractive index = <b>${mean.toFixed(2)}</b>. Taking the average of three trials reduces the error. Press "New trial" to run the experiment again.`;award('pinall',30,'Experiment complete!');pin.ns=[];pin.rows=[];$('#pinTab tbody').insertAdjacentHTML('beforeend','<tr><td colspan="6" style="background:var(--surface2);font-weight:800">Mean n = '+mean.toFixed(2)+'</td></tr>');$('#pinStat').textContent='Done: 3 of 3';$('#pinNew').disabled=false;pin.finished=true}
+  else{$('#pinCap').innerHTML=`n = ${frac('sin i','sin r')} = ${frac(si.toFixed(3),sr.toFixed(3))} = <b>${n.toFixed(2)}</b>. Do ${3-pin.ns.length} more trial${3-pin.ns.length>1?'s':''} and take the mean.`;$('#pinNew').disabled=false;$('#pinStat').textContent='Trial '+pin.ns.length+' of 3 done'}
+});
+$('#pinNew').addEventListener('click',()=>{if(pin.finished){$('#pinTab tbody').innerHTML='';pin.finished=false}pinNew()});
+pinNew();
+
+/* ================= GAMES ================= */
+const GAMES=[['laser','Laser Maze'],['sun','Sun Burner'],['rules','Ray Rules'],['det','Image Detective'],['num','Number Crunch']];
+function showGame(id){$$('.gpanel').forEach(p=>p.hidden=p.id!=='g-'+id);$$('#gnav .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.g===id));setTimeout(()=>stages.forEach(s=>s.cv.offsetParent!==null&&s.resize()),30)}
+GAMES.forEach(([id,l])=>{const b=document.createElement('button');b.className='chip';b.dataset.g=id;b.textContent=l;b.addEventListener('click',()=>showGame(id));$('#gnav').appendChild(b)});
+
+/* ---------- Laser Maze ---------- */
+const LZ=[
+ {n:'Level 1',hint:'One mirror. Turn it until the beam drops onto the target. Tip: the normal must split the angle between the incoming and outgoing beam.',src:{x:8,y:12,a:0},target:{x:60,y:50,r:4},mirrors:[{x:60,y:12,a:100,len:14}],blocks:[]},
+ {n:'Level 2',hint:'Two mirrors. Each bounce obeys i = r. Fix the first bounce, then the second.',src:{x:8,y:50,a:0},target:{x:90,y:15,r:4},mirrors:[{x:40,y:50,a:10,len:14},{x:40,y:15,a:80,len:14}],blocks:[]},
+ {n:'Level 3',hint:'A wall blocks the straight path. Send the beam down, along the bottom, then up.',src:{x:8,y:10,a:0},target:{x:75,y:14,r:4},mirrors:[{x:30,y:10,a:120,len:14},{x:30,y:50,a:10,len:14},{x:75,y:50,a:100,len:14}],blocks:[{x:46,y:0,w:7,h:38}]},
+ {n:'Level 4: Periscope',hint:'This is how a periscope works: up, across, down. Three mirrors, all at 45°.',src:{x:8,y:52,a:0},target:{x:78,y:44,r:4},mirrors:[{x:25,y:52,a:70,len:14},{x:25,y:10,a:100,len:14},{x:78,y:10,a:20,len:14}],blocks:[{x:40,y:18,w:14,h:42}]}];
+const lz={lv:0,sel:0,L:null,won:false};
+function lzLoad(i){lz.lv=i;lz.L=JSON.parse(JSON.stringify(LZ[i]));lz.sel=0;lz.won=false;$('#lzGo').disabled=true;$('#lzLvl').textContent=LZ[i].n+' of '+LZ.length;$('#lzCap').textContent=LZ[i].hint}
+function distSeg(c,p,q){const dx=q.x-p.x,dy=q.y-p.y,l2=dx*dx+dy*dy||1,t=clamp(((c.x-p.x)*dx+(c.y-p.y)*dy)/l2,0,1);return Math.hypot(c.x-(p.x+dx*t),c.y-(p.y+dy*t))}
+function lzTrace(L){let p={x:L.src.x,y:L.src.y},d={x:Math.cos(rad(L.src.a)),y:Math.sin(rad(L.src.a))};const pts=[[p.x,p.y]],bn=[];let hit=false;
+  for(let b=0;b<14;b++){
+    const tx=d.x>0?(100-p.x)/d.x:d.x<0?-p.x/d.x:1e9,ty=d.y>0?(60-p.y)/d.y:d.y<0?-p.y/d.y:1e9;let best=Math.min(tx,ty),kind='wall',obj=null;
+    L.mirrors.forEach(m=>{const a=rad(m.a),md={x:Math.cos(a),y:Math.sin(a)},den=d.x*md.y-d.y*md.x;if(Math.abs(den)<1e-9)return;const cx=m.x-p.x,cy=m.y-p.y,t=(cx*md.y-cy*md.x)/den,s=(cx*d.y-cy*d.x)/den;if(t>1e-3&&t<best&&Math.abs(s)<=m.len/2){best=t;kind='mirror';obj=m}});
+    L.blocks.forEach(k=>{let t0=-1e9,t1=1e9;[['x','w'],['y','h']].forEach(([ax,sz])=>{if(Math.abs(d[ax])<1e-9){if(p[ax]<k[ax]||p[ax]>k[ax]+k[sz]){t0=1e9}}else{let a=(k[ax]-p[ax])/d[ax],c=(k[ax]+k[sz]-p[ax])/d[ax];if(a>c)[a,c]=[c,a];t0=Math.max(t0,a);t1=Math.min(t1,c)}});if(t0<t1&&t0>1e-3&&t0<best){best=t0;kind='block'}});
+    const q={x:p.x+d.x*best,y:p.y+d.y*best};
+    if(distSeg(L.target,p,q)<=L.target.r){hit=true;const dx=q.x-p.x,dy=q.y-p.y,l2=dx*dx+dy*dy||1,t=clamp(((L.target.x-p.x)*dx+(L.target.y-p.y)*dy)/l2,0,1);pts.push([p.x+dx*t,p.y+dy*t]);break}
+    pts.push([q.x,q.y]);if(kind!=='mirror')break;
+    const a=rad(obj.a),n={x:-Math.sin(a),y:Math.cos(a)},dn=d.x*n.x+d.y*n.y;bn.push({p:q,i:deg(Math.acos(clamp(Math.abs(dn),0,1)))});
+    d={x:d.x-2*dn*n.x,y:d.y-2*dn*n.y};p=q}
+  return {pts,bn,hit}}
+const lzSt=makeStage($('#lzCv'),{section:$('#games'),ratio:.6,minH:260,maxH:560,draw(ctx,W,H,t){
+  stageBg(ctx,W,H);const u=W/100,L=lz.L,P=(x,y)=>[x*u,y*u],tr=lzTrace(L);
+  L.blocks.forEach(k=>{ctx.fillStyle='#2b3566';ctx.strokeStyle='#5668b8';ctx.lineWidth=2;ctx.fillRect(k.x*u,k.y*u,k.w*u,k.h*u);ctx.strokeRect(k.x*u,k.y*u,k.w*u,k.h*u);tag(ctx,'wall',(k.x+k.w/2)*u,(k.y+k.h/2)*u,{size:11,color:'#93a2e6'})});
+  // target
+  const T=L.target,pulse=1+.08*Math.sin(t*4),tc=tr.hit?'#4fe0a2':'#ff7aa8';
+  if(tr.hit)dot(ctx,T.x*u,T.y*u,T.r*u*1.9,tc,.18);ctx.save();ctx.strokeStyle=tc;ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(T.x*u,T.y*u,T.r*u*pulse,0,7);ctx.stroke();ctx.beginPath();ctx.arc(T.x*u,T.y*u,T.r*u*.5,0,7);ctx.stroke();ctx.restore();dot(ctx,T.x*u,T.y*u,3,tc);tag(ctx,tr.hit?'Lit!':'Target',T.x*u,(T.y+T.r+4)*u,{size:12,color:tc});
+  // beam
+  const px=tr.pts.map(p=>[p[0]*u,p[1]*u]),c1=css('--r1');line(ctx,px,c1,2.6,1,null,7);pulses(ctx,px,c1,t,3);
+  // mirrors
+  L.mirrors.forEach((m,i)=>{const a=rad(m.a),dx=Math.cos(a)*m.len/2*u,dy=Math.sin(a)*m.len/2*u,c=P(m.x,m.y);
+    ctx.save();ctx.strokeStyle='rgba(150,170,255,.45)';ctx.lineWidth=1;ctx.beginPath();for(let k=-.9;k<=.9;k+=.18){const bx=c[0]+dx*k,by=c[1]+dy*k;ctx.moveTo(bx,by);ctx.lineTo(bx-Math.sin(a)*-7+0,by+Math.cos(a)*-7*-1)}ctx.stroke();ctx.restore();
+    line(ctx,[[c[0]-dx,c[1]-dy],[c[0]+dx,c[1]+dy]],i===lz.sel?'#ffffff':'#d3dcff',i===lz.sel?5:4,1,null,i===lz.sel?8:0);
+    if(i===lz.sel){dot(ctx,c[0]+dx,c[1]+dy,6,css('--accent'));dot(ctx,c[0]-dx,c[1]-dy,6,css('--accent'));ctx.save();ctx.strokeStyle='rgba(255,255,255,.3)';ctx.setLineDash([3,4]);ctx.beginPath();ctx.arc(c[0],c[1],m.len/2*u,0,7);ctx.stroke();ctx.restore()}});
+  // source
+  torch(ctx,L.src.x*u,L.src.y*u,rad(L.src.a));
+  // bounce labels
+  tr.bn.forEach(b=>{const q=[b.p.x*u,b.p.y*u];tag(ctx,'i = r = '+Math.round(b.i)+'°',q[0]+(q[0]>W*.8?-50:40),q[1]+(q[1]>H*.8?-18:18),{size:11,color:'#fff',bg:'rgba(10,15,36,.75)'})});
+  if(tr.hit&&!lz.won){lz.won=true;$('#lzGo').disabled=false;const last=lz.lv===LZ.length-1;$('#lzCap').innerHTML='<b>Target lit!</b> '+(last?'All four levels done. You just built a periscope.':'Well bounced.');$('#lzGo').textContent=last?'Play again':'Next level';award('laser'+lz.lv,20,'Level cleared');good()}
+}});
+dragger($('#lzCv'),{down(p){const u=lzSt.W/100,x=p.x/u,y=p.y/u;let b=-1,bd=11;lz.L.mirrors.forEach((m,i)=>{const d=Math.hypot(m.x-x,m.y-y);if(d<bd){bd=d;b=i}});if(b<0)return false;lz.sel=b},move(p){const u=lzSt.W/100,m=lz.L.mirrors[lz.sel];let a=deg(Math.atan2(p.y/u-m.y,p.x/u-m.x));a=((Math.round(a)%180)+180)%180;m.a=a}});
+const lzRot=d=>{const m=lz.L.mirrors[lz.sel];m.a=((m.a+d)%180+180)%180};
+$('#lzPrev').addEventListener('click',()=>lzRot(-5));$('#lzNext').addEventListener('click',()=>lzRot(5));
+$('#lzGo').addEventListener('click',()=>lzLoad((lz.lv+1)%LZ.length));
+$('#lzCv').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){lzRot(-2);e.preventDefault()}if(e.key==='ArrowRight'){lzRot(2);e.preventDefault()}if(e.key==='Tab')return;if(['1','2','3'].includes(e.key)&&lz.L.mirrors[+e.key-1])lz.sel=+e.key-1});
+lzLoad(0);
+
+/* ---------- Sun Burner ---------- */
+const SB={rounds:[8,11,13.5],r:0,R:30,burning:false,spread:9};
+function sbRays(W,H){const S=W/80,ox=W*.8,oy=H*.5,R=SB.R,Cx=ox-R*S,out=[];const D=SB.rounds[SB.r],px=ox-D*S;
+  for(let k=0;k<9;k++){const y0=(k-4)*.05*R;const hx=Cx+Math.sqrt(R*R-y0*y0)*S;const P=[hx,oy-y0*S];const n=unit(Cx-P[0],oy-P[1]);const dn=n.x;const rd={x:1-2*dn*n.x,y:-2*dn*n.y};
+    const tt=(px-P[0])/rd.x,yy=P[1]+rd.y*tt;out.push({y0,P,rd,hy:(oy-yy)/S,tt,px})}
+  return {S,ox,oy,Cx,px,out}}
+function sbUpdate(){const W=sbSt.W,H=sbSt.H,g=sbRays(W,H),ys=g.out.map(o=>o.hy),sp=Math.max(...ys)-Math.min(...ys);SB.spread=sp;const D=SB.rounds[SB.r],F=SB.R/2;
+  $('#sbRo').textContent=SB.R+' cm';$('#sbRd').textContent='Paper is '+D+' cm from the mirror. f = R/2 = '+fmt(F)+' cm';
+  const was=SB.burning;SB.burning=sp<.45;
+  if(SB.burning){$('#sbCap').innerHTML=`<b>The paper is burning!</b> It sits exactly at the focus, so f = ${D} cm and R = 2 × ${D} = ${2*D} cm.`;$('#sbGo').disabled=false;if(!was){award('sun'+SB.r,20,'Paper ignited');good()}}
+  else{$('#sbGo').disabled=!Progress.keys['sun'+SB.r]&&true;$('#sbCap').textContent=F>D?'The rays have not met yet. The focus is behind the paper. Move the focus closer: make R smaller.':'The rays already crossed and are spreading again. The focus is in front of the paper. Make R larger.'}
+  if(Progress.keys['sun'+SB.r])$('#sbGo').disabled=false}
+const sbSt=makeStage($('#sbCv'),{section:$('#games'),ratio:.5,minH:270,maxH:430,draw(ctx,W,H,t){
+  stageBg(ctx,W,H);const g=sbRays(W,H),{S,ox,oy,Cx,px}=g,R=SB.R;sbUpdate.t=sbUpdate.t||0;
+  // sun label
+  tag(ctx,'Sunlight (parallel rays)',W*.02,16,{align:'left',size:12,color:'#ffd166'});
+  // mirror arc
+  const a=Math.asin(.3);ctx.save();ctx.strokeStyle='rgba(150,170,255,.45)';ctx.lineWidth=1;for(let q=-a;q<=a;q+=.05){const x=Cx+R*S*Math.cos(q),y=oy+R*S*Math.sin(q);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+9,y+4);ctx.stroke()}
+  ctx.strokeStyle='#e6ecff';ctx.lineWidth=4;ctx.beginPath();for(let q=-a;q<=a+.001;q+=.03){const x=Cx+R*S*Math.cos(q),y=oy+R*S*Math.sin(q);q===-a?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.stroke();ctx.restore();
+  line(ctx,[[0,oy],[W,oy]],'rgba(210,220,255,.3)',1,1,[4,5]);
+  const col=css('--r1');g.out.forEach(o=>{const pts=[[0,o.P[1]],o.P,[px,o.P[1]+o.rd.y*o.tt]];line(ctx,pts,col,1.8,.95,null,4);pulses(ctx,pts,col,t+o.y0,1)});
+  // paper
+  const D=SB.rounds[SB.r];ctx.fillStyle=SB.burning?'#3a2a1c':'#f4f1e6';ctx.fillRect(px-4,oy-3.4*S,8,6.8*S);tag(ctx,'paper',px,oy+4.4*S+8,{size:12,color:'#f4f1e6'});
+  line(ctx,[[px,oy+5.4*S+12],[ox,oy+5.4*S+12]],'#c8d2ff',1.3);tag(ctx,D+' cm',(px+ox)/2,oy+5.4*S+26,{size:12,color:'#c8d2ff'});
+  if(SB.burning){glowDot(ctx,px,oy,5+Math.sin(t*9)*1.2,'#ffb347');for(let k=0;k<7;k++){const s=((t*.6+k/7)%1);dot(ctx,px-4-s*10+Math.sin(k*3+t*2)*6,oy-s*90,2+s*5,'#8a8fb0',.5*(1-s))}}
+  sbUpdate();
+}});
+$('#sbR').addEventListener('input',e=>{SB.R=+e.target.value});
+$('#sbGo').addEventListener('click',()=>{SB.r=(SB.r+1)%SB.rounds.length;SB.R=Math.round(rnd(14,38)*2)/2;$('#sbR').value=SB.R;$('#sbGo').disabled=true;if(SB.r===0)toast('All papers burned! Great work.')});
+
+/* ---------- Ray Rules ---------- */
+const rr={n:0,score:0,q:null,done:false,streak:0};
+const RRC=['#6ec6ff','#ffa94d','#c4a0ff'];
+function outDir(fam,f,id,H,P0){const F=Math.abs(f);
+  if(fam==='mirror'){const conc=f<0;if(id==='par')return unit(-F,-H.y*(conc?1:-1));if(id==='foc')return {x:-1,y:0};const di=unit(H.x-P0.x,H.y-P0.y);if(id==='cen')return {x:-di.x,y:-di.y};return {x:-di.x,y:di.y}}
+  const conv=f>0;if(id==='par')return unit(F,-H.y*(conv?1:-1));if(id==='cen')return unit(H.x-P0.x,H.y-P0.y);return {x:1,y:0}}
+function rrGen(){const fam=pick(['mirror','lens']),kind=fam==='mirror'?pick(['concave','convex']):pick(['convex','concave']),F=pick([8,10,12]);
+  const f=(fam==='mirror'?(kind==='concave'?-1:1):(kind==='convex'?1:-1))*F,id=pick(Optics.ids(fam)),yh=pick([-1,1])*rnd(1.8,3.6);
+  let H={x:0,y:yh},P0;
+  if(id==='par')P0={x:-36,y:yh};
+  else if(id==='pole'||(id==='cen'&&fam==='lens')){H={x:0,y:0};P0={x:-26,y:pick([-1,1])*rnd(4,8)}}
+  else{const Tx=fam==='mirror'?(id==='foc'?f:2*f):-f;if(Tx<0){const k=Math.max(.25,26/Math.abs(Tx)-1);P0={x:Tx*(1+k),y:-yh*k}}else{const k=26/Tx;P0={x:-Tx*k,y:yh*(1+k)}}}
+  const dOut=outDir(fam,f,id,H,P0),ang=v=>deg(Math.atan2(v.y,v.x));
+  const raw=[];[[f,0],[-f,0],[2*f,0],[-2*f,0],[0,0]].forEach(T=>{if(Math.hypot(T[0]-H.x,T[1]-H.y)>1)raw.push(unit(T[0]-H.x,T[1]-H.y))});
+  raw.push({x:-1,y:0},{x:1,y:0},{x:dOut.x,y:-dOut.y},unit(dOut.x,dOut.y*.35),unit(dOut.x,dOut.y*2.2));
+  const okSide=u=>fam==='mirror'?u.x<-.05:u.x>.05,diff=(a,b)=>Math.abs(((ang(a)-ang(b)+540)%360)-180);
+  let cands=[];shuffle(raw).forEach(c=>{if(okSide(c)&&diff(c,dOut)>13&&cands.every(x=>diff(x,c)>10))cands.push(c)});
+  cands=cands.slice(0,2);while(cands.length<2)cands.push(unit(dOut.x,dOut.y+rnd(.4,.9)*(Math.random()<.5?-1:1)));
+  const opts=shuffle([{d:dOut,ok:true},{d:cands[0]},{d:cands[1]}]);
+  const kn=fam==='mirror'?kind+' mirror':kind+' lens';
+  const desc={par:'parallel to the principal axis',foc:fam==='mirror'?(kind==='concave'?'passing through the focus F':'directed towards the focus F'):(kind==='convex'?'passing through the focus F₁':'directed towards the focus F₂'),cen:fam==='mirror'?(kind==='concave'?'passing through the centre of curvature C':'directed towards the centre of curvature C'):'passing through the optical centre O',pole:'striking the pole P'}[id];
+  return {fam,kind,f,id,H,P0,dOut,opts,text:`A ray ${desc} falls on a ${kn}. Which path does it take afterwards?`,rule:Optics.meta(fam,kind,id).rule,chosen:-1}}
+function rrNext(){if(rr.n>=10){rr.n=0;rr.score=0;rr.streak=0}rr.n++;rr.q=rrGen();rr.done=false;$('#rrQ').textContent=`Ray ${rr.n} of 10: ${rr.q.text}`;$('#rrCap').textContent='Pick A, B or C.';$('#rrNext').hidden=true;
+  const o=$('#rrOpts');o.innerHTML='';rr.q.opts.forEach((op,i)=>{const b=document.createElement('button');b.className='chip';b.innerHTML=`<span class="dot" style="background:${RRC[i]}"></span>Path ${'ABC'[i]}`;b.addEventListener('click',()=>rrPick(i));o.appendChild(b)});rrScore()}
+function rrScore(){$('#rrScore').textContent=`Score ${rr.score} / ${rr.n-(rr.done?0:1)}  ·  Streak ${rr.streak}`}
+function rrPick(i){if(rr.done)return;rr.done=true;rr.q.chosen=i;const ok=rr.q.opts[i].ok;const chips=$$('#rrOpts .chip');
+  chips.forEach((c,k)=>{if(rr.q.opts[k].ok)c.classList.add('right');else if(k===i)c.classList.add('wrong')});
+  if(ok){rr.score++;rr.streak++;award(null,5+Math.min(rr.streak,5),'');good();$('#rrCap').innerHTML='<b>Correct.</b> '+rr.q.rule}else{rr.streak=0;bad();$('#rrCap').innerHTML='<b>Not quite.</b> '+rr.q.rule}
+  rrScore();$('#rrNext').hidden=false;$('#rrNext').textContent=rr.n>=10?'Finish: score '+rr.score+'/10':'Next ray';if(rr.n>=10&&rr.score>=8)award('rr8',25,'Ray master!')}
+$('#rrNext').addEventListener('click',rrNext);
+const rrSt=makeStage($('#rrCv'),{section:$('#games'),ratio:.48,minH:280,maxH:420,draw(ctx,W,H,t){
+  const q=rr.q;if(!q){stageBg(ctx,W,H);return}
+  const g=drawBase(ctx,W,H,{fam:q.fam,kind:q.kind,f:q.f},{bands:false}),{X,Y}=g;const col=css('--r1'),far=Math.max(W,H);
+  const A=[X(q.P0.x),Y(q.P0.y)],Hh=[X(q.H.x),Y(q.H.y)];
+  line(ctx,[A,Hh],col,2.6,1,null,7);pulses(ctx,[A,Hh],col,t,2);dot(ctx,Hh[0],Hh[1],4,'#fff');
+  q.opts.forEach((op,i)=>{const E=[Hh[0]+op.d.x*far,Hh[1]-op.d.y*far];let c=RRC[i],al=rr.done?.28:.95,w=2.2;
+    if(rr.done){if(op.ok){c='#4fe0a2';al=1;w=3}else if(i===q.chosen){c='#ff6b8b';al=.9}}
+    const path=[Hh,E];line(ctx,path,c,w,al,null,rr.done&&op.ok?8:4);line(ctx,[Hh,[Hh[0]-op.d.x*70,Hh[1]+op.d.y*70]],c,1.3,al*.6,[4,4]);
+    if(rr.done&&op.ok)pulses(ctx,path,c,t,3);
+    const lp=pointAt(path,Math.min(plen(path)*.6,Math.min(W,H)*.55));tag(ctx,'ABC'[i],clamp(lp[0],16,W-16),clamp(lp[1],16,H-16),{size:14,color:'#0a0f24',bg:c})});
+}});
+rrNext();
+
+/* ---------- Image Detective ---------- */
+const ID={n:0,score:0,s:null,truth:null,done:false,hinted:false,sel:{}};
+const ID_ZONES={beyond:'beyond',at2F:'at2F',mid:'mid',atF:'atF',within:'within'};
+function idGen(){const fam=pick(['mirror','lens']),kind=fam==='mirror'?pick(['concave','convex','concave']):pick(['convex','concave','convex']);const F=pick([8,10,12]);
+  const conv=(fam==='mirror'&&kind==='concave')||(fam==='lens'&&kind==='convex');const g=geom(fam,idSt.W,idSt.H);let U;
+  if(conv){const z=pick(['beyond','at2F','mid','atF','within']);U={beyond:clamp(2.7*F,2*F+3,g.visMax-3),at2F:2*F,mid:1.5*F,atF:F,within:F*.55}[z]}else U=rnd(.5*F,3*F);
+  U=Math.round(U*2)/2;const f=(fam==='mirror'?(kind==='concave'?-1:1):(kind==='convex'?1:-1))*F;
+  return {fam,kind,f,u:-U,h:g.h,show:{},imgAlpha:0,vis:g.visMax}}
+function idSize(d){return /enlarged/i.test(d.size)?'Enlarged':/diminished/i.test(d.size)?'Diminished':'Same size'}
+function idNext(){if(ID.n>=8){ID.n=0;ID.score=0}ID.n++;ID.s=idGen();ID.truth=describe(ID.s.fam,ID.s.kind,ID.s.f,ID.s.u,ID.s.h,ID.s.vis);ID.done=false;ID.hinted=false;ID.sel={};
+  const nm=ID.s.fam==='mirror'?ID.s.kind+' mirror':ID.s.kind+' lens',F=Math.abs(ID.s.f);
+  $('#idQ').textContent=`Case ${ID.n} of 8: a ${nm}, f = ${fmt(F)} cm. The object is ${fmt(-ID.s.u)} cm away (${ID.truth.zname.toLowerCase()===('in front of the '+(ID.s.fam==='mirror'?'mirror':'lens'))?'anywhere in front':ID.truth.zname}).`;
+  const form=$('#idForm');form.innerHTML='';[['nat','Nature',['Real','Virtual']],['ori','Orientation',['Erect','Inverted']],['siz','Size',['Enlarged','Same size','Diminished']]].forEach(([k,l,opts])=>{const r=document.createElement('div');r.innerHTML=`<b style="font-size:.9rem;color:var(--muted)">${l}</b>`;const w=document.createElement('div');w.className='qopt';opts.forEach(o=>{const b=document.createElement('button');b.className='chip';b.textContent=o;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>{if(ID.done)return;ID.sel[k]=o;$$('.chip',w).forEach(c=>c.setAttribute('aria-pressed',c===b))});w.appendChild(b)});r.appendChild(w);form.appendChild(r)});
+  $('#idCheck').hidden=false;$('#idHint').hidden=false;$('#idNext').hidden=true;$('#idCap').textContent='Think about where the object stands compared with F and 2F (or C). Then press Check.';idScore()}
+function idScore(){$('#idScore').textContent=`Score ${ID.score} / ${ID.n-(ID.done?0:1)}`}
+$('#idHint').addEventListener('click',()=>{if(ID.done)return;ID.hinted=true;ID.s.show.par=.001;$('#idCap').textContent=Optics.meta(ID.s.fam,ID.s.kind,'par').rule});
+$('#idCheck').addEventListener('click',()=>{if(ID.done)return;if(!(ID.sel.nat&&ID.sel.ori&&ID.sel.siz)){$('#idCap').textContent='Choose one answer in each row first.';return}
+  ID.done=true;const T=ID.truth,truth={nat:T.real?'Real':'Virtual',ori:T.erect?'Erect':'Inverted',siz:idSize(T)};let right=0;
+  $$('#idForm .qopt').forEach((w,gi)=>{const k=['nat','ori','siz'][gi];$$('.chip',w).forEach(c=>{if(c.textContent===truth[k])c.classList.add('right');else if(c.textContent===ID.sel[k])c.classList.add('wrong')});if(ID.sel[k]===truth[k])right++});
+  Optics.ids(ID.s.fam).forEach(id=>ID.s.show[id]=.001);ID.s.imgAlpha=null;
+  const all=right===3;if(all){ID.score++;good()}else bad();award(null,all?(ID.hinted?7:10):right*2,'');
+  const im=T.im;$('#idCap').innerHTML=`<b>${all?'Perfect.':right+' of 3 right.'}</b> Image: ${T.pos.toLowerCase()}; ${T.size.toLowerCase()}; ${T.nature.toLowerCase()}. ${im.inf?'Rays emerge parallel, so the image is at infinity.':`Check: v = ${fmt(im.v,1)} cm, m = ${fmt(im.m,2)}.`}`;
+  $('#idCheck').hidden=true;$('#idHint').hidden=true;$('#idNext').hidden=false;$('#idNext').textContent=ID.n>=8?'Finish: score '+ID.score+'/8':'Next case';idScore();if(ID.n>=8&&ID.score>=7)award('id7',25,'Detective badge!')});
+$('#idNext').addEventListener('click',idNext);
+const idSt=makeStage($('#idCv'),{section:$('#games'),ratio:.48,minH:280,maxH:420,draw(ctx,W,H,t,dt){
+  if(!ID.s)return;Optics.ids(ID.s.fam).forEach(id=>{if(ID.s.show[id]>0&&ID.s.show[id]<1)ID.s.show[id]=Math.min(1,ID.s.show[id]+dt/1.1)});
+  drawScene(ctx,W,H,Object.assign({},ID.s,{imgAlpha:ID.done?null:0}),t,{bands:false});
+}});
+idNext();
+
+/* ---------- Number Crunch ---------- */
+const nc={p:null,solved:0,streak:0,tries:0};
+const num=x=>`<span class="num-n">${x}</span>`;
+function niceVals(kind,F){for(let k=0;k<400;k++){const U=pick([10,12,15,18,20,24,25,30,36,40,45,60]);if(Math.abs(U-F)<1e-6)continue;let v;const f=kind==='cmirror'||kind==='dlens'?-F:F;
+    if(kind==='cmirror'||kind==='xmirror'){v=(-U)*f/(-U-f)}else{v=(-U)*f/(-U+f)}
+    if(Math.abs(v)<=130&&Math.abs(v*2-Math.round(v*2))<1e-7)return {U,f,v}}return null}
+function ncGen(){let type=pick(['cmirror','xmirror','clens','dlens','findf','power','nspeed','nsnell']),F=pick([10,12,15,20,25,30]),h=pick([3,4,5,6]);
+  if(['cmirror','xmirror','clens','dlens'].includes(type)){const r=niceVals(type,F);if(!r)type='power';else{const {U,f,v}=r,mirror=type.endsWith('mirror'),m=mirror?-v/(-U):v/(-U);
+    const name={cmirror:'concave mirror',xmirror:'convex mirror',clens:'convex lens',dlens:'concave lens'}[type];
+    const steps=mirror?[`Sign convention: u = ${num('−'+U)} cm; ${type==='cmirror'?'concave':'convex'} mirror so f = ${num(fmt(f))} cm`,`${frac(1,'v')} = ${frac(1,'f')} − ${frac(1,'u')} = ${frac(1,'('+f+')')} − ${frac(1,'(−'+U+')')} = ${fmt(1/f+1/U,4)}`,`<span class="ln ans">v = ${fmt(v,1)} cm</span>`,`m = − ${frac('v','u')} = − ${frac('('+fmt(v,1)+')','(−'+U+')')} = <b>${fmt(m,2)}</b>`]
+      :[`Sign convention: u = ${num('−'+U)} cm; ${type==='clens'?'convex':'concave'} lens so f = ${num((f>0?'+':'−')+Math.abs(f))} cm`,`${frac(1,'v')} = ${frac(1,'f')} + ${frac(1,'u')} = ${frac(1,'('+fmt(f)+')')} + ${frac(1,'(−'+U+')')} = ${fmt(1/f-1/U,4)}`,`<span class="ln ans">v = ${fmt(v,1)} cm</span>`,`m = ${frac('v','u')} = ${frac('('+fmt(v,1)+')','(−'+U+')')} = <b>${fmt(m,2)}</b>`];
+    return {text:`A ${h} cm tall object is placed ${U} cm in front of a ${name} of focal length ${F} cm. Find the image distance v (in cm) and the magnification m.`,inputs:[{id:'v',label:'v (cm)',ans:v},{id:'m',label:'m',ans:m}],steps,hint:mirror?`Light comes from the left, so u = −${U}. A ${type==='cmirror'?'concave mirror has a NEGATIVE f':'convex mirror has a POSITIVE f'}. Use 1/v + 1/u = 1/f and m = −v/u.`:`Light comes from the left, so u = −${U}. A ${type==='clens'?'convex lens has a POSITIVE f':'concave lens has a NEGATIVE f'}. Use 1/v − 1/u = 1/f and m = v/u.`}}}
+  if(type==='findf'){const c=pick([[30,60],[20,20],[60,30],[40,40],[15,30],[45,90],[20,-10],[24,-8]]),U=c[0],V=c[1],f=(-U*V)/(-U-V),P=100/f;
+    return {text:`An object is placed ${U} cm from a lens. Its image forms ${Math.abs(V)} cm from the lens on the ${V>0?'opposite side (real image)':'same side as the object (virtual image)'}. Find the focal length f (cm) and the power P (dioptre).`,inputs:[{id:'f',label:'f (cm)',ans:f},{id:'P',label:'P (D)',ans:P}],
+      steps:[`u = ${num('−'+U)} cm, v = ${num((V>0?'+':'−')+Math.abs(V))} cm`,`${frac(1,'f')} = ${frac(1,'v')} − ${frac(1,'u')} = ${frac(1,'('+(V>0?'':'−')+Math.abs(V)+')')} − ${frac(1,'(−'+U+')')} = ${fmt(1/V+1/U,4)}`,`<span class="ln ans">f = ${fmt(f,1)} cm</span>`,`P = ${frac(1,'f (m)')} = ${frac(100,fmt(f,1))} = <b>${fmt(P,2)} D</b>`],hint:`Lens formula: 1/v − 1/u = 1/f. Put u as negative. Real image on the far side means v is positive. Then P = 1/f with f in metres.`}}
+  if(type==='power'){const f=pick([25,20,-50,-40,50,100,-25,-20]),P=100/f;return {text:`A lens has a focal length of ${f} cm. Find its power in dioptre. (Is it convex or concave?)`,inputs:[{id:'P',label:'P (D)',ans:P}],steps:[`f = ${num(fmt(f))} cm = ${num(fmt(f/100,2))} m`,`P = ${frac(1,'f (m)')} = ${frac(1,fmt(f/100,2))} = <span class="ln ans">${fmt(P,2)} D</span>`,`${f>0?'Positive power: convex lens (converging)':'Negative power: concave lens (diverging)'}`],hint:'Convert f to metres first. Convex lens: positive f, positive power. Concave lens: negative f, negative power.'}}
+  if(type==='nspeed'){const c=pick([[2.0,1.5],[2.25,1.33],[1.24,2.42],[1.97,1.52],[1.5,2.0],[2.05,1.46]]);return {text:`The speed of light in a medium is ${c[0]} × 10⁸ m/s. Taking the speed of light in air as 3 × 10⁸ m/s, find the refractive index of the medium.`,inputs:[{id:'n',label:'n',ans:3/c[0]}],steps:[`n = ${frac('speed of light in air','speed of light in medium')} = ${frac('3 × 10⁸',c[0]+' × 10⁸')}`,`<span class="ln ans">n = ${fmt(3/c[0],2)}</span>`,'A refractive index has no unit.'],hint:'n = c ÷ v, where c is the speed of light in vacuum or air.'}}
+  const c=pick([[45,30],[60,35],[50,30],[40,25],[30,22],[55,33]]),n=Math.sin(rad(c[0]))/Math.sin(rad(c[1]));
+  return {text:`A ray goes from air into a medium. The angle of incidence is ${c[0]}° and the angle of refraction is ${c[1]}°. Find the refractive index of the medium. (sin ${c[0]}° = ${Math.sin(rad(c[0])).toFixed(3)}, sin ${c[1]}° = ${Math.sin(rad(c[1])).toFixed(3)})`,inputs:[{id:'n',label:'n',ans:n}],steps:[`n = ${frac('sin i','sin r')} = ${frac(Math.sin(rad(c[0])).toFixed(3),Math.sin(rad(c[1])).toFixed(3))}`,`<span class="ln ans">n = ${fmt(n,2)}</span>`],hint:'Snell\'s law: n = sin i ÷ sin r. Angles are from the normal.'}}
+function ncNew(){nc.p=ncGen();nc.tries=0;$('#ncQ').textContent=nc.p.text;const w=$('#ncIn');w.innerHTML='';nc.p.inputs.forEach(i=>{const l=document.createElement('label');l.innerHTML=`${i.label} = `;const inp=document.createElement('input');inp.className='num';inp.inputMode='decimal';inp.autocomplete='off';inp.dataset.id=i.id;inp.setAttribute('aria-label',i.label);inp.addEventListener('keydown',e=>{if(e.key==='Enter')ncCheck()});l.appendChild(inp);w.appendChild(l)});
+  $('#ncCap').textContent='Use the sign convention. Type your answers, then press Check.';$('#ncSol').innerHTML='';ncScore()}
+function ncScore(){$('#ncScore').textContent=`Solved ${nc.solved} · Streak ${nc.streak}`}
+function ncCheck(){let allOk=true,signMiss=false;nc.tries++;$$('#ncIn input').forEach(inp=>{const spec=nc.p.inputs.find(x=>x.id===inp.dataset.id),val=parseFloat(inp.value.replace('−','-').replace(',','.')),tol=Math.max(.06,.02*Math.abs(spec.ans));const ok=isFinite(val)&&Math.abs(val-spec.ans)<=tol;inp.classList.toggle('right',ok);inp.classList.toggle('wrong',!ok);if(!ok){allOk=false;if(isFinite(val)&&Math.abs(Math.abs(val)-Math.abs(spec.ans))<=tol)signMiss=true}});
+  if(allOk){nc.solved++;nc.streak++;award(null,nc.tries===1?12:6,'');good();$('#ncCap').innerHTML='<b>Correct.</b> '+(nc.tries===1?'First try!':'')+' Press "Show steps" to compare your method, or try a new problem.';if(nc.solved>=5)award('nc5',30,'Number cruncher!');}
+  else{nc.streak=0;bad();$('#ncCap').innerHTML=signMiss?'<b>Right number, wrong sign.</b> Re-read the sign convention: which side is the image on?':'<b>Not yet.</b> Check your signs, then try again. The hint button can help.'}ncScore()}
+$('#ncCheck').addEventListener('click',ncCheck);$('#ncNext').addEventListener('click',ncNew);
+$('#ncHint').addEventListener('click',()=>{$('#ncCap').textContent=nc.p.hint});
+$('#ncSteps').addEventListener('click',()=>{$('#ncSol').innerHTML=nc.p.steps.map(s=>s.startsWith('<span class="ln')?s:`<span class="ln">${s}</span>`).join('')});
+ncNew();
+
+/* ---------- cheat sheet ---------- */
+(function(){
+const card=(t,b)=>`<div class="card"><h3>${t}</h3>${b}</div>`;
+$('#sheetTop').innerHTML=
+card('Sign convention','<p>Light travels left → right. Distances from P or O: right +, left −. u is always −. Upward heights +, downward −.</p><p><b>f is − for concave mirror and concave lens.</b><br><b>f is + for convex mirror and convex lens.</b></p>')+
+card('Formulas',`<p class="steps"><span class="ln">Mirror: ${frac(1,'v')} + ${frac(1,'u')} = ${frac(1,'f')}, &nbsp;m = ${frac('h′','h')} = − ${frac('v','u')}</span><span class="ln">Lens: ${frac(1,'v')} − ${frac(1,'u')} = ${frac(1,'f')}, &nbsp;m = ${frac('h′','h')} = ${frac('v','u')}</span><span class="ln">R = 2f &nbsp;·&nbsp; P = ${frac(1,'f (m)')} &nbsp;·&nbsp; n = ${frac('sin i','sin r')} = ${frac('c','v')}</span></p>`)+
+card('Four mirror rays','<p><b>1.</b> Parallel to axis → through F.<br><b>2.</b> Through F → parallel.<br><b>3.</b> Through C → straight back.<br><b>4.</b> To the pole P → equal angle on the other side.</p><p>Convex mirror: same rules, but "through" becomes "appears to come from / heads towards".</p>')+
+card('Three lens rays','<p><b>1.</b> Parallel to axis → through the far focus F₂.<br><b>2.</b> Through optical centre O → straight on.<br><b>3.</b> Through the near focus F₁ → parallel.</p>')+
+card('Refraction rules','<p>Rarer → denser: bends <b>towards</b> the normal.<br>Denser → rarer: bends <b>away</b> from the normal.<br>Glass slab: e = i, emergent ray is parallel to the incident ray, shifted sideways.<br>Higher n means slower light, more bending.</p>')+
+card('Always virtual, erect, diminished','<p><b>Convex mirror</b> (any object position) and <b>concave lens</b> (any object position).<br>Plane mirror: virtual, erect, same size, laterally inverted.</p>');
+const T=(h,rows)=>`<table class="t"><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+$('#shT1').innerHTML=T(['Object','Image position','Size','Nature'],[['At infinity','At F','Highly diminished, point-sized','Real, inverted'],['Beyond C','Between F and C','Diminished','Real, inverted'],['At C','At C','Same size','Real, inverted'],['Between C and F','Beyond C','Enlarged','Real, inverted'],['At F','At infinity','Highly enlarged','Real, inverted'],['Between P and F','Behind the mirror','Enlarged','Virtual, erect']]);
+$('#shT2').innerHTML=T(['Object','Image position','Size','Nature'],[['At infinity','At F₂','Highly diminished, point-sized','Real, inverted'],['Beyond 2F₁','Between F₂ and 2F₂','Diminished','Real, inverted'],['At 2F₁','At 2F₂','Same size','Real, inverted'],['Between F₁ and 2F₁','Beyond 2F₂','Enlarged','Real, inverted'],['At F₁','At infinity','Highly enlarged','Real, inverted'],['Between F₁ and O','Same side as the object','Enlarged','Virtual, erect']]);
+$('#shT3').innerHTML=T(['','Concave mirror','Convex mirror','Convex lens','Concave lens'],[['Also called','Converging','Diverging','Converging','Diverging'],['f sign','−','+','+','−'],['Real image?','Yes (object beyond F)','Never','Yes (object beyond F)','Never'],['Virtual image?','Object inside F','Always','Object inside F','Always'],['Uses','Shaving mirror, torch reflector, headlights','Rear-view mirror, shop security','Magnifier, camera, spectacles for far-sightedness','Spectacles for short-sightedness']]);
+})();
+
+/* ---------- start ---------- */
+$('#xp').textContent=Progress.xp;
+showGame('laser');
+refreshStations();
+const h0=(location.hash||'').slice(1);showTab(TABS.some(t=>t[0]===h0)?h0:'home',false);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
